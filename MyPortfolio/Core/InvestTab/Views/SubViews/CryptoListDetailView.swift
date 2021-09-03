@@ -13,11 +13,14 @@ struct CryptoListDetailView: View {
     
     @State private var showAddCoinView: Bool = false
     
+    @State var isEditing = false
+    
     var body: some View {
         List {
             ForEach(marketVM.savedCoins) {
                 coin in CoinRowView(coin: coin)
             }
+            .onMove(perform: marketVM.move)
             .onDelete(perform: marketVM.delete(at:))
         }
         .listStyle(.plain)
@@ -27,6 +30,7 @@ struct CryptoListDetailView: View {
                 toolbarTrailingItemView
             }
         }
+        .environment(\.editMode, .constant(isEditing ? EditMode.active : EditMode.inactive))
     }
 }
 
@@ -51,7 +55,7 @@ extension CryptoListDetailView {
                 .padding(.trailing)
             
             Button(action: {
-                print("Unimplemented")
+                isEditing.toggle()
             }, label: {
                 Image(systemName: "ellipsis")
                     .foregroundColor(.theme.accent)

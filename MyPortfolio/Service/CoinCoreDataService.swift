@@ -38,25 +38,51 @@ class CoinCoreDataService {
         delete(entity: entity)
     }
     
+    func move(coin: CoinModel, to destination: Int) {
+        guard let entity = savedEntities.first(where: { $0.coinID == coin.id }) else { return }
+        move(entity: entity, to: destination)
+    }
+    
     // MARK: Private
     private func getCoins() {
         let request = NSFetchRequest<CoinEntity>(entityName: entityName)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \CoinEntity.listIndex, ascending: true)]
         do {
             savedEntities = try container.viewContext.fetch(request)
         } catch let error {
             print("Error fetching Portfolio Entities. \(error)")
         }
         print("Successfully loaded \(savedEntities.count) entity")
+//        print("\(savedEntities)")
     }
     
     private func add(coinID: String) {
         let entity = CoinEntity(context: container.viewContext)
         entity.coinID = coinID
+        entity.listIndex = Int16(savedEntities.count)
         applyChanges()
     }
     
     private func delete(entity: CoinEntity) {
         container.viewContext.delete(entity)
+        for index in Int(entity.listIndex) ..< savedEntities.count {
+            savedEntities[index].listIndex -= 1
+        }
+        applyChanges()
+    }
+    
+    private func move(entity: CoinEntity, to destination: Int) {
+        let currentListIndex = entity.listIndex
+        if destination < currentListIndex {
+            for index in destination ..< Int(currentListIndex) {
+                savedEntities[index].listIndex += 1
+            }
+        } else {
+            for index in (Int(currentListIndex) + 1) ... destination {
+                savedEntities[index].listIndex -= 1
+            }
+        }
+        entity.listIndex = Int16(destination)
         applyChanges()
     }
     

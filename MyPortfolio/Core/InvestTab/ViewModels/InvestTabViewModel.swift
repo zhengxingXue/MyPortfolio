@@ -37,10 +37,9 @@ class InvestTabViewModel: ObservableObject {
         
         $allCoins
             .combineLatest(coinCoreDataService.$savedEntities)
-            .map { allCoins, coinEntities -> [CoinModel] in
-                allCoins.compactMap { coin -> CoinModel? in
-                    guard let _  = coinEntities.first(where: { $0.coinID == coin.id }) else { return nil }
-                    return coin
+            .map { (allCoins: [CoinModel], coinEntities: [CoinEntity]) -> [CoinModel] in
+                coinEntities.compactMap { coinEntity in
+                    allCoins.first(where: { $0.id == coinEntity.coinID })
                 }
             }
             .sink { [weak self] returnedCoins in
@@ -55,6 +54,10 @@ class InvestTabViewModel: ObservableObject {
     func delete(coin: CoinModel) { coinCoreDataService.delete(coin: coin) }
     
     func delete(at offset: IndexSet) { offset.map({ savedCoins[$0] }).forEach { coin in coinCoreDataService.delete(coin: coin) } }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        source.map({ savedCoins[$0] }).forEach { coin in coinCoreDataService.move(coin: coin, to: destination)}
+    }
     
     func refreshAllCoins() {
         coinDataService.getCoins()
