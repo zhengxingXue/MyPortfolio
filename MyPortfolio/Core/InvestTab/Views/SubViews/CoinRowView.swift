@@ -10,12 +10,15 @@ import SwiftUI
 struct CoinRowView: View {
     
     let coin: CoinModel
+    @Binding var isEditing: Bool
     
     var body: some View {
         HStack {
             leftColumn
             Spacer()
-            rightColumn
+            if !isEditing {
+                rightColumn
+            }
         }
         .padding(.vertical)
         .background(NavigationLink("", destination: Text("The detail view of \(coin.name)")).opacity(0))
@@ -25,15 +28,15 @@ struct CoinRowView: View {
 struct CoinRowView_Previews: PreviewProvider {
     static var previews: some View {
         List{
-            CoinRowView(coin: dev.coin)
-            CoinRowView(coin: dev.coin)
+            CoinRowView(coin: dev.coin, isEditing: .constant(false))
+            CoinRowView(coin: dev.coin, isEditing: .constant(false))
         }
         .listStyle(.plain)
         .preferredColorScheme(.light)
         
         List{
-            CoinRowView(coin: dev.coin)
-            CoinRowView(coin: dev.coin)
+            CoinRowView(coin: dev.coin, isEditing: .constant(false))
+            CoinRowView(coin: dev.coin, isEditing: .constant(false))
         }
         .listStyle(.plain)
         .preferredColorScheme(.dark)

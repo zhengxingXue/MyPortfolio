@@ -17,8 +17,8 @@ struct InvestTabView: View {
                 notesScrollView
                 listTitleText
                 cryptoListTitle
-                ForEach(marketVM.savedCoins) {
-                    coin in CoinRowView(coin: coin)
+                ForEach(marketVM.savedCoins) { coin in
+                    CoinRowView(coin: coin, isEditing: .constant(false))
                 }
                 .onDelete(perform: marketVM.delete(at:))
             }
