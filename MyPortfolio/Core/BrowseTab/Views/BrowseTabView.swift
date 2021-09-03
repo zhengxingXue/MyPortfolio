@@ -16,7 +16,7 @@ struct BrowseTabView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView(.vertical, showsIndicators: true) {
+            List {
                 ForEach(browseVM.allNews) { news in
                     NewsRowView(news: news)
                         .contentShape(Rectangle())
@@ -32,6 +32,7 @@ struct BrowseTabView: View {
             .refreshable {
                 browseVM.refreshNews()
             }
+            .listStyle(.plain)
             .navigationTitle("Browse")
         }
     }

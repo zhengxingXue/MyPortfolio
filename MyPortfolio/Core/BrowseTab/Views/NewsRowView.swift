@@ -12,35 +12,32 @@ struct NewsRowView: View {
     let news: NewsModel
     
     var body: some View {
-        VStack {
-            HStack(alignment: .center) {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text(news.source.name)
-                            .bold()
-                            .font(.body)
-                            .lineLimit(1)
-                        Text(news.publishedToNow)
-                    }
-                    Text(news.titleWithoutSource)
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Text(news.source.name)
+                        .bold()
                         .font(.body)
-                        .lineLimit(3)
-                    Text("")
-                        .font(.body)
+                        .lineLimit(1)
+                    Text(news.publishedToNow)
                 }
-                .foregroundColor(.theme.accent)
-                .fixedSize(horizontal: false, vertical: true)
-                
-                Spacer()
-                
-                NewsImageView(news: news)
-                    .scaledToFill()
-                    .frame(width: 100, height: 100)
-                    .cornerRadius(10)
-                    .padding()
-                
+                Text(news.titleWithoutSource)
+                    .font(.body)
+                    .lineLimit(3)
+                Text("")
+                    .font(.body)
             }
-            .padding(.horizontal)
+            .foregroundColor(.theme.accent)
+            .fixedSize(horizontal: false, vertical: true)
+            
+            Spacer()
+            
+            NewsImageView(news: news)
+                .scaledToFill()
+                .frame(width: 100, height: 100)
+                .cornerRadius(10)
+                .padding()
+            
         }
         .padding(.top, 2)
     }
