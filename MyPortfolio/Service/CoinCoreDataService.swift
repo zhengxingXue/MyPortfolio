@@ -52,8 +52,14 @@ class CoinCoreDataService {
         } catch let error {
             print("Error fetching Portfolio Entities. \(error)")
         }
+        
+        // TODO: Debug
+        for index in savedEntities.indices {
+            savedEntities[index].listIndex = Int16(index)
+        }
+        
         print("Successfully loaded \(savedEntities.count) entity")
-//        print("\(savedEntities)")
+        print("\(savedEntities)")
     }
     
     private func add(coinID: String) {
@@ -73,12 +79,13 @@ class CoinCoreDataService {
     
     private func move(entity: CoinEntity, to destination: Int) {
         let currentListIndex = entity.listIndex
+        print("destination: \(destination) current index:\(currentListIndex)")
         if destination < currentListIndex {
             for index in destination ..< Int(currentListIndex) {
                 savedEntities[index].listIndex += 1
             }
         } else {
-            for index in (Int(currentListIndex) + 1) ... destination {
+            for index in (Int(currentListIndex) + 1) ..< destination {
                 guard index < savedEntities.count else { break }
                 savedEntities[index].listIndex -= 1
             }
