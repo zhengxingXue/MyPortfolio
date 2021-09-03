@@ -15,13 +15,23 @@ struct CoinRowView: View {
     var body: some View {
         HStack {
             leftColumn
-            Spacer()
+                .frame(width: UIScreen.main.bounds.width / divider, alignment: .leading)
+                .padding(.vertical)
             if !isEditing {
+                SimpleLineChartView(data: getData())
+                    .frame(width: UIScreen.main.bounds.width / divider)
+                Spacer()
                 rightColumn
+                    .padding(.vertical)
             }
         }
-        .padding(.vertical)
         .background(NavigationLink("", destination: Text("The detail view of \(coin.name)")).opacity(0))
+    }
+    
+    private let divider: CGFloat = 3.8
+    private func getData() -> [Double] {
+        let sparkline7D = coin.sparklineIn7D?.price ?? []
+        return sparkline7D.suffix(Int(1 * sparkline7D.count / 7))
     }
 }
 
@@ -59,7 +69,7 @@ extension CoinRowView {
     private var rightColumn: some View {
         Text("\(coin.currentPrice.asCurrencyWith6Decimals())")
             .font(.callout)
-            .foregroundColor(.white)
+            .foregroundColor(.theme.background)
             .frame(minWidth: 80)
             .padding(.vertical, 8)
             .padding(.horizontal, 8)

@@ -20,6 +20,8 @@
 		3824176E26E1A0D5002BCA6E /* CoinCoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824176D26E1A0D5002BCA6E /* CoinCoreDataService.swift */; };
 		3824177026E1A5DC002BCA6E /* AddCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824176F26E1A5DC002BCA6E /* AddCoinView.swift */; };
 		3824177226E1A9FF002BCA6E /* XMarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177126E1A9FF002BCA6E /* XMarkButton.swift */; };
+		3824177426E1C861002BCA6E /* Path+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177326E1C861002BCA6E /* Path+.swift */; };
+		3824177726E1C88A002BCA6E /* SimpleLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177626E1C88A002BCA6E /* SimpleLineChartView.swift */; };
 		38B20A6926E13C280028B819 /* MyPortfolioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B20A6826E13C280028B819 /* MyPortfolioApp.swift */; };
 		38B20A6B26E13C280028B819 /* MyPortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B20A6A26E13C280028B819 /* MyPortfolioView.swift */; };
 		38B20A6D26E13C2B0028B819 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38B20A6C26E13C2B0028B819 /* Assets.xcassets */; };
@@ -42,6 +44,8 @@
 		3824176D26E1A0D5002BCA6E /* CoinCoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinCoreDataService.swift; sourceTree = "<group>"; };
 		3824176F26E1A5DC002BCA6E /* AddCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCoinView.swift; sourceTree = "<group>"; };
 		3824177126E1A9FF002BCA6E /* XMarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkButton.swift; sourceTree = "<group>"; };
+		3824177326E1C861002BCA6E /* Path+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+.swift"; sourceTree = "<group>"; };
+		3824177626E1C88A002BCA6E /* SimpleLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLineChartView.swift; sourceTree = "<group>"; };
 		38B20A6526E13C280028B819 /* MyPortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPortfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38B20A6826E13C280028B819 /* MyPortfolioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPortfolioApp.swift; sourceTree = "<group>"; };
 		38B20A6A26E13C280028B819 /* MyPortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPortfolioView.swift; sourceTree = "<group>"; };
@@ -65,6 +69,7 @@
 		3824175226E18429002BCA6E /* Componenets */ = {
 			isa = PBXGroup;
 			children = (
+				3824177526E1C87B002BCA6E /* LineChart */,
 				3824177126E1A9FF002BCA6E /* XMarkButton.swift */,
 			);
 			path = Componenets;
@@ -104,6 +109,14 @@
 				3824176F26E1A5DC002BCA6E /* AddCoinView.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		3824177526E1C87B002BCA6E /* LineChart */ = {
+			isa = PBXGroup;
+			children = (
+				3824177626E1C88A002BCA6E /* SimpleLineChartView.swift */,
+			);
+			path = LineChart;
 			sourceTree = "<group>";
 		};
 		38B20A5C26E13C280028B819 = {
@@ -153,6 +166,7 @@
 				3824176126E18688002BCA6E /* Double+.swift */,
 				3824175F26E1862F002BCA6E /* PreviewProvider+.swift */,
 				3824176826E19D2E002BCA6E /* UINavigationController+.swift */,
+				3824177326E1C861002BCA6E /* Path+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -267,9 +281,11 @@
 				3824176E26E1A0D5002BCA6E /* CoinCoreDataService.swift in Sources */,
 				3824177026E1A5DC002BCA6E /* AddCoinView.swift in Sources */,
 				3824176C26E1A0A4002BCA6E /* CoinContainer.xcdatamodeld in Sources */,
+				3824177726E1C88A002BCA6E /* SimpleLineChartView.swift in Sources */,
 				38B20A8026E157340028B819 /* Color+.swift in Sources */,
 				3824175C26E18511002BCA6E /* CoinDataService.swift in Sources */,
 				3824176726E19A0B002BCA6E /* CryptoListDetailView.swift in Sources */,
+				3824177426E1C861002BCA6E /* Path+.swift in Sources */,
 				3824175726E184CA002BCA6E /* NetworkManager.swift in Sources */,
 				3824177226E1A9FF002BCA6E /* XMarkButton.swift in Sources */,
 				3824176226E18688002BCA6E /* Double+.swift in Sources */,
