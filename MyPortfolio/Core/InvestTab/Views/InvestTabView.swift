@@ -76,7 +76,7 @@ extension InvestTabView {
                 Text("My Crypto")
                     .font(.body)
                     .foregroundColor(.theme.accent)
-                Text("\(marketVM.savedCoins.count) items")
+                Text("\(marketVM.savedCoinEntities.count) items")
                     .font(.callout)
                     .foregroundColor(.theme.secondaryText)
             }

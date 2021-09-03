@@ -13,6 +13,7 @@ class InvestTabViewModel: ObservableObject {
     
     @Published var allCoins: [CoinModel] = []
     @Published var savedCoins: [CoinModel] = []
+    @Published var savedCoinEntities: [CoinEntity] = []
     
     private let coinDataService = CoinDataService()
     private let coinCoreDataService = CoinCoreDataService()
@@ -30,23 +31,19 @@ class InvestTabViewModel: ObservableObject {
     
     private func addSubscribers() {
         coinDataService.$allCoins
-            .sink { [weak self] returnedCoins in
-                self?.allCoins = returnedCoins
-            }
-            .store(in: &cancellables)
-        
-        $allCoins
             .combineLatest(coinCoreDataService.$savedEntities)
-            .map { (allCoins: [CoinModel], coinEntities: [CoinEntity]) -> [CoinModel] in
-                coinEntities.compactMap { coinEntity in
-                    allCoins.first(where: { $0.id == coinEntity.coinID })
-                }
-            }
-            .sink { [weak self] returnedCoins in
+            .map(mapDataToCoins)
+            .sink { [weak self] returned in
                 guard let self = self else { return }
-                self.savedCoins = returnedCoins
+                self.allCoins = returned.allCoins
+                self.savedCoins = returned.savedCoins
+                self.savedCoinEntities = returned.savedEntities
             }
             .store(in: &cancellables)
+    }
+    
+    private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [CoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [CoinEntity], allCoins: [CoinModel]) {
+        (coinEntities.compactMap { coinEntity in allCoins.first(where: { $0.id == coinEntity.coinID }) }, coinEntities, allCoins)
     }
     
     func add(coin: CoinModel) { coinCoreDataService.add(coin: coin) }
