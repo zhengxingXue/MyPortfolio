@@ -10,8 +10,9 @@ import SwiftUI
 struct MyPortfolioView: View {
     
     @EnvironmentObject private var marketVM: InvestTabViewModel
+    @EnvironmentObject private var browseVM: BrowseTabViewModel
     
-    @State var selectedTab = 0
+    @State var selectedTab = 1
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -22,8 +23,8 @@ struct MyPortfolioView: View {
                 }
                 .tag(0)
             
-            Text("Second View")
-                .padding()
+            BrowseTabView()
+                .environmentObject(browseVM)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                 }

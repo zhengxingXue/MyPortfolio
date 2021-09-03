@@ -21,6 +21,8 @@ class DeveloperPreview {
     
     lazy var marketVM = InvestTabViewModel(coins: [coin])
     
+    let browseVM = BrowseTabViewModel()
+    
     let coin = CoinModel(
        id: "bitcoin",
        symbol: "btc",
@@ -221,4 +223,11 @@ class DeveloperPreview {
        priceChangePercentage24HInCurrency: 3952.64
     )
     
+    let news = NewsModel(
+        source: Source(id: nil, name: "Honolulu Star-Advertiser"),
+        title: "Safe Access Oahu program to require proof of vaccination or recent COVID test to enter establishments - Honolulu Star-Advertiser",
+        url: "https://soyacincau.com/2021/08/31/tesla-model-x-lengthy-software-update-stopped-vlogger-david-dobrik-driving-home/",
+        urlToImage: "https://deadline.com/wp-content/uploads/2021/08/Mike-Richards.jpg?w=1000",
+        publishedAt: "2021-08-30T21:50:47Z"
+    )
 }

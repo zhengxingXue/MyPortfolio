@@ -11,6 +11,7 @@ import SwiftUI
 struct MyPortfolioApp: App {
     
     @StateObject private var marketVM = InvestTabViewModel()
+    @StateObject private var browseVM = BrowseTabViewModel()
     
     init() {
         UITabBar.appearance().barStyle = .black
@@ -29,6 +30,7 @@ struct MyPortfolioApp: App {
         WindowGroup {
             MyPortfolioView()
                 .environmentObject(marketVM)
+                .environmentObject(browseVM)
         }
     }
 }

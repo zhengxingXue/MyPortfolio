@@ -22,6 +22,18 @@
 		3824177226E1A9FF002BCA6E /* XMarkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177126E1A9FF002BCA6E /* XMarkButton.swift */; };
 		3824177426E1C861002BCA6E /* Path+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177326E1C861002BCA6E /* Path+.swift */; };
 		3824177726E1C88A002BCA6E /* SimpleLineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177626E1C88A002BCA6E /* SimpleLineChartView.swift */; };
+		3824177926E1D1A8002BCA6E /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177826E1D1A8002BCA6E /* API.swift */; };
+		3824177E26E1D230002BCA6E /* BrowseTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177D26E1D230002BCA6E /* BrowseTabView.swift */; };
+		3824178026E1D250002BCA6E /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824177F26E1D250002BCA6E /* NewsModel.swift */; };
+		3824178226E1D289002BCA6E /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178126E1D289002BCA6E /* Date+.swift */; };
+		3824178426E1D2B6002BCA6E /* NewsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178326E1D2B6002BCA6E /* NewsDataService.swift */; };
+		3824178626E1D2D2002BCA6E /* BrowseTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178526E1D2D2002BCA6E /* BrowseTabViewModel.swift */; };
+		3824178826E1D3BA002BCA6E /* NewsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178726E1D3BA002BCA6E /* NewsRowView.swift */; };
+		3824178B26E1D4BE002BCA6E /* BetterSafariView in Frameworks */ = {isa = PBXBuildFile; productRef = 3824178A26E1D4BE002BCA6E /* BetterSafariView */; };
+		3824178D26E1D559002BCA6E /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178C26E1D559002BCA6E /* LocalFileManager.swift */; };
+		3824178F26E1D584002BCA6E /* NewsImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178E26E1D584002BCA6E /* NewsImageService.swift */; };
+		3824179226E1D5E0002BCA6E /* NewsImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824179126E1D5E0002BCA6E /* NewsImageView.swift */; };
+		3824179426E1D5F0002BCA6E /* NewsImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824179326E1D5F0002BCA6E /* NewsImageViewModel.swift */; };
 		38B20A6926E13C280028B819 /* MyPortfolioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B20A6826E13C280028B819 /* MyPortfolioApp.swift */; };
 		38B20A6B26E13C280028B819 /* MyPortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B20A6A26E13C280028B819 /* MyPortfolioView.swift */; };
 		38B20A6D26E13C2B0028B819 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38B20A6C26E13C2B0028B819 /* Assets.xcassets */; };
@@ -46,6 +58,17 @@
 		3824177126E1A9FF002BCA6E /* XMarkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMarkButton.swift; sourceTree = "<group>"; };
 		3824177326E1C861002BCA6E /* Path+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path+.swift"; sourceTree = "<group>"; };
 		3824177626E1C88A002BCA6E /* SimpleLineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLineChartView.swift; sourceTree = "<group>"; };
+		3824177826E1D1A8002BCA6E /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		3824177D26E1D230002BCA6E /* BrowseTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTabView.swift; sourceTree = "<group>"; };
+		3824177F26E1D250002BCA6E /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
+		3824178126E1D289002BCA6E /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		3824178326E1D2B6002BCA6E /* NewsDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsDataService.swift; sourceTree = "<group>"; };
+		3824178526E1D2D2002BCA6E /* BrowseTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTabViewModel.swift; sourceTree = "<group>"; };
+		3824178726E1D3BA002BCA6E /* NewsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRowView.swift; sourceTree = "<group>"; };
+		3824178C26E1D559002BCA6E /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		3824178E26E1D584002BCA6E /* NewsImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageService.swift; sourceTree = "<group>"; };
+		3824179126E1D5E0002BCA6E /* NewsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageView.swift; sourceTree = "<group>"; };
+		3824179326E1D5F0002BCA6E /* NewsImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageViewModel.swift; sourceTree = "<group>"; };
 		38B20A6526E13C280028B819 /* MyPortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPortfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38B20A6826E13C280028B819 /* MyPortfolioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPortfolioApp.swift; sourceTree = "<group>"; };
 		38B20A6A26E13C280028B819 /* MyPortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPortfolioView.swift; sourceTree = "<group>"; };
@@ -60,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3824178B26E1D4BE002BCA6E /* BetterSafariView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +93,7 @@
 		3824175226E18429002BCA6E /* Componenets */ = {
 			isa = PBXGroup;
 			children = (
+				3824179026E1D5C0002BCA6E /* NewsImage */,
 				3824177526E1C87B002BCA6E /* LineChart */,
 				3824177126E1A9FF002BCA6E /* XMarkButton.swift */,
 			);
@@ -80,6 +105,7 @@
 			children = (
 				3824175926E184ED002BCA6E /* CoinModel.swift */,
 				3824176A26E1A0A4002BCA6E /* CoinContainer.xcdatamodeld */,
+				3824177F26E1D250002BCA6E /* NewsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -88,6 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				3824175626E184CA002BCA6E /* NetworkManager.swift */,
+				3824178C26E1D559002BCA6E /* LocalFileManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -97,6 +124,8 @@
 			children = (
 				3824175B26E18511002BCA6E /* CoinDataService.swift */,
 				3824176D26E1A0D5002BCA6E /* CoinCoreDataService.swift */,
+				3824178326E1D2B6002BCA6E /* NewsDataService.swift */,
+				3824178E26E1D584002BCA6E /* NewsImageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -119,6 +148,41 @@
 			path = LineChart;
 			sourceTree = "<group>";
 		};
+		3824177A26E1D1D9002BCA6E /* BrowseTab */ = {
+			isa = PBXGroup;
+			children = (
+				3824177C26E1D1EE002BCA6E /* ViewModels */,
+				3824177B26E1D1EA002BCA6E /* Views */,
+			);
+			path = BrowseTab;
+			sourceTree = "<group>";
+		};
+		3824177B26E1D1EA002BCA6E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3824177D26E1D230002BCA6E /* BrowseTabView.swift */,
+				3824178726E1D3BA002BCA6E /* NewsRowView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3824177C26E1D1EE002BCA6E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				3824178526E1D2D2002BCA6E /* BrowseTabViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3824179026E1D5C0002BCA6E /* NewsImage */ = {
+			isa = PBXGroup;
+			children = (
+				3824179126E1D5E0002BCA6E /* NewsImageView.swift */,
+				3824179326E1D5F0002BCA6E /* NewsImageViewModel.swift */,
+			);
+			path = NewsImage;
+			sourceTree = "<group>";
+		};
 		38B20A5C26E13C280028B819 = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +202,7 @@
 		38B20A6726E13C280028B819 /* MyPortfolio */ = {
 			isa = PBXGroup;
 			children = (
+				3824177826E1D1A8002BCA6E /* API.swift */,
 				38B20A6826E13C280028B819 /* MyPortfolioApp.swift */,
 				38B20A6A26E13C280028B819 /* MyPortfolioView.swift */,
 				3824175426E1847D002BCA6E /* Utils */,
@@ -167,6 +232,7 @@
 				3824175F26E1862F002BCA6E /* PreviewProvider+.swift */,
 				3824176826E19D2E002BCA6E /* UINavigationController+.swift */,
 				3824177326E1C861002BCA6E /* Path+.swift */,
+				3824178126E1D289002BCA6E /* Date+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -175,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				3824175226E18429002BCA6E /* Componenets */,
+				3824177A26E1D1D9002BCA6E /* BrowseTab */,
 				38B20A7A26E14BF10028B819 /* InvestTab */,
 			);
 			path = Core;
@@ -222,6 +289,9 @@
 			dependencies = (
 			);
 			name = MyPortfolio;
+			packageProductDependencies = (
+				3824178A26E1D4BE002BCA6E /* BetterSafariView */,
+			);
 			productName = MyPortfolio;
 			productReference = 38B20A6526E13C280028B819 /* MyPortfolio.app */;
 			productType = "com.apple.product-type.application";
@@ -250,6 +320,9 @@
 				Base,
 			);
 			mainGroup = 38B20A5C26E13C280028B819;
+			packageReferences = (
+				3824178926E1D4BE002BCA6E /* XCRemoteSwiftPackageReference "BetterSafariView" */,
+			);
 			productRefGroup = 38B20A6626E13C280028B819 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -276,12 +349,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3824178226E1D289002BCA6E /* Date+.swift in Sources */,
+				3824178626E1D2D2002BCA6E /* BrowseTabViewModel.swift in Sources */,
 				38B20A7E26E14C110028B819 /* InvestTabView.swift in Sources */,
 				3824176526E187E4002BCA6E /* CoinRowView.swift in Sources */,
 				3824176E26E1A0D5002BCA6E /* CoinCoreDataService.swift in Sources */,
 				3824177026E1A5DC002BCA6E /* AddCoinView.swift in Sources */,
 				3824176C26E1A0A4002BCA6E /* CoinContainer.xcdatamodeld in Sources */,
 				3824177726E1C88A002BCA6E /* SimpleLineChartView.swift in Sources */,
+				3824179226E1D5E0002BCA6E /* NewsImageView.swift in Sources */,
+				3824178026E1D250002BCA6E /* NewsModel.swift in Sources */,
+				3824178426E1D2B6002BCA6E /* NewsDataService.swift in Sources */,
+				3824178F26E1D584002BCA6E /* NewsImageService.swift in Sources */,
 				38B20A8026E157340028B819 /* Color+.swift in Sources */,
 				3824175C26E18511002BCA6E /* CoinDataService.swift in Sources */,
 				3824176726E19A0B002BCA6E /* CryptoListDetailView.swift in Sources */,
@@ -289,11 +368,16 @@
 				3824175726E184CA002BCA6E /* NetworkManager.swift in Sources */,
 				3824177226E1A9FF002BCA6E /* XMarkButton.swift in Sources */,
 				3824176226E18688002BCA6E /* Double+.swift in Sources */,
+				3824177E26E1D230002BCA6E /* BrowseTabView.swift in Sources */,
 				38B20A6B26E13C280028B819 /* MyPortfolioView.swift in Sources */,
+				3824177926E1D1A8002BCA6E /* API.swift in Sources */,
+				3824178D26E1D559002BCA6E /* LocalFileManager.swift in Sources */,
 				3824175A26E184ED002BCA6E /* CoinModel.swift in Sources */,
 				3824176926E19D2E002BCA6E /* UINavigationController+.swift in Sources */,
+				3824179426E1D5F0002BCA6E /* NewsImageViewModel.swift in Sources */,
 				3824176026E1862F002BCA6E /* PreviewProvider+.swift in Sources */,
 				38B20A6926E13C280028B819 /* MyPortfolioApp.swift in Sources */,
+				3824178826E1D3BA002BCA6E /* NewsRowView.swift in Sources */,
 				3824175E26E18563002BCA6E /* InvestTabViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,6 +585,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3824178926E1D4BE002BCA6E /* XCRemoteSwiftPackageReference "BetterSafariView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stleamist/BetterSafariView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3824178A26E1D4BE002BCA6E /* BetterSafariView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3824178926E1D4BE002BCA6E /* XCRemoteSwiftPackageReference "BetterSafariView" */;
+			productName = BetterSafariView;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		3824176A26E1A0A4002BCA6E /* CoinContainer.xcdatamodeld */ = {
