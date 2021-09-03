@@ -42,16 +42,22 @@ struct CryptoListDetailView_Previews: PreviewProvider {
 extension CryptoListDetailView {
     private var toolbarTrailingItemView: some View {
         HStack {
-            Image(systemName: "plus.circle")
-                .foregroundColor(.theme.accent)
+            Button(action: {
+                showAddCoinView.toggle()
+            }, label: {
+                Image(systemName: "plus.circle")
+                    .foregroundColor(.theme.accent)
+            })
                 .padding(.trailing)
-                .onTapGesture {
-                    showAddCoinView.toggle()
-                }
-            Image(systemName: "ellipsis")
-                .foregroundColor(.theme.accent)
+            
+            Button(action: {
+                print("Unimplemented")
+            }, label: {
+                Image(systemName: "ellipsis")
+                    .foregroundColor(.theme.accent)
+            })
         }
-        .sheet(isPresented: $showAddCoinView) {
+        .fullScreenCover(isPresented: $showAddCoinView) {
             AddCoinView(isPresented: $showAddCoinView)
         }
     }
