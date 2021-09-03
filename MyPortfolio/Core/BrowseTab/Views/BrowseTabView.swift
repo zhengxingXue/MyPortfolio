@@ -13,11 +13,12 @@ struct BrowseTabView: View {
     @EnvironmentObject private var browseVM: BrowseTabViewModel
     
     @State private var showOnSafari = false
+    @State private var searchText = ""
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(browseVM.allNews) { news in
+                ForEach(searchResults) { news in
                     NewsRowView(news: news)
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -29,9 +30,8 @@ struct BrowseTabView: View {
                         })
                 }
             }
-            .refreshable {
-                browseVM.refreshNews()
-            }
+            .refreshable { browseVM.refreshNews() }
+            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
             .listStyle(.plain)
             .navigationTitle("Browse")
         }
@@ -39,6 +39,15 @@ struct BrowseTabView: View {
     
     private func loadNews(for news: NewsModel) -> some View {
         SafariView(url: URL(string: news.url.replacingOccurrences(of: "http://", with: "https://"))!)
+    }
+    
+    private var searchResults: [NewsModel] {
+        if searchText.isEmpty {
+            return browseVM.allNews
+        } else {
+            let lowercasedText = searchText.lowercased()
+            return browseVM.allNews.filter { $0.title.lowercased().contains(lowercasedText) || $0.source.name.lowercased().contains(lowercasedText) }
+        }
     }
 }
 
