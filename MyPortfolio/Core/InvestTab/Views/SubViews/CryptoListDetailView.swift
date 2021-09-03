@@ -23,6 +23,9 @@ struct CryptoListDetailView: View {
             .onMove(perform: marketVM.move)
             .onDelete(perform: marketVM.delete(at:))
         }
+        .refreshable {
+            marketVM.refreshAllCoins()
+        }
         .listStyle(.plain)
         .navigationTitle("My Crypto List")
         .toolbar {
