@@ -79,6 +79,7 @@ class CoinCoreDataService {
             }
         } else {
             for index in (Int(currentListIndex) + 1) ... destination {
+                guard index < savedEntities.count else { break }
                 savedEntities[index].listIndex -= 1
             }
         }
