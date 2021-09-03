@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import BetterSafariView
 
 struct NewsRowView: View {
     
     let news: NewsModel
+    
+    @State private var showOnSafari = false
     
     var body: some View {
         HStack(alignment: .center) {
@@ -40,6 +43,17 @@ struct NewsRowView: View {
             
         }
         .padding(.top, 2)
+        .onTapGesture {
+            showOnSafari.toggle()
+        }
+        // Sheet or fullScreenCover
+        .fullScreenCover(isPresented: $showOnSafari, content: {
+            loadNews(for: news)
+        })
+    }
+    
+    private func loadNews(for news: NewsModel) -> some View {
+        SafariView(url: URL(string: news.url.replacingOccurrences(of: "http://", with: "https://"))!)
     }
 }
 

@@ -11,8 +11,6 @@ import BetterSafariView
 struct BrowseTabView: View {
     
     @EnvironmentObject private var browseVM: BrowseTabViewModel
-    
-    @State private var showOnSafari = false
     @State private var searchText = ""
     
     var body: some View {
@@ -20,14 +18,6 @@ struct BrowseTabView: View {
             List {
                 ForEach(searchResults) { news in
                     NewsRowView(news: news)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            showOnSafari.toggle()
-                        }
-                        // Sheet or fullScreenCover
-                        .fullScreenCover(isPresented: $showOnSafari, content: {
-                            loadNews(for: news)
-                        })
                 }
             }
             .refreshable { browseVM.refreshNews() }
@@ -35,10 +25,6 @@ struct BrowseTabView: View {
             .listStyle(.plain)
             .navigationTitle("Browse")
         }
-    }
-    
-    private func loadNews(for news: NewsModel) -> some View {
-        SafariView(url: URL(string: news.url.replacingOccurrences(of: "http://", with: "https://"))!)
     }
     
     private var searchResults: [NewsModel] {
