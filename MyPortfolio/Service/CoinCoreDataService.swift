@@ -59,7 +59,7 @@ class CoinCoreDataService {
         }
         
         print("Successfully loaded \(savedEntities.count) entity")
-        print("\(savedEntities)")
+//        print("\(savedEntities)")
     }
     
     private func add(coinID: String) {
@@ -79,7 +79,7 @@ class CoinCoreDataService {
     
     private func move(entity: CoinEntity, to destination: Int) {
         let currentListIndex = entity.listIndex
-        print("destination: \(destination) current index:\(currentListIndex)")
+//        print("destination: \(destination) current index:\(currentListIndex)")
         if destination < currentListIndex {
             for index in destination ..< Int(currentListIndex) {
                 savedEntities[index].listIndex += 1

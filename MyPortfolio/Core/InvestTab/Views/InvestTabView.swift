@@ -15,7 +15,7 @@ struct InvestTabView: View {
         NavigationView {
             List {
                 notesScrollView
-                listTitleText
+                ListTitleRow(title: "List")
                 cryptoListTitle
                 ForEach(marketVM.savedCoins) { coin in
                     CoinRowView(coin: coin, isEditing: .constant(false))
@@ -57,14 +57,6 @@ extension InvestTabView {
         .listRowBackground(Color.gray.opacity(0.1))
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
-    }
-    
-    private var listTitleText: some View {
-        Text("List")
-            .font(.title)
-            .foregroundColor(.theme.accent)
-            .listRowSeparator(.hidden)
-            .padding(.vertical)
     }
     
     private var cryptoListTitle: some View {

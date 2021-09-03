@@ -8,19 +8,34 @@
 import Foundation
 import Combine
 
+enum NewsEndPoints {
+    case everything, headlines
+}
+
 class NewsDataService {
     
     @Published var allNews: [NewsModel] = []
     
     var newsSubscription: AnyCancellable?
     
+    private let endPoints: NewsEndPoints
+    private var searchKeywords: String? = nil
+    private var pageSize: Int = 20
+    
     init() {
+        self.endPoints = .headlines
+        getNews()
+    }
+    
+    init(endPoints: NewsEndPoints, pageSize: Int, keywords: String? = nil) {
+        self.endPoints = endPoints
+        self.pageSize = pageSize
+        self.searchKeywords = keywords
         getNews()
     }
     
     func getNews() {
-        
-        guard let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=\(API.news)") else { return }
+        guard let url = URL(string: urlString) else { return }
         
         newsSubscription = NetworkManager.download(url: url)
             .decode(type: NewsResponse.self, decoder: JSONDecoder())
@@ -31,5 +46,12 @@ class NewsDataService {
                 self.newsSubscription?.cancel()
                 print("\(self.allNews.count) news recieved from NewsAPI")
             })
+    }
+    
+    private var urlString: String {
+        switch self.endPoints {
+        case .headlines: return "https://newsapi.org/v2/top-headlines?country=us&category=business&pageSize=\(pageSize)&apiKey=\(API.news)"
+        case .everything: return "https://newsapi.org/v2/everything?qInTitle=\(searchKeywords ?? "business")&language=en&pageSize=\(pageSize)&sortBy=publishedAt&apiKey=\(API.news)"
+        }
     }
 }

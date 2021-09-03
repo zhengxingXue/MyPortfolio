@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CoinRowView: View {
     
-    let coin: CoinModel
+    var coin: CoinModel
     @Binding var isEditing: Bool
     
     var body: some View {
@@ -25,7 +25,7 @@ struct CoinRowView: View {
                     .padding(.vertical)
             }
         }
-        .background(NavigationLink("", destination: Text("The detail view of \(coin.name)")).opacity(0))
+        .background(NavigationLink("", destination: CoinDetailView(coin: coin)).opacity(0))
     }
     
     private let divider: CGFloat = 3.8
