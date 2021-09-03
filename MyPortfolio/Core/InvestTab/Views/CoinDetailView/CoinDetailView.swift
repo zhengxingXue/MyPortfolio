@@ -54,17 +54,16 @@ struct CoinDetailView_Previews: PreviewProvider {
 extension CoinDetailView {
     private var statsVGrid: some View {
         LazyVGrid(columns: columns) {
-            ForEach(0 ..< 10) { index in
+            ForEach(0 ..< vm.coin.stats.count) { index in
                 VStack(spacing: 10) {
                     HStack {
-                        Text("Placeholder")
+                        Text(vm.coin.stats[index].titleString)
                             .font(.callout)
                             .foregroundColor(.theme.secondaryText)
                         Spacer()
-                        Text("\(00)")
+                        Text(vm.coin.stats[index].valueString)
                             .font(.body)
                             .foregroundColor(.theme.accent)
-                        
                     }
                     Divider()
                 }

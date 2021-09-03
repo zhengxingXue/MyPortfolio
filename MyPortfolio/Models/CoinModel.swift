@@ -102,6 +102,16 @@ struct CoinModel: Identifiable, Codable, Hashable {
         hasher.combine(id)
     }
     
+    var stats: [(titleString: String, valueString: String)] {
+        [("High", high24H?.formattedWithAbbreviations() ?? "-"),
+         ("Low", low24H?.formattedWithAbbreviations() ?? "-"),
+         ("Supply", totalSupply?.formattedWithAbbreviations() ?? "-"),
+         ("Volume", totalVolume?.formattedWithAbbreviations() ?? "-"),
+         ("Mkt Cap", marketCap?.formattedWithAbbreviations() ?? "-"),
+         ("Rank", "\(Int(marketCapRank ?? -1))"),
+        ]
+    }
+    
 }
 
 struct SparklineIn7D: Codable {

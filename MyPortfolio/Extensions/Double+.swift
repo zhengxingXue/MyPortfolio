@@ -105,11 +105,11 @@ extension Double {
         case 1_000_000_000_000...:
             let formatted = num / 1_000_000_000_000
             let stringFormatted = formatted.asNumberString()
-            return "\(sign)\(stringFormatted)Tr"
+            return "\(sign)\(stringFormatted)T"
         case 1_000_000_000...:
             let formatted = num / 1_000_000_000
             let stringFormatted = formatted.asNumberString()
-            return "\(sign)\(stringFormatted)Bn"
+            return "\(sign)\(stringFormatted)B"
         case 1_000_000...:
             let formatted = num / 1_000_000
             let stringFormatted = formatted.asNumberString()
