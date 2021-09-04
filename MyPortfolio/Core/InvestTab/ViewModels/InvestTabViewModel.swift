@@ -15,12 +15,15 @@ class InvestTabViewModel: ObservableObject {
     @Published var savedCoins: [CoinModel] = []
     @Published var savedCoinEntities: [CoinEntity] = []
     
+    @Published var isLoading: Bool = false
+    
     private let coinDataService = CoinDataService()
     private let coinCoreDataService = CoinCoreDataService()
     
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        self.isLoading = true
         addSubscribers()
     }
     
@@ -38,6 +41,7 @@ class InvestTabViewModel: ObservableObject {
                 self.allCoins = returned.allCoins
                 self.savedCoins = returned.savedCoins
                 self.savedCoinEntities = returned.savedEntities
+                self.isLoading = self.savedCoinEntities.count > self.savedCoins.count
             }
             .store(in: &cancellables)
     }

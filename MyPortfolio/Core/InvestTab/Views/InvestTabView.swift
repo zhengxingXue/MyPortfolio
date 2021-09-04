@@ -17,10 +17,12 @@ struct InvestTabView: View {
                 notesScrollView
                 ListTitleRow(title: "List")
                 cryptoListTitle
+                
                 ForEach(marketVM.savedCoins) { coin in
                     CoinRowView(coin: coin, isEditing: .constant(false))
                 }
                 .onDelete(perform: marketVM.delete(at:))
+                
             }
             .refreshable {
                 marketVM.refreshAllCoins()
@@ -73,6 +75,7 @@ extension InvestTabView {
                     .foregroundColor(.theme.secondaryText)
             }
             Spacer()
+            if marketVM.isLoading { ProgressView() }
         }
         .background(
             NavigationLink(
