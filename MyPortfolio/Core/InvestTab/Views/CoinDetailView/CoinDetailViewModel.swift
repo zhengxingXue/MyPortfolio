@@ -30,4 +30,8 @@ class CoinDetailViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+    
+    func refreshCoin() {
+        newsDataService.getNews()
+    }
 }

@@ -41,6 +41,7 @@ struct CoinDetailView: View {
             
         }
         .listStyle(.plain)
+        .refreshable { vm.refreshCoin() }
         .background(Color.theme.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(vm.coin.name)
@@ -93,19 +94,8 @@ extension CoinDetailView {
             Text("Show More")
                 .font(.callout)
                 .foregroundColor(.theme.green)
-                .background(NavigationLink("", destination: newsShowMoreDestination).opacity(0))
+                .background(NavigationLink("", destination: CoinDetailNewsView().environmentObject(vm)).opacity(0))
         }
         .listRowSeparator(.hidden)
-    }
-    
-    private var newsShowMoreDestination: some View {
-        List {
-            ForEach(vm.allNews) { news in
-                NewsRowView(news: news)
-            }
-        }
-        .listStyle(.plain)
-        .navigationTitle("\(vm.coin.name) News")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

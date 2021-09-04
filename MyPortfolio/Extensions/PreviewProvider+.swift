@@ -21,6 +21,8 @@ class DeveloperPreview {
     
     lazy var marketVM = InvestTabViewModel(coins: [coin])
     
+    lazy var coinDetailVM = CoinDetailViewModel(coin: coin)
+    
     let browseVM = BrowseTabViewModel()
     
     let coin = CoinModel(
@@ -230,4 +232,5 @@ class DeveloperPreview {
         urlToImage: "https://deadline.com/wp-content/uploads/2021/08/Mike-Richards.jpg?w=1000",
         publishedAt: "2021-08-30T21:50:47Z"
     )
+
 }
