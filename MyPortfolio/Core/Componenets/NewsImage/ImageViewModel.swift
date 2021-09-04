@@ -1,6 +1,6 @@
 //
-//  NewsImageViewModel.swift
-//  NewsImageViewModel
+//  ImageViewModel.swift
+//  ImageViewModel
 //
 //  Created by Jim's MacBook Pro on 9/3/21.
 //
@@ -9,24 +9,31 @@ import Foundation
 import SwiftUI
 import Combine
 
-class NewsImageViewModel: ObservableObject {
+class ImageViewModel: ObservableObject {
     
     @Published var image: UIImage? = nil
     @Published var isLoading: Bool = false
     
-    private let news: NewsModel
-    private let dataService: NewsImageService
+    // TODO: comment out results in crash, future fix
+    private var news: NewsModel? = nil
+    
+    private let imageService: ImageService
     private var cancellables = Set<AnyCancellable>()
     
     init(news: NewsModel) {
-        self.news = news
-        self.dataService = NewsImageService(news: news)
+        self.imageService = ImageService(news: news)
+        self.addSuscribers()
+        self.isLoading = true
+    }
+    
+    init(coin: CoinModel) {
+        self.imageService = ImageService(coin: coin)
         self.addSuscribers()
         self.isLoading = true
     }
     
     private func addSuscribers() {
-        dataService.$image
+        imageService.$image
             .sink { [weak self] _ in
                 self?.isLoading = false
             } receiveValue: { [weak self] returnedImage in

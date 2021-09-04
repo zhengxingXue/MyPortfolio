@@ -103,8 +103,8 @@ struct CoinModel: Identifiable, Codable, Hashable {
     }
     
     var stats: [(titleString: String, valueString: String)] {
-        [("24h High", high24H?.asCurrencyWith2Decimals() ?? "-"),
-         ("24h Low", low24H?.asCurrencyWith2Decimals() ?? "-"),
+        [("24h High", high24H?.asCurrencyWith2Decimals().replacingOccurrences(of: "$", with: "") ?? "-"),
+         ("24h Low", low24H?.asCurrencyWith2Decimals().replacingOccurrences(of: "$", with: "") ?? "-"),
          ("Supply", totalSupply?.formattedWithAbbreviations() ?? "-"),
          ("Volume", totalVolume?.formattedWithAbbreviations() ?? "-"),
          ("Mkt Cap", marketCap?.formattedWithAbbreviations() ?? "-"),

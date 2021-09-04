@@ -1,6 +1,6 @@
 //
-//  NewsImageService.swift
-//  NewsImageService
+//  ImageService.swift
+//  ImageService
 //
 //  Created by Jim's MacBook Pro on 9/3/21.
 //
@@ -9,33 +9,42 @@ import Foundation
 import SwiftUI
 import Combine
 
-class NewsImageService {
+class ImageService {
     @Published var image: UIImage? = nil
     
     private var imageSubscription: AnyCancellable?
-    private var news: NewsModel
+    
     private let fileManager = LocalFileManager.instance
-    private let folderName = "coin_images"
+    private let folderName: String
     private let imageName: String
+    private var imageUrlString: String
     
     init(news: NewsModel) {
-        self.news = news
+        self.folderName = "news_images"
         self.imageName = "\(news.imageUrl.hash)"
-        getNewsImage()
+        self.imageUrlString = news.imageUrl
+        getImage()
     }
     
-    private func getNewsImage() {
+    init(coin: CoinModel) {
+        self.folderName = "coin_images"
+        self.imageName = coin.id
+        self.imageUrlString = coin.image
+        getImage()
+    }
+    
+    private func getImage() {
         if let savedImage = fileManager.getImage(imageName: imageName, folderName: folderName) {
             image = savedImage
-            print("Retrieved image \(imageName) from File Manager")
+            print("Retrieved image \(imageName) from File Manager in folder \(folderName)")
         } else {
-            downloadNewsImage()
+            downloadImage()
             print("Downloading image \(imageName) now")
         }
     }
     
-    private func downloadNewsImage() {
-        guard let url = URL(string: news.imageUrl) else { return }
+    private func downloadImage() {
+        guard let url = URL(string: self.imageUrlString) else { return }
         
         imageSubscription = NetworkManager.download(url: url)
             .tryMap({ data -> UIImage? in UIImage(data: data)})

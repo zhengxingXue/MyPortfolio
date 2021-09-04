@@ -15,6 +15,7 @@ struct CoinDetailView: View {
     
     init(coin: CoinModel) {
         _vm = StateObject(wrappedValue: CoinDetailViewModel(coin: coin))
+        print("Init \(coin.name) CoinDetailView")
     }
     
     var body: some View {

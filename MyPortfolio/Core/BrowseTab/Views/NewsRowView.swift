@@ -39,7 +39,7 @@ struct NewsRowView: View {
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .cornerRadius(10)
-                .padding()
+                .padding(.vertical)
             
         }
         .padding(.top, 2)
@@ -60,6 +60,9 @@ struct NewsRowView: View {
 
 struct NewsRowView_Previews: PreviewProvider {
     static var previews: some View {
-        NewsRowView(news: dev.news)
+        List {
+            NewsRowView(news: dev.news)
+        }
+        .listStyle(.plain)
     }
 }
