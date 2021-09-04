@@ -27,7 +27,12 @@ struct CoinDetailView: View {
             .listRowInsets(EdgeInsets())
             .listRowSeparator(.hidden)
             
-            ListTitleRow(title: "Stats")
+            HStack {
+                ListTitleRow(title: "Stats")
+                Spacer()
+                CustomImageView(coin: vm.coin)
+                    .frame(width: 30, height: 30)
+            }
             statsVGrid
             
             ListTitleRow(title: "News")
@@ -77,7 +82,9 @@ extension CoinDetailView {
     
     private var newsPreviewRows: some View {
         ForEach(0 ..< 3) { index in
-            NewsRowView(news: vm.allNews[index])
+            if index < vm.allNews.count {
+                NewsRowView(news: vm.allNews[index])
+            }
         }
     }
     

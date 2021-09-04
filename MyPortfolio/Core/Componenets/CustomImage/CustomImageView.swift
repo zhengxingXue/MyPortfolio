@@ -1,18 +1,22 @@
 //
-//  NewsImageView.swift
-//  NewsImageView
+//  CustomImageView.swift
+//  CustomImageView
 //
 //  Created by Jim's MacBook Pro on 9/3/21.
 //
 
 import SwiftUI
 
-struct NewsImageView: View {
+struct CustomImageView: View {
     
-    @StateObject var vm: ImageViewModel
+    @StateObject var vm: CustomImageViewModel
     
     init(news: NewsModel) {
-        _vm = StateObject(wrappedValue: ImageViewModel(news: news))
+        _vm = StateObject(wrappedValue: CustomImageViewModel(news: news))
+    }
+    
+    init(coin: CoinModel) {
+        _vm = StateObject(wrappedValue: CustomImageViewModel(coin: coin))
     }
     
     var body: some View {
@@ -30,9 +34,9 @@ struct NewsImageView: View {
     }
 }
 
-struct NewsImageView_Previews: PreviewProvider {
+struct CustomImageView_Previews: PreviewProvider {
     static var previews: some View {
-        NewsImageView(news: dev.news)
+        CustomImageView(news: dev.news)
             .scaledToFill()
             .frame(width: 100, height: 130)
             .cornerRadius(10)

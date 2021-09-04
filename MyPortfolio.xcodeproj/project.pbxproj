@@ -32,8 +32,8 @@
 		3824178B26E1D4BE002BCA6E /* BetterSafariView in Frameworks */ = {isa = PBXBuildFile; productRef = 3824178A26E1D4BE002BCA6E /* BetterSafariView */; };
 		3824178D26E1D559002BCA6E /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178C26E1D559002BCA6E /* LocalFileManager.swift */; };
 		3824178F26E1D584002BCA6E /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824178E26E1D584002BCA6E /* ImageService.swift */; };
-		3824179226E1D5E0002BCA6E /* NewsImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824179126E1D5E0002BCA6E /* NewsImageView.swift */; };
-		3824179426E1D5F0002BCA6E /* ImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824179326E1D5F0002BCA6E /* ImageViewModel.swift */; };
+		3824179226E1D5E0002BCA6E /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824179126E1D5E0002BCA6E /* CustomImageView.swift */; };
+		3824179426E1D5F0002BCA6E /* CustomImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824179326E1D5F0002BCA6E /* CustomImageViewModel.swift */; };
 		38B20A6926E13C280028B819 /* MyPortfolioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B20A6826E13C280028B819 /* MyPortfolioApp.swift */; };
 		38B20A6B26E13C280028B819 /* MyPortfolioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38B20A6A26E13C280028B819 /* MyPortfolioView.swift */; };
 		38B20A6D26E13C2B0028B819 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38B20A6C26E13C2B0028B819 /* Assets.xcassets */; };
@@ -71,8 +71,8 @@
 		3824178726E1D3BA002BCA6E /* NewsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRowView.swift; sourceTree = "<group>"; };
 		3824178C26E1D559002BCA6E /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		3824178E26E1D584002BCA6E /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
-		3824179126E1D5E0002BCA6E /* NewsImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsImageView.swift; sourceTree = "<group>"; };
-		3824179326E1D5F0002BCA6E /* ImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewModel.swift; sourceTree = "<group>"; };
+		3824179126E1D5E0002BCA6E /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
+		3824179326E1D5F0002BCA6E /* CustomImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageViewModel.swift; sourceTree = "<group>"; };
 		38B20A6526E13C280028B819 /* MyPortfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPortfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38B20A6826E13C280028B819 /* MyPortfolioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPortfolioApp.swift; sourceTree = "<group>"; };
 		38B20A6A26E13C280028B819 /* MyPortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPortfolioView.swift; sourceTree = "<group>"; };
@@ -187,8 +187,8 @@
 		3824179026E1D5C0002BCA6E /* CustomImage */ = {
 			isa = PBXGroup;
 			children = (
-				3824179326E1D5F0002BCA6E /* ImageViewModel.swift */,
-				3824179126E1D5E0002BCA6E /* NewsImageView.swift */,
+				3824179326E1D5F0002BCA6E /* CustomImageViewModel.swift */,
+				3824179126E1D5E0002BCA6E /* CustomImageView.swift */,
 			);
 			path = CustomImage;
 			sourceTree = "<group>";
@@ -379,7 +379,7 @@
 				3824177026E1A5DC002BCA6E /* AddCoinView.swift in Sources */,
 				3824176C26E1A0A4002BCA6E /* CoinContainer.xcdatamodeld in Sources */,
 				3824177726E1C88A002BCA6E /* SimpleLineChartView.swift in Sources */,
-				3824179226E1D5E0002BCA6E /* NewsImageView.swift in Sources */,
+				3824179226E1D5E0002BCA6E /* CustomImageView.swift in Sources */,
 				3824178026E1D250002BCA6E /* NewsModel.swift in Sources */,
 				3824178426E1D2B6002BCA6E /* NewsDataService.swift in Sources */,
 				3824178F26E1D584002BCA6E /* ImageService.swift in Sources */,
@@ -397,7 +397,7 @@
 				3824178D26E1D559002BCA6E /* LocalFileManager.swift in Sources */,
 				3824175A26E184ED002BCA6E /* CoinModel.swift in Sources */,
 				3824176926E19D2E002BCA6E /* UINavigationController+.swift in Sources */,
-				3824179426E1D5F0002BCA6E /* ImageViewModel.swift in Sources */,
+				3824179426E1D5F0002BCA6E /* CustomImageViewModel.swift in Sources */,
 				3824176026E1862F002BCA6E /* PreviewProvider+.swift in Sources */,
 				38B20A6926E13C280028B819 /* MyPortfolioApp.swift in Sources */,
 				3824178826E1D3BA002BCA6E /* NewsRowView.swift in Sources */,

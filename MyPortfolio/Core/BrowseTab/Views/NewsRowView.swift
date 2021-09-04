@@ -35,7 +35,7 @@ struct NewsRowView: View {
             
             Spacer()
             
-            NewsImageView(news: news)
+            CustomImageView(news: news)
                 .scaledToFill()
                 .frame(width: 100, height: 100)
                 .cornerRadius(10)

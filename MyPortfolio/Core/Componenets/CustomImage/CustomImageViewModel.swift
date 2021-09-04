@@ -1,6 +1,6 @@
 //
-//  ImageViewModel.swift
-//  ImageViewModel
+//  CustomImageViewModel.swift
+//  CustomImageViewModel
 //
 //  Created by Jim's MacBook Pro on 9/3/21.
 //
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class ImageViewModel: ObservableObject {
+class CustomImageViewModel: ObservableObject {
     
     @Published var image: UIImage? = nil
     @Published var isLoading: Bool = false
