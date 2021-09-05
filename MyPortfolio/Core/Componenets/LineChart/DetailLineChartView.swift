@@ -152,7 +152,7 @@ extension DetailLineChartView {
             Text(subTitlePriceChange.asCurrencyWith2Decimals())
             Text("(\(subTitlePriceChangePercent.asPercentString()))")
             if !showIndicator {
-                Text("24 Hour")
+                Text("Today")
                     .foregroundColor(.theme.accent)
             }
         }
