@@ -139,7 +139,7 @@ extension DetailLineChartView {
     private var priceChangeRow: some View {
         HStack {
             Text(subTitle)
-                .foregroundColor((coin.priceChange24H ?? 0) < 0 ? .theme.red : .theme.green)
+                .foregroundColor(subTitle.hasPrefix("-") ? .theme.red : .theme.green)
             if !showIndicator { Text("24 Hour") }
         }
         .font(.callout)
