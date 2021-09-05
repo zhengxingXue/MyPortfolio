@@ -66,13 +66,14 @@ struct DetailLineChartView: View {
                             .foregroundColor(.theme.secondaryText)
                     }
                 }
+                .contentShape(Rectangle())
                 .gesture(
                     DragGesture()
                         .onChanged({ value in
+                            showIndicator = true
                             let returnedValue = getClosestDataPoint(to: value.location, in: geometry)
                             dragPosition = returnedValue.point
                             dragPositionPrice = returnedValue.value
-                            showIndicator = true
                             indicatorStirng = returnedValue.time
                         })
                         .onEnded({ _ in
@@ -89,9 +90,10 @@ struct DetailLineChartView: View {
     
     private func getClosestDataPoint(to point: CGPoint, in geometry: GeometryProxy) -> (point: CGPoint, time: String, value: Double) {
         let step = getStep(in: geometry)
-        let index = Int(round((point.x - padding.width / 2) / step.x))
+        let index = min(Int(round((point.x - padding.width / 2) / step.x)), data.count - 1)
         
-        guard index >= 0 && index < data.count && index < prices.count else { return (.zero, "", data.last ?? -1) }
+//        guard index >= 0 && index < data.count && index < prices.count else { return (.zero, "", data.last ?? -1) }
+        guard index >= 0 else { return (.zero, "", data.last ?? -1) }
         
         let point = CGPoint(
             x: step.x * CGFloat(index) + padding.width / 2,
