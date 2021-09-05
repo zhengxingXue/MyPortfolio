@@ -4,7 +4,7 @@ Based on [CryptoApp](https://github.com/zhengxingXue/CryptoApp)
 
 ## API
 
-[<img src="./Resources/coingecko.png" height="60">](https://www.coingecko.com)
+[<img src="./Resources/coingecko.png" height="80">](https://www.coingecko.com)
 
 The cryptocurrency data that is used in this app comes from a free API from [CoinGecko](https://www.coingecko.com). Prices may be slightly delayed.
 
