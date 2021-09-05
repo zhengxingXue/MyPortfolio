@@ -35,25 +35,15 @@ struct DetailLineChartView: View {
             .foregroundColor(.theme.accent)
             .padding(.horizontal)
             
-            GeometryReader { geometry in
-                HStack {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .overlay(
-                            Text(indicatorStirng)
-                                .foregroundColor(.theme.secondaryText),
-                            alignment: .leading
-                        )
-                        .frame(width: indicatorStringWidth, height: 10)
-                        .offset(x: min(max(padding.width / 2, dragPosition.x - indicatorStringWidth / 2), geometry.size.width - indicatorStringWidth - padding.width/2))
-                }
-                .font(.callout)
-            }
-            .frame(height: 10)
+            indicatorBox
             
             // Line Section
             GeometryReader { geometry in
                 Group {
+                    // Progress View
+                    if data.count == 0 {
+                        ProgressView().position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                    }
                     // baseline
                     Path.horizontalBaseLine(points: data, step: getStep(in: geometry), padding: padding, width: geometry.size.width)
                         .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
@@ -133,26 +123,52 @@ extension DetailLineChartView {
                 Text((data.last ?? coin.currentPrice).asCurrencyWith2Decimals())
             }
         }
-        .font(.title)
+        .font(.largeTitle)
     }
     
     private var priceChangeRow: some View {
-        HStack {
-            Text(subTitle)
-                .foregroundColor(subTitle.hasPrefix("-") ? .theme.red : .theme.green)
-            if !showIndicator { Text("24 Hour") }
+        HStack(spacing: 5) {
+            Image(systemName: "triangle.fill")
+                .font(.caption)
+                .rotationEffect((subTitlePriceChange < 0 ? .degrees(180) : .degrees(0)), anchor: .center)
+            Text(subTitlePriceChange.asCurrencyWith2Decimals())
+            Text("(\(subTitlePriceChangePercent.asPercentString()))")
+            if !showIndicator {
+                Text("24 Hour")
+                    .foregroundColor(.theme.accent)
+            }
         }
+        .foregroundColor(subTitlePriceChange < 0 ? .theme.red: .theme.green)
         .font(.callout)
     }
     
-    private var subTitle: String {
-        guard let first = data.first, var last = data.last else { return "" }
+    private var indicatorBox: some View {
+        GeometryReader { geometry in
+            HStack {
+                Rectangle()
+                    .fill(Color.clear)
+                    .overlay(
+                        Text(indicatorStirng)
+                            .foregroundColor(.theme.secondaryText),
+                        alignment: .leading
+                    )
+                    .frame(width: indicatorStringWidth, height: 10)
+                    .offset(x: min(max(padding.width / 2, dragPosition.x - indicatorStringWidth / 2), geometry.size.width - indicatorStringWidth - padding.width/2))
+            }
+            .font(.callout)
+        }
+        .frame(height: 10)
+    }
+    
+    private var subTitlePriceChange: Double {
+        guard let first = data.first, var last = data.last else { return 0 }
         if showIndicator { last = dragPositionPrice }
-        let change = last - first
-        let sign = change < 0 ? "" : "+"
-        let priceChange = abs(change) > 1 ? change.asCurrencyWith2Decimals() : change.asCurrencyWith6Decimals()
-        let priceChangePercent = (change / first * 100).asPercentString()
-        return "\(sign)\(priceChange)(\(sign)\(priceChangePercent))"
+        return last - first
+    }
+    
+    private var subTitlePriceChangePercent: Double {
+        guard let first = data.first else { return 0 }
+        return subTitlePriceChange / first * 100
     }
     
     private var lineColor: Color { (data.last ?? 0) - (data.first ?? 0) > 0 ? Color.theme.green : Color.theme.red }

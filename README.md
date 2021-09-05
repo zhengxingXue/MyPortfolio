@@ -16,6 +16,10 @@ The news data that is used in this app comes from [NewsAPI](https://newsapi.org/
 
 * [BetterSafariView](https://github.com/stleamist/BetterSafariView) - A better way to present a SFSafariViewController or start a ASWebAuthenticationSession in SwiftUI.
 
+## Screen Recordings 
+
+<img src="./Resources/1.gif" height="500">
+
 ## Screenshots
 
 <img src="./Resources/1.png" height="500"><img src="./Resources/2.png" height="500"><img src="./Resources/3.png" height="500"><img src="./Resources/4.png" height="500"><img src="./Resources/5.png" height="500">
