@@ -17,6 +17,7 @@ struct CryptoListDetailView: View {
     
     var body: some View {
         List {
+            loadingView
             ForEach(marketVM.savedCoins) {coin in
                 CoinRowView(coin: coin, isEditing: $isEditing)
             }
@@ -47,6 +48,19 @@ struct CryptoListDetailView_Previews: PreviewProvider {
 }
 
 extension CryptoListDetailView {
+    private var loadingView: some View {
+        Group {
+            if marketVM.isLoading {
+                HStack(alignment: .center) {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                .listRowSeparator(.hidden)
+            }
+        }
+    }
+    
     private var toolbarTrailingItemView: some View {
         HStack {
             Button(action: {
