@@ -19,6 +19,8 @@ struct DetailLineChartView: View {
     @State private var showIndicator: Bool = false
     @State private var indicatorStirng: String = ""
     
+    @GestureState var isDetectingLongPress = false
+    
     init(coin: CoinModel, prices: [[Double]]) {
         self.coin = coin
         
@@ -68,18 +70,21 @@ struct DetailLineChartView: View {
                 }
                 .contentShape(Rectangle())
                 .gesture(
-                    DragGesture()
+                    DragGesture(minimumDistance: 0)
                         .onChanged({ value in
+                            if !showIndicator { HapticManager.notification(type: .success) }
                             showIndicator = true
                             let returnedValue = getClosestDataPoint(to: value.location, in: geometry)
                             dragPosition = returnedValue.point
                             dragPositionPrice = returnedValue.value
                             indicatorStirng = returnedValue.time
+                            
                         })
                         .onEnded({ _ in
                             showIndicator = false
                             dragPosition = .zero
                             indicatorStirng = ""
+                            HapticManager.notification(type: .success)
                         })
                 )
                 .rotationEffect(.degrees(180), anchor: .center)
@@ -185,7 +190,7 @@ extension DetailLineChartView {
     private var lineColor: Color { (data.last ?? 0) - (data.first ?? 0) > 0 ? Color.theme.green : Color.theme.red }
     
     private func getStep(in geometry: GeometryProxy) -> CGPoint {
-        var step = CGPoint(x: 0, y: 0)
+        var step = CGPoint(x: -1, y: -1)
         guard data.count > 1, let min = data.min(), let max = data.max() else { return step }
 //        step.x = (geometry.size.width - padding.width) / CGFloat(data.count - 1)
         step.x = (geometry.size.width - padding.width) / CGFloat(dataCount)
