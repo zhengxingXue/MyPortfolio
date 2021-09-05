@@ -20,7 +20,6 @@ extension Date {
     init(newsAPITimeString: String) {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
         let date = formatter.date(from: newsAPITimeString) ?? Date()
         self.init(timeInterval: 0, since: date)
     }
@@ -33,6 +32,17 @@ extension Date {
     
     func asShortDateString() -> String {
         return shortFormatter.string(from: self)
+    }
+    
+    private var dailyMarketChartFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "HH:mm"
+        return formatter
+    }
+    
+    func asDailyMarketChartString() -> String {
+        return dailyMarketChartFormatter.string(from: self)
     }
     
     var millisecondsSince1970: Int64 {

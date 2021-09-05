@@ -11,10 +11,12 @@ struct DetailLineChartView: View {
     
     var coin: CoinModel
     var prices: [[Double]]
+    private var data: [Double]
     
-    @State var dragPosition: CGPoint = .zero
-    @State var dragPositionPrice: Double = -1
-    @State var showIndicator: Bool = false
+    @State private var dragPosition: CGPoint = .zero
+    @State private var dragPositionPrice: Double = -1
+    @State private var showIndicator: Bool = false
+    @State private var indicatorStirng: String = ""
     
     init(coin: CoinModel, prices: [[Double]]) {
         self.coin = coin
@@ -22,7 +24,7 @@ struct DetailLineChartView: View {
         self.data = prices.map{ $0[1] }
     }
     
-    private var data: [Double]
+    private var indicatorStringWidth: CGFloat { indicatorStirng.widthOfString(usingFont: UIFont.preferredFont(forTextStyle: .callout))}
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -33,6 +35,23 @@ struct DetailLineChartView: View {
             .foregroundColor(.theme.accent)
             .padding(.horizontal)
             
+            GeometryReader { geometry in
+                HStack {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .overlay(
+                            Text(indicatorStirng)
+                                .foregroundColor(.theme.secondaryText),
+                            alignment: .leading
+                        )
+                        .frame(width: indicatorStringWidth, height: 10)
+                        .offset(x: min(max(padding.width / 2, dragPosition.x - indicatorStringWidth / 2), geometry.size.width - indicatorStringWidth - padding.width/2))
+                }
+                .font(.callout)
+            }
+            .frame(height: 10)
+            
+            // Line Section
             GeometryReader { geometry in
                 Group {
                     // baseline
@@ -57,9 +76,12 @@ struct DetailLineChartView: View {
                             dragPosition = returnedValue.point
                             dragPositionPrice = returnedValue.value
                             showIndicator = true
+                            indicatorStirng = returnedValue.time
                         })
                         .onEnded({ _ in
                             showIndicator = false
+                            dragPosition = .zero
+                            indicatorStirng = ""
                         })
                 )
                 .rotationEffect(.degrees(180), anchor: .center)
@@ -68,18 +90,20 @@ struct DetailLineChartView: View {
         }
     }
     
-    private func getClosestDataPoint(to point: CGPoint, in geometry: GeometryProxy) -> (point: CGPoint, value: Double) {
+    private func getClosestDataPoint(to point: CGPoint, in geometry: GeometryProxy) -> (point: CGPoint, time: String, value: Double) {
         let step = getStep(in: geometry)
         let index = Int(round((point.x - padding.width / 2) / step.x))
         
-        guard index >= 0 && index < data.count else { return (.zero, data.last ?? -1) }
+        guard index >= 0 && index < data.count else { return (.zero, "", data.last ?? -1) }
         
         let point = CGPoint(
             x: step.x * CGFloat(index) + padding.width / 2,
             y: CGFloat(data[index] - data.min()!) * step.y + padding.height / 2
         )
         
-        return (point, data[index])
+        let timeString = Date(milliseconds: Int64(prices[index][0])).asDailyMarketChartString()
+        
+        return (point, timeString, data[index])
     }
     
     private let padding = CGSize(width: 20, height: 20)
@@ -141,5 +165,5 @@ extension DetailLineChartView {
         return step
     }
     
-//    private var data: [Double] { coin.sparklineIn7D?.price ?? [] }
+    //    private var data: [Double] { coin.sparklineIn7D?.price ?? [] }
 }
