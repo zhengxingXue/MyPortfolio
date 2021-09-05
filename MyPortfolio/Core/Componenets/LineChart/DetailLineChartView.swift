@@ -12,64 +12,122 @@ struct DetailLineChartView: View {
     var coin: CoinModel
     var prices: [[Double]]
     
+    @State var dragPosition: CGPoint = .zero
+    @State var dragPositionPrice: Double = -1
+    @State var showIndicator: Bool = false
+    
     init(coin: CoinModel, prices: [[Double]]) {
         self.coin = coin
         self.prices = prices
+        self.data = prices.map{ $0[1] }
     }
     
-    private var data: [Double] { prices.map{ $0[1] } }
-    
-    private let padding = CGSize(width: 0, height: 20)
+    private var data: [Double]
     
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 10) {
                 currentPrice
-                
-                HStack {
-                    Text(subTitle)
-                        .foregroundColor((coin.priceChange24H ?? 0) < 0 ? .theme.red : .theme.green)
-                    Text("24 Hour")
-                }
-                .font(.callout)
+                priceChangeRow
             }
             .foregroundColor(.theme.accent)
             .padding(.horizontal)
             
             GeometryReader { geometry in
-                // baseline
-                Path.horizontalBaseLine(points: data, step: getStep(in: geometry), padding: padding, width: geometry.size.width)
-                    .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                    .foregroundColor(.theme.secondaryText)
-                // stock price
-                Path.linePath(points: data, step: getStep(in: geometry), padding: padding)
-                    .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                Group {
+                    // baseline
+                    Path.horizontalBaseLine(points: data, step: getStep(in: geometry), padding: padding, width: geometry.size.width)
+                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
+                        .foregroundColor(.theme.secondaryText)
+                    // stock price
+                    Path.linePath(points: data, step: getStep(in: geometry), padding: padding)
+                        .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                    // Indicator
+                    if showIndicator {
+                        Rectangle()
+                            .position(x: dragPosition.x, y: geometry.size.height/2)
+                            .frame(width: 1, height: geometry.size.height)
+                            .foregroundColor(.theme.secondaryText)
+                    }
+                }
+                .gesture(
+                    DragGesture()
+                        .onChanged({ value in
+                            let returnedValue = getClosestDataPoint(to: value.location, in: geometry)
+                            dragPosition = returnedValue.point
+                            dragPositionPrice = returnedValue.value
+                            showIndicator = true
+                        })
+                        .onEnded({ _ in
+                            showIndicator = false
+                        })
+                )
+                .rotationEffect(.degrees(180), anchor: .center)
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
             }
-            .rotationEffect(.degrees(180), anchor: .center)
-            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
         }
     }
     
+    private func getClosestDataPoint(to point: CGPoint, in geometry: GeometryProxy) -> (point: CGPoint, value: Double) {
+        let step = getStep(in: geometry)
+        let index = Int(round((point.x - padding.width / 2) / step.x))
+        
+        guard index >= 0 && index < data.count else { return (.zero, data.last ?? -1) }
+        
+        let point = CGPoint(
+            x: step.x * CGFloat(index) + padding.width / 2,
+            y: CGFloat(data[index] - data.min()!) * step.y + padding.height / 2
+        )
+        
+        return (point, data[index])
+    }
+    
+    private let padding = CGSize(width: 20, height: 20)
 }
 
 struct DetailLineChartView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailLineChartView(coin: dev.coin, prices: dev.coinMarketChart.prices ?? [])
-            .frame(height: 500)
+        NavigationView {
+            List {
+                DetailLineChartView(coin: dev.coin, prices: dev.coinMarketChart.prices ?? [])
+                    .frame(height: 500)
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets())
+            }
+            .listStyle(.plain)
+            .navigationTitle(dev.coin.name)
+        }
     }
 }
 
 extension DetailLineChartView {
     private var currentPrice: some View {
-        Text((data.last ?? coin.currentPrice).asCurrencyWith2Decimals())
-            .font(.title)
+        Group {
+            if showIndicator {
+                Text(dragPositionPrice.asCurrencyWith2Decimals())
+            } else {
+                Text((data.last ?? coin.currentPrice).asCurrencyWith2Decimals())
+            }
+        }
+        .font(.title)
+    }
+    
+    private var priceChangeRow: some View {
+        HStack {
+            Text(subTitle)
+                .foregroundColor((coin.priceChange24H ?? 0) < 0 ? .theme.red : .theme.green)
+            if !showIndicator { Text("24 Hour") }
+        }
+        .font(.callout)
     }
     
     private var subTitle: String {
-        let change = coin.priceChange24H ?? 0
+        guard let first = data.first, var last = data.last else { return "" }
+        if showIndicator { last = dragPositionPrice }
+        let change = last - first
         let sign = change < 0 ? "" : "+"
         let priceChange = abs(change) > 1 ? change.asCurrencyWith2Decimals() : change.asCurrencyWith6Decimals()
-        let priceChangePercent = coin.priceChangePercentage24H?.asPercentString() ?? ""
+        let priceChangePercent = (change / first * 100).asPercentString()
         return "\(sign)\(priceChange)(\(sign)\(priceChangePercent))"
     }
     

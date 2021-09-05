@@ -17,7 +17,7 @@ class CoinDetailViewModel: ObservableObject {
     private let searchKeywords: String
     
     private lazy var newsDataService = NewsDataService(endPoints: .everything, pageSize: 10, keywords: self.searchKeywords)
-    private var coinMarketChartService = CoinMarketChartService()
+    private lazy var coinMarketChartService = CoinMarketChartService(coin: coin)
     private var cancellables = Set<AnyCancellable>()
     
     init(coin: CoinModel) {

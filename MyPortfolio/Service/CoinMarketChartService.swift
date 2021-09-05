@@ -14,11 +14,12 @@ class CoinMarketChartService {
     
     var coinSubscription: AnyCancellable?
     
-    let coinID: String = "bitcoin"
+    let coinID: String
     var days: Double = 1
-    var interval: String = "1minute"
+    var interval: String = "5minute"
     
-    init() {
+    init(coin: CoinModel) {
+        self.coinID = coin.id
         getCoinMarketChart()
     }
     
