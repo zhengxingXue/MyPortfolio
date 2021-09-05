@@ -61,6 +61,7 @@ class InvestTabViewModel: ObservableObject {
     }
     
     func refreshAllCoins() {
+        self.isLoading = true
         coinDataService.getCoins()
     }
 }
