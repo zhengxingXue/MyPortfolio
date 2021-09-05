@@ -252,8 +252,8 @@
 				3824176126E18688002BCA6E /* Double+.swift */,
 				3824177326E1C861002BCA6E /* Path+.swift */,
 				3824175F26E1862F002BCA6E /* PreviewProvider+.swift */,
-				3824176826E19D2E002BCA6E /* UINavigationController+.swift */,
 				38CE2E9F26E47B0500FD0E17 /* String+.swift */,
+				3824176826E19D2E002BCA6E /* UINavigationController+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

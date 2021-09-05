@@ -24,8 +24,6 @@ struct DetailLineChartView: View {
         self.data = prices.map{ $0[1] }
     }
     
-    private var indicatorStringWidth: CGFloat { indicatorStirng.widthOfString(usingFont: UIFont.preferredFont(forTextStyle: .callout))}
-    
     var body: some View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 10) {
@@ -159,6 +157,8 @@ extension DetailLineChartView {
         }
         .frame(height: 10)
     }
+    
+    private var indicatorStringWidth: CGFloat { indicatorStirng.widthOfString(usingFont: UIFont.preferredFont(forTextStyle: .callout))}
     
     private var subTitlePriceChange: Double {
         guard let first = data.first, var last = data.last else { return 0 }
