@@ -12,6 +12,7 @@ struct DetailLineChartView: View {
     var coin: CoinModel
     var prices: [[Double]]
     private var data: [Double]
+    private let dataCount: Int  // used for reserving space for future data
     
     @State private var dragPosition: CGPoint = .zero
     @State private var dragPositionPrice: Double = -1
@@ -20,8 +21,16 @@ struct DetailLineChartView: View {
     
     init(coin: CoinModel, prices: [[Double]]) {
         self.coin = coin
-        self.prices = prices
-        self.data = prices.map{ $0[1] }
+        
+        // map only today's prices
+        self.prices = prices.compactMap({ dataPoint in
+            guard dataPoint.count > 1, Int64(dataPoint[0]) > Date().startOfDay.millisecondsSince1970 else { return nil }
+            return dataPoint
+        })
+        
+        self.data = self.prices.map{ $0[1] }
+        
+        self.dataCount = max(24 * 60 / 5, self.data.count - 1)
     }
     
     var body: some View {
@@ -82,7 +91,7 @@ struct DetailLineChartView: View {
         let step = getStep(in: geometry)
         let index = Int(round((point.x - padding.width / 2) / step.x))
         
-        guard index >= 0 && index < data.count else { return (.zero, "", data.last ?? -1) }
+        guard index >= 0 && index < data.count && index < prices.count else { return (.zero, "", data.last ?? -1) }
         
         let point = CGPoint(
             x: step.x * CGFloat(index) + padding.width / 2,
@@ -176,7 +185,8 @@ extension DetailLineChartView {
     private func getStep(in geometry: GeometryProxy) -> CGPoint {
         var step = CGPoint(x: 0, y: 0)
         guard data.count > 1, let min = data.min(), let max = data.max() else { return step }
-        step.x = (geometry.size.width - padding.width) / CGFloat(data.count - 1)
+//        step.x = (geometry.size.width - padding.width) / CGFloat(data.count - 1)
+        step.x = (geometry.size.width - padding.width) / CGFloat(dataCount)
         step.y = (geometry.size.height - padding.height) / CGFloat(max - min)
         return step
     }
