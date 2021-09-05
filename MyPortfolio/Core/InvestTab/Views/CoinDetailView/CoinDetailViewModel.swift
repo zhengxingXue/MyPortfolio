@@ -10,11 +10,14 @@ import Combine
 
 class CoinDetailViewModel: ObservableObject {
     @Published var allNews: [NewsModel] = []
+    @Published var prices: [[Double]] = []
+    
     @Published var coin: CoinModel
     
     private let searchKeywords: String
     
     private lazy var newsDataService = NewsDataService(endPoints: .everything, pageSize: 10, keywords: self.searchKeywords)
+    private var coinMarketChartService = CoinMarketChartService()
     private var cancellables = Set<AnyCancellable>()
     
     init(coin: CoinModel) {
@@ -29,9 +32,17 @@ class CoinDetailViewModel: ObservableObject {
                 self?.allNews = returnedNews
             }
             .store(in: &cancellables)
+        
+        coinMarketChartService.$marketCharts
+            .sink { [weak self] returnedmarketCharts in
+                self?.prices = returnedmarketCharts?.prices ?? []
+                print("\(String(describing: self?.prices.last))")
+            }
+            .store(in: &cancellables)
     }
     
     func refreshCoin() {
         newsDataService.getNews()
+        coinMarketChartService.getCoinMarketChart()
     }
 }

@@ -21,7 +21,7 @@ struct CoinDetailView: View {
     var body: some View {
         List {
             VStack(alignment: .leading) {
-                DetailLineChartView(coin: vm.coin)
+                DetailLineChartView(coin: vm.coin, prices: vm.prices)
                     .frame(height: 500)
             }
             .listRowInsets(EdgeInsets())
