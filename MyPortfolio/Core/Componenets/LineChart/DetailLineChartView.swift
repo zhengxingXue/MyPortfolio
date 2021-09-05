@@ -19,7 +19,7 @@ struct DetailLineChartView: View {
     @State private var showIndicator: Bool = false
     @State private var indicatorStirng: String = ""
     
-    @GestureState var isDetectingLongPress = false
+    @State private var animateBlinkingCircle: Bool = false
     
     init(coin: CoinModel, prices: [[Double]]) {
         self.coin = coin
@@ -52,35 +52,39 @@ struct DetailLineChartView: View {
                     // Progress View
                     if data.count == 0 {
                         ProgressView().position(x: geometry.size.width / 2, y: geometry.size.height / 2)
-                    }
-                    // baseline
-                    Path.horizontalBaseLine(points: data, step: getStep(in: geometry), padding: padding, width: geometry.size.width)
-                        .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
-                        .foregroundColor(.theme.secondaryText)
-                    // stock price
-                    Path.linePath(points: data, step: getStep(in: geometry), padding: padding)
-                        .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
-                    // Indicator
-                    if showIndicator {
-                        Rectangle()
-                            .position(x: dragPosition.x, y: geometry.size.height/2)
-                            .frame(width: 1, height: geometry.size.height)
+                    } else {
+                        // baseline
+                        Path.horizontalBaseLine(points: data, step: getStep(in: geometry), padding: padding, width: geometry.size.width)
+                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [5]))
                             .foregroundColor(.theme.secondaryText)
+                        // stock price
+                        Path.linePath(points: data, step: getStep(in: geometry), padding: padding)
+                            .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                        // blinking dot to indicate current price
+                        getblinkingDotView(in: geometry)
+                        // Indicator
+                        if showIndicator {
+                            Rectangle()
+                                .position(x: dragPosition.x, y: geometry.size.height/2)
+                                .frame(width: 1, height: geometry.size.height)
+                                .foregroundColor(.theme.secondaryText)
+                        }
                     }
                 }
                 .contentShape(Rectangle())
                 .gesture(
                     DragGesture(minimumDistance: 0)
                         .onChanged({ value in
+                            guard data.count > 0 else { return }
                             if !showIndicator { HapticManager.notification(type: .success) }
                             showIndicator = true
                             let returnedValue = getClosestDataPoint(to: value.location, in: geometry)
                             dragPosition = returnedValue.point
                             dragPositionPrice = returnedValue.value
                             indicatorStirng = returnedValue.time
-                            
                         })
                         .onEnded({ _ in
+                            guard data.count > 0 else { return }
                             showIndicator = false
                             dragPosition = .zero
                             indicatorStirng = ""
@@ -156,6 +160,27 @@ extension DetailLineChartView {
         .font(.callout)
     }
     
+    private func getblinkingDotView(in geometry: GeometryProxy) -> some View {
+        let step = getStep(in: geometry)
+        let offset = data.min() ?? 0
+        let index = data.count - 1
+        return ZStack {
+            Circle()
+            Circle()
+                .scale(animateBlinkingCircle ? 5.0 : 1.0)
+                .opacity(animateBlinkingCircle ? 0.0 : 0.6)
+                .onAppear {
+                    withAnimation(repeatingAnimation) { animateBlinkingCircle = true }
+                }
+        }
+        .foregroundColor(lineColor)
+        .frame(width: 6, height: 6)
+        .position(
+            x: step.x * CGFloat(index) + padding.width / 2,
+            y: CGFloat(data[index] - offset) * step.y + padding.height / 2
+        )
+    }
+    
     private var indicatorBox: some View {
         GeometryReader { geometry in
             HStack {
@@ -188,6 +213,12 @@ extension DetailLineChartView {
     }
     
     private var lineColor: Color { (data.last ?? 0) - (data.first ?? 0) > 0 ? Color.theme.green : Color.theme.red }
+    
+    private var repeatingAnimation: Animation {
+        Animation
+            .easeOut(duration: 1)
+            .repeatForever(autoreverses: false)
+    }
     
     private func getStep(in geometry: GeometryProxy) -> CGPoint {
         var step = CGPoint(x: -1, y: -1)
