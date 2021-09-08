@@ -22,35 +22,31 @@ struct DetailLineChartView: View {
     @State private var animateBlinkingCircle: Bool = false
     
     init(coin: CoinModel, prices: [[Double]]) {
-        self.coin = coin
-        
+        var startOfDay: Int64
+        if let last = prices.last {
+            startOfDay = Date(milliseconds: Int64(last[0])).startOfDay.millisecondsSince1970
+        } else {
+            startOfDay = Date().startOfDay.millisecondsSince1970
+        }
         // map only today's prices
         self.prices = prices.compactMap({ dataPoint in
-            guard dataPoint.count > 1, Int64(dataPoint[0]) > Date().startOfDay.millisecondsSince1970 else { return nil }
+            guard dataPoint.count > 1, Int64(dataPoint[0]) > startOfDay else { return nil }
             return dataPoint
         })
-        
         self.data = self.prices.map{ $0[1] }
-        
         self.dataCount = max(24 * 60 / 5, self.data.count - 1)
+        self.coin = coin
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            VStack(alignment: .leading, spacing: 10) {
-                currentPrice
-                priceChangeRow
-            }
-            .foregroundColor(.theme.accent)
-            .padding(.horizontal)
-            
+            priceStack
             indicatorBox
-            
-            // Line Section
+            // Figure Section
             GeometryReader { geometry in
                 Group {
-                    // Progress View
                     if data.count == 0 {
+                        // Progress View
                         ProgressView().position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                     } else {
                         // baseline
@@ -61,56 +57,48 @@ struct DetailLineChartView: View {
                         Path.linePath(points: data, step: getStep(in: geometry), padding: padding)
                             .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
                         // blinking dot to indicate current price
-                        getblinkingDotView(in: geometry)
+                        getBlinkingDotView(in: geometry)
                         // Indicator
-                        if showIndicator {
-                            Rectangle()
-                                .position(x: dragPosition.x, y: geometry.size.height/2)
-                                .frame(width: 1, height: geometry.size.height)
-                                .foregroundColor(.theme.secondaryText)
-                        }
+                        if showIndicator { getIndicatorLine(in: geometry) }
                     }
                 }
                 .contentShape(Rectangle())
-                .gesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged({ value in
-                            guard data.count > 0 else { return }
-                            if !showIndicator { HapticManager.notification(type: .success) }
-                            showIndicator = true
-                            let returnedValue = getClosestDataPoint(to: value.location, in: geometry)
-                            dragPosition = returnedValue.point
-                            dragPositionPrice = returnedValue.value
-                            indicatorStirng = returnedValue.time
-                        })
-                        .onEnded({ _ in
-                            guard data.count > 0 else { return }
-                            showIndicator = false
-                            dragPosition = .zero
-                            indicatorStirng = ""
-                            HapticManager.notification(type: .success)
-                        })
-                )
                 .rotationEffect(.degrees(180), anchor: .center)
                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                .gesture(getDragGesture(in: geometry))
             }
         }
+    }
+    
+    private func getDragGesture(in geometry: GeometryProxy) -> some Gesture {
+        DragGesture(minimumDistance: 0)
+            .onChanged({ value in
+                guard data.count > 0 else { return }
+                if !showIndicator { HapticManager.notification(type: .success) }
+                showIndicator = true
+                let returnedValue = getClosestDataPoint(to: value.location, in: geometry)
+                dragPosition = returnedValue.point
+                dragPositionPrice = returnedValue.value
+                indicatorStirng = returnedValue.time
+            })
+            .onEnded({ _ in
+                guard data.count > 0 else { return }
+                showIndicator = false
+                dragPosition = .zero
+                indicatorStirng = ""
+                HapticManager.notification(type: .success)
+            })
     }
     
     private func getClosestDataPoint(to point: CGPoint, in geometry: GeometryProxy) -> (point: CGPoint, time: String, value: Double) {
         let step = getStep(in: geometry)
         let index = min(Int(round((point.x - padding.width / 2) / step.x)), data.count - 1)
-        
-//        guard index >= 0 && index < data.count && index < prices.count else { return (.zero, "", data.last ?? -1) }
         guard index >= 0 else { return (.zero, "", data.last ?? -1) }
-        
         let point = CGPoint(
             x: step.x * CGFloat(index) + padding.width / 2,
             y: CGFloat(data[index] - data.min()!) * step.y + padding.height / 2
         )
-        
         let timeString = Date(milliseconds: Int64(prices[index][0])).asDailyMarketChartString()
-        
         return (point, timeString, data[index])
     }
     
@@ -133,6 +121,15 @@ struct DetailLineChartView_Previews: PreviewProvider {
 }
 
 extension DetailLineChartView {
+    private var priceStack: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            currentPrice
+            priceChangeRow
+        }
+        .foregroundColor(.theme.accent)
+        .padding(.horizontal)
+    }
+    
     private var currentPrice: some View {
         Group {
             if showIndicator {
@@ -160,7 +157,7 @@ extension DetailLineChartView {
         .font(.callout)
     }
     
-    private func getblinkingDotView(in geometry: GeometryProxy) -> some View {
+    private func getBlinkingDotView(in geometry: GeometryProxy) -> some View {
         let step = getStep(in: geometry)
         let offset = data.min() ?? 0
         let index = data.count - 1
@@ -197,6 +194,13 @@ extension DetailLineChartView {
             .font(.callout)
         }
         .frame(height: 10)
+    }
+    
+    private func getIndicatorLine(in geometry: GeometryProxy) -> some View {
+        Rectangle()
+            .position(x: dragPosition.x, y: geometry.size.height/2)
+            .frame(width: 1, height: geometry.size.height)
+            .foregroundColor(.theme.secondaryText)
     }
     
     private var indicatorStringWidth: CGFloat { indicatorStirng.widthOfString(usingFont: UIFont.preferredFont(forTextStyle: .callout))}
