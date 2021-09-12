@@ -71,7 +71,7 @@ struct DetailLineChartView: View {
     }
     
     private func getDragGesture(in geometry: GeometryProxy) -> some Gesture {
-        DragGesture(minimumDistance: 0)
+        DragGesture()
             .onChanged({ value in
                 guard data.count > 0 else { return }
                 if !showIndicator { HapticManager.notification(type: .success) }
