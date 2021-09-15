@@ -1,0 +1,168 @@
+//
+//  AccountDataService.swift
+//  AccountDataService
+//
+//  Created by Jim's MacBook Pro on 9/15/21.
+//
+
+import Foundation
+import CoreData
+
+class AccountDataService {
+    
+    static let instance = AccountDataService()
+    
+    private let container: NSPersistentContainer
+    private let containerName: String = "AccountContainer"
+    
+    private let accountEntityName: String = "AccountEntity"
+    private let portfolioCoinEntityName: String = "PortfolioCoinEntity"
+    private let watchListCoinEntityName: String = "WatchListCoinEntity"
+    
+    @Published var accounts: [AccountEntity] = []
+    @Published var currentWatchListCoins: [WatchListCoinEntity] = []
+    
+    var currentAccount: AccountEntity {
+        if let currentAccount = accounts.first(where: { $0.selected }) {
+            return currentAccount
+        } else {
+            let currentAccount = createEntity(account: "Guest Account")
+            currentAccount.selected = true
+            applyChanges()
+            return currentAccount
+        }
+    }
+    
+    init() {
+        container = NSPersistentContainer(name: containerName)
+        container.loadPersistentStores { _, error in
+            if let error = error {
+                print("Error loading Core Data! \(error)")
+            } else {
+                print("Successfully loaded \(self.containerName)!")
+            }
+            self.getAccount()
+            self.getCurrentWatchListCoins()
+        }
+    }
+
+    private func getAccount() {
+        let request = NSFetchRequest<AccountEntity>(entityName: accountEntityName)
+        do {
+            accounts = try container.viewContext.fetch(request)
+        } catch let error {
+            print("Error fetching Account Entities. \(error)")
+        }
+    }
+    
+    private func getCurrentWatchListCoins() {
+        currentWatchListCoins = currentAccount.watchListCoins?.allObjects as? [WatchListCoinEntity] ?? []
+        print(currentAccount)
+        print(currentWatchListCoins)
+    }
+    
+    func add(account name: String) {
+        guard accounts.first(where: { $0.name == name }) == nil else { return }
+        addEntity(account: name)
+    }
+    
+    func deleteEntity(account entity: AccountEntity) {
+        container.viewContext.delete(entity)
+        applyChanges()
+        if let first = accounts.first {
+            first.selected = true
+        } else {
+            createEntity(account: "Guest Account").selected = true
+        }
+        applyChanges()
+    }
+
+    func select(account entity: AccountEntity) {
+        currentAccount.selected = false
+        entity.selected = true
+        applyChanges()
+    }
+    
+    func add(coin: CoinModel) {
+        guard currentWatchListCoins.first(where: { $0.coinID == coin.id }) == nil else { return }
+        addEntity(watchListCoin: coin.id)
+    }
+    
+    func delete(coin: CoinModel) {
+        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
+        deleteEntity(watchListCoin: entity)
+    }
+    
+    func move(coin: CoinModel, to destination: Int) {
+        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
+        moveEntity(watchListCoin: entity, to: destination)
+    }
+    
+    private func addEntity(account name: String) {
+        _ = createEntity(account: name)
+        applyChanges()
+    }
+    
+    private func createEntity(account name: String) -> AccountEntity {
+        let entity = AccountEntity(context: container.viewContext)
+        entity.name = name
+        entity.dateCreated = Date()
+        entity.cash = 100000
+        entity.selected = false
+        entity.portfolioCoins = []
+        entity.watchListCoins = []
+        return entity
+    }
+    
+//    private func delete(entity: NSManagedObject) {
+//        container.viewContext.delete(entity)
+//        applyChanges()
+//    }
+    
+    private func addEntity(watchListCoin coinID: String) {
+        let entity = WatchListCoinEntity(context: container.viewContext)
+        entity.coinID = coinID
+        entity.listIndex = Int16(currentWatchListCoins.count)
+        entity.account = currentAccount
+        applyChanges()
+    }
+    
+    private func deleteEntity(watchListCoin entity: WatchListCoinEntity) {
+        container.viewContext.delete(entity)
+        for index in Int(entity.listIndex) ..< currentWatchListCoins.count {
+            currentWatchListCoins[index].listIndex -= 1
+        }
+        applyChanges()
+    }
+    
+    private func moveEntity(watchListCoin entity: WatchListCoinEntity, to destination: Int) {
+        let currentListIndex = entity.listIndex
+//        print("destination: \(destination) current index:\(currentListIndex)")
+        if destination < currentListIndex {
+            for index in destination ..< Int(currentListIndex) {
+                currentWatchListCoins[index].listIndex += 1
+            }
+        } else {
+            for index in (Int(currentListIndex) + 1) ..< destination {
+                guard index < currentWatchListCoins.count else { break }
+                currentWatchListCoins[index].listIndex -= 1
+            }
+        }
+        entity.listIndex = Int16(destination)
+        applyChanges()
+    }
+    
+    private func save() {
+        do {
+            try container.viewContext.save()
+        } catch let error {
+            print("Error saving to Core Data. \(error)")
+        }
+    }
+    
+    private func applyChanges() {
+        save()
+        getAccount()
+        getCurrentWatchListCoins()
+    }
+}

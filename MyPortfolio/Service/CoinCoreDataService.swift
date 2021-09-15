@@ -21,7 +21,7 @@ class CoinCoreDataService {
             if let error = error {
                 print("Error loading Core Data! \(error)")
             } else {
-                print("Successfully loaded Core Data!")
+                print("Successfully loaded \(self.containerName)!")
             }
             self.getCoins()
         }

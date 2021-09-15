@@ -12,6 +12,7 @@ struct MyPortfolioApp: App {
     
     @StateObject private var marketVM = InvestTabViewModel()
     @StateObject private var browseVM = BrowseTabViewModel()
+    @StateObject private var accountVM = AccountTabViewModel()
     
     init() {
         UITabBar.appearance().barStyle = .black
@@ -31,6 +32,7 @@ struct MyPortfolioApp: App {
             MyPortfolioView()
                 .environmentObject(marketVM)
                 .environmentObject(browseVM)
+                .environmentObject(accountVM)
         }
     }
 }

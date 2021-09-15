@@ -940,4 +940,10 @@ class DeveloperPreview {
         publishedAt: "2021-08-30T21:50:47Z"
     )
     
+    func getAccountVM() -> AccountTabViewModel {
+        let accountVM = AccountTabViewModel()
+        _ = accountVM.currentAccount
+        return accountVM
+    }
+    
 }

@@ -11,8 +11,9 @@ struct MyPortfolioView: View {
     
     @EnvironmentObject private var marketVM: InvestTabViewModel
     @EnvironmentObject private var browseVM: BrowseTabViewModel
+    @EnvironmentObject private var accountVM: AccountTabViewModel
     
-    @State var selectedTab = 0
+    @State var selectedTab = 2
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -30,11 +31,12 @@ struct MyPortfolioView: View {
                 }
                 .tag(1)
             
-            Text("The content of the third view")
+            AccountTabView()
+                .environmentObject(accountVM)
                 .tabItem {
                     Image(systemName: "person.fill")
                 }
-                .tag(3)
+                .tag(2)
         }
         .accentColor(.theme.accent)
     }
