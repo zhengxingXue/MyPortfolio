@@ -28,8 +28,9 @@ class AccountTabViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func add(account name: String) {
-        accountDataService.add(account: name)
+    func add(account name: String = "Guest Account") {
+        let uniqueName = name.uniqued(withRespectTo: allAccounts.map({ $0.name ?? "Guest Account"}))
+        accountDataService.add(account: uniqueName)
     }
     
     func delete(at offset: IndexSet) { offset.map({ allAccounts[$0] }).forEach { account in accountDataService.deleteEntity(account: account) } }

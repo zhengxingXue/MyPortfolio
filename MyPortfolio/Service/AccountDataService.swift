@@ -57,8 +57,11 @@ class AccountDataService {
     
     private func getCurrentWatchListCoins() {
         currentWatchListCoins = currentAccount.watchListCoins?.allObjects as? [WatchListCoinEntity] ?? []
-        print(currentAccount)
-        print(currentWatchListCoins)
+        currentWatchListCoins.sort(by: { $0.listIndex < $1.listIndex })
+        for index in currentWatchListCoins.indices {
+            currentWatchListCoins[index].listIndex = Int16(index)
+        }
+//        print(currentWatchListCoins)
     }
     
     func add(account name: String) {
@@ -68,11 +71,8 @@ class AccountDataService {
     
     func deleteEntity(account entity: AccountEntity) {
         container.viewContext.delete(entity)
-        applyChanges()
-        if let first = accounts.first {
+        if entity.selected, let first = accounts.first(where: {$0.name != entity.name}) {
             first.selected = true
-        } else {
-            createEntity(account: "Guest Account").selected = true
         }
         applyChanges()
     }
@@ -114,11 +114,6 @@ class AccountDataService {
         return entity
     }
     
-//    private func delete(entity: NSManagedObject) {
-//        container.viewContext.delete(entity)
-//        applyChanges()
-//    }
-    
     private func addEntity(watchListCoin coinID: String) {
         let entity = WatchListCoinEntity(context: container.viewContext)
         entity.coinID = coinID
@@ -137,13 +132,14 @@ class AccountDataService {
     
     private func moveEntity(watchListCoin entity: WatchListCoinEntity, to destination: Int) {
         let currentListIndex = entity.listIndex
-//        print("destination: \(destination) current index:\(currentListIndex)")
         if destination < currentListIndex {
             for index in destination ..< Int(currentListIndex) {
                 currentWatchListCoins[index].listIndex += 1
             }
         } else {
-            for index in (Int(currentListIndex) + 1) ..< destination {
+            let leftIndex = Int(currentListIndex) + 1
+            guard leftIndex <= destination else { return }
+            for index in leftIndex ..< destination {
                 guard index < currentWatchListCoins.count else { break }
                 currentWatchListCoins[index].listIndex -= 1
             }

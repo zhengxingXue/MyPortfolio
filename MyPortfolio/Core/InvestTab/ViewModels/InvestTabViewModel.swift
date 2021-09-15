@@ -13,12 +13,13 @@ class InvestTabViewModel: ObservableObject {
     
     @Published var allCoins: [CoinModel] = []
     @Published var savedCoins: [CoinModel] = []
-    @Published var savedCoinEntities: [CoinEntity] = []
+    @Published var savedCoinEntities: [WatchListCoinEntity] = []
     
     @Published var isLoading: Bool = false
     
     private let coinDataService = CoinDataService()
-    private let coinCoreDataService = CoinCoreDataService()
+    
+    private let accountDataService = AccountDataService.instance
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -34,7 +35,7 @@ class InvestTabViewModel: ObservableObject {
     
     private func addSubscribers() {
         coinDataService.$allCoins
-            .combineLatest(coinCoreDataService.$savedEntities)
+            .combineLatest(accountDataService.$currentWatchListCoins)
             .map(mapDataToCoins)
             .sink { [weak self] returned in
                 guard let self = self else { return }
@@ -46,18 +47,18 @@ class InvestTabViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [CoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [CoinEntity], allCoins: [CoinModel]) {
+    private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [WatchListCoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [WatchListCoinEntity], allCoins: [CoinModel]) {
         (coinEntities.compactMap { coinEntity in allCoins.first(where: { $0.id == coinEntity.coinID }) }, coinEntities, allCoins)
     }
     
-    func add(coin: CoinModel) { coinCoreDataService.add(coin: coin) }
+    func add(coin: CoinModel) { accountDataService.add(coin: coin) }
     
-    func delete(coin: CoinModel) { coinCoreDataService.delete(coin: coin) }
+    func delete(coin: CoinModel) { accountDataService.delete(coin: coin) }
     
-    func delete(at offset: IndexSet) { offset.map({ savedCoins[$0] }).forEach { coin in coinCoreDataService.delete(coin: coin) } }
+    func delete(at offset: IndexSet) { offset.map({ savedCoins[$0] }).forEach { coin in accountDataService.delete(coin: coin) } }
     
     func move(from source: IndexSet, to destination: Int) {
-        source.map({ savedCoins[$0] }).forEach { coin in coinCoreDataService.move(coin: coin, to: destination)}
+        source.map({ savedCoins[$0] }).forEach { coin in accountDataService.move(coin: coin, to: destination)}
     }
     
     func refreshAllCoins() {

@@ -38,7 +38,7 @@ struct AllAcountsView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        accountVM.add(account: "Joker1")
+                        accountVM.add()
                     } label: {
                         Image(systemName: "plus")
                     }
