@@ -61,9 +61,38 @@ class AccountDataService {
         for index in currentWatchListCoins.indices {
             currentWatchListCoins[index].listIndex = Int16(index)
         }
-//        print(currentWatchListCoins)
     }
     
+    private func save() {
+        do {
+            try container.viewContext.save()
+        } catch let error {
+            print("Error saving to Core Data. \(error)")
+        }
+    }
+    
+    private func applyChanges() {
+        save()
+        getAccount()
+        getCurrentWatchListCoins()
+//        getCoins()
+    }
+    
+    // For Debug
+//    private func getCoins() {
+//        let request = NSFetchRequest<WatchListCoinEntity>(entityName: watchListCoinEntityName)
+//        do {
+//            let coins = try container.viewContext.fetch(request)
+//            print("\(coins)")
+//        } catch let error {
+//            print("Error fetching Account Entities. \(error)")
+//        }
+//    }
+}
+
+
+extension AccountDataService {
+    // MARK: AccountEntity Functions
     func add(account name: String) {
         guard accounts.first(where: { $0.name == name }) == nil else { return }
         addEntity(account: name)
@@ -83,21 +112,6 @@ class AccountDataService {
         applyChanges()
     }
     
-    func add(coin: CoinModel) {
-        guard currentWatchListCoins.first(where: { $0.coinID == coin.id }) == nil else { return }
-        addEntity(watchListCoin: coin.id)
-    }
-    
-    func delete(coin: CoinModel) {
-        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
-        deleteEntity(watchListCoin: entity)
-    }
-    
-    func move(coin: CoinModel, to destination: Int) {
-        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
-        moveEntity(watchListCoin: entity, to: destination)
-    }
-    
     private func addEntity(account name: String) {
         _ = createEntity(account: name)
         applyChanges()
@@ -112,6 +126,24 @@ class AccountDataService {
         entity.portfolioCoins = []
         entity.watchListCoins = []
         return entity
+    }
+}
+
+extension AccountDataService {
+    // MARK: WatchListCoinEntity Functions
+    func add(coin: CoinModel) {
+        guard currentWatchListCoins.first(where: { $0.coinID == coin.id }) == nil else { return }
+        addEntity(watchListCoin: coin.id)
+    }
+    
+    func delete(coin: CoinModel) {
+        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
+        deleteEntity(watchListCoin: entity)
+    }
+    
+    func move(coin: CoinModel, to destination: Int) {
+        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
+        moveEntity(watchListCoin: entity, to: destination)
     }
     
     private func addEntity(watchListCoin coinID: String) {
@@ -147,30 +179,4 @@ class AccountDataService {
         entity.listIndex = Int16(destination)
         applyChanges()
     }
-    
-    private func save() {
-        do {
-            try container.viewContext.save()
-        } catch let error {
-            print("Error saving to Core Data. \(error)")
-        }
-    }
-    
-    private func applyChanges() {
-        save()
-        getAccount()
-        getCurrentWatchListCoins()
-//        getCoins()
-    }
-    
-    // For Debug
-//    private func getCoins() {
-//        let request = NSFetchRequest<WatchListCoinEntity>(entityName: watchListCoinEntityName)
-//        do {
-//            let coins = try container.viewContext.fetch(request)
-//            print("\(coins)")
-//        } catch let error {
-//            print("Error fetching Account Entities. \(error)")
-//        }
-//    }
 }
