@@ -36,5 +36,7 @@ class AccountTabViewModel: ObservableObject {
     func delete(at offset: IndexSet) { offset.map({ allAccounts[$0] }).forEach { account in accountDataService.deleteEntity(account: account) } }
     
     func select(account entity: AccountEntity) { accountDataService.select(account: entity)}
+    
+    func clear() { accountDataService.clear() }
         
 }

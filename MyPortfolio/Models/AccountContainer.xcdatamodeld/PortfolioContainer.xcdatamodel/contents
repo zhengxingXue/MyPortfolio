@@ -5,8 +5,9 @@
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="selected" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="watchListCoinArray" optional="YES" attributeType="Transformable" customClassName="[String]"/>
         <relationship name="portfolioCoins" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PortfolioCoinEntity" inverseName="account" inverseEntity="PortfolioCoinEntity"/>
-        <relationship name="watchListCoins" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WatchListCoinEntity" inverseName="account" inverseEntity="WatchListCoinEntity"/>
+        <relationship name="watchListCoins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WatchListCoinEntity" inverseName="accounts" inverseEntity="WatchListCoinEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="name"/>
@@ -22,10 +23,10 @@
     <entity name="WatchListCoinEntity" representedClassName="WatchListCoinEntity" syncable="YES" codeGenerationType="class">
         <attribute name="coinID" optional="YES" attributeType="String"/>
         <attribute name="listIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="watchListCoins" inverseEntity="AccountEntity"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="watchListCoins" inverseEntity="AccountEntity"/>
     </entity>
     <elements>
-        <element name="AccountEntity" positionX="529.2486572265625" positionY="93.9215087890625" width="128" height="133"/>
+        <element name="AccountEntity" positionX="529.2486572265625" positionY="93.9215087890625" width="128" height="134"/>
         <element name="PortfolioCoinEntity" positionX="328.4781494140625" positionY="108.8551330566406" width="128" height="103"/>
         <element name="WatchListCoinEntity" positionX="731.6055908203125" positionY="139.1190490722656" width="128" height="88"/>
     </elements>

@@ -37,10 +37,17 @@ struct AllAcountsView: View {
                     XMarkButton(isPresented: $showAllAccountsView)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        accountVM.add()
-                    } label: {
-                        Image(systemName: "plus")
+                    HStack {
+                        Button {
+                            accountVM.clear()
+                        } label: {
+                            Image(systemName: "trash")
+                        }
+                        Button {
+                            accountVM.add()
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }

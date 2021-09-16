@@ -21,6 +21,7 @@ class AccountDataService {
     
     @Published var accounts: [AccountEntity] = []
     @Published var currentWatchListCoins: [WatchListCoinEntity] = []
+    private var allWatchListCoins: [WatchListCoinEntity] = []
     
     var currentAccount: AccountEntity {
         if let currentAccount = accounts.first(where: { $0.selected }) {
@@ -43,6 +44,7 @@ class AccountDataService {
             }
             self.getAccount()
             self.getCurrentWatchListCoins()
+            self.getAllWatchListCoins()
         }
     }
 
@@ -63,6 +65,16 @@ class AccountDataService {
         }
     }
     
+    private func getAllWatchListCoins() {
+        let request = NSFetchRequest<WatchListCoinEntity>(entityName: watchListCoinEntityName)
+        do {
+            allWatchListCoins = try container.viewContext.fetch(request)
+            print("\nall watch list coins: \n \(allWatchListCoins)\n")
+        } catch let error {
+            print("Error fetching watch list coin Entities. \(error)")
+        }
+    }
+    
     private func save() {
         do {
             try container.viewContext.save()
@@ -75,19 +87,18 @@ class AccountDataService {
         save()
         getAccount()
         getCurrentWatchListCoins()
-//        getCoins()
+        getAllWatchListCoins()
     }
     
-    // For Debug
-//    private func getCoins() {
-//        let request = NSFetchRequest<WatchListCoinEntity>(entityName: watchListCoinEntityName)
-//        do {
-//            let coins = try container.viewContext.fetch(request)
-//            print("\(coins)")
-//        } catch let error {
-//            print("Error fetching Account Entities. \(error)")
-//        }
-//    }
+    func clear() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: watchListCoinEntityName)
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try container.viewContext.execute(deleteRequest)
+        } catch let error {
+            print("Error deleting all watch list coin Entities. \(error)")
+        }
+    }
 }
 
 
@@ -99,6 +110,9 @@ extension AccountDataService {
     }
     
     func deleteEntity(account entity: AccountEntity) {
+        for watchListCoin in (entity.watchListCoins?.allObjects as? [WatchListCoinEntity] ?? []) {
+            deleteEntity(watchListCoin: watchListCoin, from: entity)
+        }
         container.viewContext.delete(entity)
         if entity.selected, let first = accounts.first(where: {$0.name != entity.name}) {
             first.selected = true
@@ -138,7 +152,7 @@ extension AccountDataService {
     
     func delete(coin: CoinModel) {
         guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
-        deleteEntity(watchListCoin: entity)
+        deleteEntity(watchListCoin: entity, from: currentAccount)
     }
     
     func move(coin: CoinModel, to destination: Int) {
@@ -147,17 +161,21 @@ extension AccountDataService {
     }
     
     private func addEntity(watchListCoin coinID: String) {
-        let entity = WatchListCoinEntity(context: container.viewContext)
-        entity.coinID = coinID
-        entity.listIndex = Int16(currentWatchListCoins.count)
-        entity.account = currentAccount
+        if let entity = allWatchListCoins.first(where: { $0.coinID == coinID }) {
+            currentAccount.addToWatchListCoins(entity)
+        } else {
+            let entity = WatchListCoinEntity(context: container.viewContext)
+            entity.coinID = coinID
+            entity.listIndex = Int16(currentWatchListCoins.count)
+            currentAccount.addToWatchListCoins(entity)
+        }
         applyChanges()
     }
     
-    private func deleteEntity(watchListCoin entity: WatchListCoinEntity) {
-        container.viewContext.delete(entity)
-        for index in Int(entity.listIndex) ..< currentWatchListCoins.count {
-            currentWatchListCoins[index].listIndex -= 1
+    private func deleteEntity(watchListCoin entity: WatchListCoinEntity, from account: AccountEntity) {
+        account.removeFromWatchListCoins(entity)
+        if entity.accounts?.count == 0 {
+            container.viewContext.delete(entity)
         }
         applyChanges()
     }
