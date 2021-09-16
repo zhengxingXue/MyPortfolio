@@ -160,5 +160,17 @@ class AccountDataService {
         save()
         getAccount()
         getCurrentWatchListCoins()
+//        getCoins()
     }
+    
+    // For Debug
+//    private func getCoins() {
+//        let request = NSFetchRequest<WatchListCoinEntity>(entityName: watchListCoinEntityName)
+//        do {
+//            let coins = try container.viewContext.fetch(request)
+//            print("\(coins)")
+//        } catch let error {
+//            print("Error fetching Account Entities. \(error)")
+//        }
+//    }
 }
