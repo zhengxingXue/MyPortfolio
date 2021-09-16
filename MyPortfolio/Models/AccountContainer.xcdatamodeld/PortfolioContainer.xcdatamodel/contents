@@ -2,32 +2,23 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19197" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountEntity" representedClassName="AccountEntity" syncable="YES" codeGenerationType="class">
         <attribute name="cash" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="coinIDs" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <attribute name="dateCreated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="selected" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="watchListCoinArray" optional="YES" attributeType="Transformable" customClassName="[String]"/>
-        <relationship name="portfolioCoins" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PortfolioCoinEntity" inverseName="account" inverseEntity="PortfolioCoinEntity"/>
-        <relationship name="watchListCoins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WatchListCoinEntity" inverseName="accounts" inverseEntity="WatchListCoinEntity"/>
+        <relationship name="coins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CoinEntity" inverseName="accounts" inverseEntity="CoinEntity"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="name"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="PortfolioCoinEntity" representedClassName="PortfolioCoinEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    <entity name="CoinEntity" representedClassName="CoinEntity" syncable="YES" codeGenerationType="class">
         <attribute name="coinID" optional="YES" attributeType="String"/>
-        <attribute name="initialValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="portfolioCoins" inverseEntity="AccountEntity"/>
-    </entity>
-    <entity name="WatchListCoinEntity" representedClassName="WatchListCoinEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="coinID" optional="YES" attributeType="String"/>
-        <attribute name="listIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="watchListCoins" inverseEntity="AccountEntity"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="coins" inverseEntity="AccountEntity"/>
     </entity>
     <elements>
-        <element name="AccountEntity" positionX="529.2486572265625" positionY="93.9215087890625" width="128" height="134"/>
-        <element name="PortfolioCoinEntity" positionX="328.4781494140625" positionY="108.8551330566406" width="128" height="103"/>
-        <element name="WatchListCoinEntity" positionX="731.6055908203125" positionY="139.1190490722656" width="128" height="88"/>
+        <element name="AccountEntity" positionX="529.2486572265625" positionY="93.9215087890625" width="128" height="119"/>
+        <element name="CoinEntity" positionX="731.6055908203125" positionY="139.1190490722656" width="128" height="59"/>
     </elements>
 </model>

@@ -13,7 +13,7 @@ class InvestTabViewModel: ObservableObject {
     
     @Published var allCoins: [CoinModel] = []
     @Published var savedCoins: [CoinModel] = []
-    @Published var savedCoinEntities: [WatchListCoinEntity] = []
+    @Published var savedCoinEntities: [CoinEntity] = []
     
     @Published var isLoading: Bool = false
     
@@ -35,7 +35,7 @@ class InvestTabViewModel: ObservableObject {
     
     private func addSubscribers() {
         coinDataService.$allCoins
-            .combineLatest(accountDataService.$currentWatchListCoins)
+            .combineLatest(accountDataService.$currentCoins)
             .map(mapDataToCoins)
             .sink { [weak self] returned in
                 guard let self = self else { return }
@@ -47,7 +47,7 @@ class InvestTabViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [WatchListCoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [WatchListCoinEntity], allCoins: [CoinModel]) {
+    private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [CoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [CoinEntity], allCoins: [CoinModel]) {
         (coinEntities.compactMap { coinEntity in allCoins.first(where: { $0.id == coinEntity.coinID }) }, coinEntities, allCoins)
     }
     
@@ -58,7 +58,8 @@ class InvestTabViewModel: ObservableObject {
     func delete(at offset: IndexSet) { offset.map({ savedCoins[$0] }).forEach { coin in accountDataService.delete(coin: coin) } }
     
     func move(from source: IndexSet, to destination: Int) {
-        source.map({ savedCoins[$0] }).forEach { coin in accountDataService.move(coin: coin, to: destination)}
+//        source.map({ savedCoins[$0] }).forEach { coin in accountDataService.move(coin: coin, to: destination)}
+        accountDataService.moveCoin(from: source, to: destination)
     }
     
     func refreshAllCoins() {

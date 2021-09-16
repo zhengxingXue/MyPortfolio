@@ -16,12 +16,11 @@ class AccountDataService {
     private let containerName: String = "AccountContainer"
     
     private let accountEntityName: String = "AccountEntity"
-    private let portfolioCoinEntityName: String = "PortfolioCoinEntity"
-    private let watchListCoinEntityName: String = "WatchListCoinEntity"
+    private let coinEntityName: String = "CoinEntity"
     
     @Published var accounts: [AccountEntity] = []
-    @Published var currentWatchListCoins: [WatchListCoinEntity] = []
-    private var allWatchListCoins: [WatchListCoinEntity] = []
+    @Published var currentCoins: [CoinEntity] = []
+    private var allCoins: [CoinEntity] = []
     
     var currentAccount: AccountEntity {
         if let currentAccount = accounts.first(where: { $0.selected }) {
@@ -43,8 +42,8 @@ class AccountDataService {
                 print("Successfully loaded \(self.containerName)!")
             }
             self.getAccount()
-            self.getCurrentWatchListCoins()
-            self.getAllWatchListCoins()
+            self.getCurrentCoins()
+            self.getAllCoins()
         }
     }
 
@@ -52,26 +51,30 @@ class AccountDataService {
         let request = NSFetchRequest<AccountEntity>(entityName: accountEntityName)
         do {
             accounts = try container.viewContext.fetch(request)
+//            print("\naccounts: \n \(accounts)\n")
         } catch let error {
             print("Error fetching Account Entities. \(error)")
         }
     }
     
-    private func getCurrentWatchListCoins() {
-        currentWatchListCoins = currentAccount.watchListCoins?.allObjects as? [WatchListCoinEntity] ?? []
-        currentWatchListCoins.sort(by: { $0.listIndex < $1.listIndex })
-        for index in currentWatchListCoins.indices {
-            currentWatchListCoins[index].listIndex = Int16(index)
+    private func getCurrentCoins() {
+        currentCoins = currentAccount.coins?.allObjects as? [CoinEntity] ?? []
+        var sortedCoins: [CoinEntity] = []
+        for coinID in (currentAccount.coinIDs ?? []) {
+            if let coin = currentCoins.first(where: { $0.coinID == coinID}) {
+                sortedCoins.append(coin)
+            }
         }
+        currentCoins = sortedCoins
     }
     
-    private func getAllWatchListCoins() {
-        let request = NSFetchRequest<WatchListCoinEntity>(entityName: watchListCoinEntityName)
+    private func getAllCoins() {
+        let request = NSFetchRequest<CoinEntity>(entityName: coinEntityName)
         do {
-            allWatchListCoins = try container.viewContext.fetch(request)
-            print("\nall watch list coins: \n \(allWatchListCoins)\n")
+            allCoins = try container.viewContext.fetch(request)
+//            print("\nall coins: \n \(allCoins)\n")
         } catch let error {
-            print("Error fetching watch list coin Entities. \(error)")
+            print("Error fetching coin Entities. \(error)")
         }
     }
     
@@ -86,17 +89,17 @@ class AccountDataService {
     private func applyChanges() {
         save()
         getAccount()
-        getCurrentWatchListCoins()
-        getAllWatchListCoins()
+        getCurrentCoins()
+        getAllCoins()
     }
     
     func clear() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: watchListCoinEntityName)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: coinEntityName)
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
             try container.viewContext.execute(deleteRequest)
         } catch let error {
-            print("Error deleting all watch list coin Entities. \(error)")
+            print("Error deleting all coin Entities. \(error)")
         }
     }
 }
@@ -110,8 +113,8 @@ extension AccountDataService {
     }
     
     func deleteEntity(account entity: AccountEntity) {
-        for watchListCoin in (entity.watchListCoins?.allObjects as? [WatchListCoinEntity] ?? []) {
-            deleteEntity(watchListCoin: watchListCoin, from: entity)
+        for coin in (entity.coins?.allObjects as? [CoinEntity] ?? []) {
+            deleteEntity(coin: coin, from: entity)
         }
         container.viewContext.delete(entity)
         if entity.selected, let first = accounts.first(where: {$0.name != entity.name}) {
@@ -137,64 +140,47 @@ extension AccountDataService {
         entity.dateCreated = Date()
         entity.cash = 100000
         entity.selected = false
-        entity.portfolioCoins = []
-        entity.watchListCoins = []
+        entity.coinIDs = []
+        entity.coins = []
         return entity
     }
 }
 
 extension AccountDataService {
-    // MARK: WatchListCoinEntity Functions
+    // MARK: CoinEntity Functions
     func add(coin: CoinModel) {
-        guard currentWatchListCoins.first(where: { $0.coinID == coin.id }) == nil else { return }
-        addEntity(watchListCoin: coin.id)
+        guard currentCoins.first(where: { $0.coinID == coin.id }) == nil else { return }
+        addEntity(coin: coin.id)
     }
     
     func delete(coin: CoinModel) {
-        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
-        deleteEntity(watchListCoin: entity, from: currentAccount)
+        guard let entity = currentCoins.first(where: { $0.coinID == coin.id }) else { return }
+        deleteEntity(coin: entity, from: currentAccount)
     }
     
-    func move(coin: CoinModel, to destination: Int) {
-        guard let entity = currentWatchListCoins.first(where: { $0.coinID == coin.id }) else { return }
-        moveEntity(watchListCoin: entity, to: destination)
-    }
-    
-    private func addEntity(watchListCoin coinID: String) {
-        if let entity = allWatchListCoins.first(where: { $0.coinID == coinID }) {
-            currentAccount.addToWatchListCoins(entity)
-        } else {
-            let entity = WatchListCoinEntity(context: container.viewContext)
-            entity.coinID = coinID
-            entity.listIndex = Int16(currentWatchListCoins.count)
-            currentAccount.addToWatchListCoins(entity)
-        }
+    func moveCoin(from source: IndexSet, to destination: Int) {
+        currentAccount.coinIDs?.move(fromOffsets: source, toOffset: destination)
         applyChanges()
     }
     
-    private func deleteEntity(watchListCoin entity: WatchListCoinEntity, from account: AccountEntity) {
-        account.removeFromWatchListCoins(entity)
+    private func addEntity(coin coinID: String) {
+        if let entity = allCoins.first(where: { $0.coinID == coinID }) {
+            currentAccount.addToCoins(entity)
+        } else {
+            let entity = CoinEntity(context: container.viewContext)
+            entity.coinID = coinID
+            currentAccount.addToCoins(entity)
+        }
+        currentAccount.coinIDs?.append(coinID)
+        applyChanges()
+    }
+    
+    private func deleteEntity(coin entity: CoinEntity, from account: AccountEntity) {
+        account.removeFromCoins(entity)
         if entity.accounts?.count == 0 {
             container.viewContext.delete(entity)
         }
-        applyChanges()
-    }
-    
-    private func moveEntity(watchListCoin entity: WatchListCoinEntity, to destination: Int) {
-        let currentListIndex = entity.listIndex
-        if destination < currentListIndex {
-            for index in destination ..< Int(currentListIndex) {
-                currentWatchListCoins[index].listIndex += 1
-            }
-        } else {
-            let leftIndex = Int(currentListIndex) + 1
-            guard leftIndex <= destination else { return }
-            for index in leftIndex ..< destination {
-                guard index < currentWatchListCoins.count else { break }
-                currentWatchListCoins[index].listIndex -= 1
-            }
-        }
-        entity.listIndex = Int16(destination)
+        account.coinIDs?.removeAll(where: { $0 == entity.coinID })
         applyChanges()
     }
 }
