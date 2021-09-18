@@ -12,6 +12,8 @@
 		3808477F26F23254005ABF4F /* AccountDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3808477E26F23254005ABF4F /* AccountDataService.swift */; };
 		3808478126F23889005ABF4F /* AccountTabViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3808478026F23889005ABF4F /* AccountTabViewModel.swift */; };
 		3808478326F26A5D005ABF4F /* AllAcountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3808478226F26A5D005ABF4F /* AllAcountsView.swift */; };
+		3822D58F26F6835600528839 /* CoinLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3822D58E26F6835600528839 /* CoinLogoView.swift */; };
+		3822D59126F6882700528839 /* OrderCoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3822D59026F6882700528839 /* OrderCoinView.swift */; };
 		3824175726E184CA002BCA6E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824175626E184CA002BCA6E /* NetworkManager.swift */; };
 		3824175A26E184ED002BCA6E /* CoinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824175926E184ED002BCA6E /* CoinModel.swift */; };
 		3824175C26E18511002BCA6E /* CoinDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824175B26E18511002BCA6E /* CoinDataService.swift */; };
@@ -60,6 +62,8 @@
 		3808477E26F23254005ABF4F /* AccountDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDataService.swift; sourceTree = "<group>"; };
 		3808478026F23889005ABF4F /* AccountTabViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTabViewModel.swift; sourceTree = "<group>"; };
 		3808478226F26A5D005ABF4F /* AllAcountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAcountsView.swift; sourceTree = "<group>"; };
+		3822D58E26F6835600528839 /* CoinLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinLogoView.swift; sourceTree = "<group>"; };
+		3822D59026F6882700528839 /* OrderCoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCoinView.swift; sourceTree = "<group>"; };
 		3824175626E184CA002BCA6E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		3824175926E184ED002BCA6E /* CoinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinModel.swift; sourceTree = "<group>"; };
 		3824175B26E18511002BCA6E /* CoinDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinDataService.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 				3824177526E1C87B002BCA6E /* LineChart */,
 				3824177126E1A9FF002BCA6E /* XMarkButton.swift */,
 				38D5666526E27ED1005D71DA /* ListTitleRow.swift */,
+				3822D58E26F6835600528839 /* CoinLogoView.swift */,
 			);
 			path = Componenets;
 			sourceTree = "<group>";
@@ -190,6 +195,7 @@
 				3824176426E187E4002BCA6E /* CoinRowView.swift */,
 				3824176626E19A0B002BCA6E /* CryptoListDetailView.swift */,
 				3824176F26E1A5DC002BCA6E /* AddCoinView.swift */,
+				3822D59026F6882700528839 /* OrderCoinView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -434,10 +440,12 @@
 				3824178F26E1D584002BCA6E /* ImageService.swift in Sources */,
 				38B20A8026E157340028B819 /* Color+.swift in Sources */,
 				3824175C26E18511002BCA6E /* CoinDataService.swift in Sources */,
+				3822D58F26F6835600528839 /* CoinLogoView.swift in Sources */,
 				3824176726E19A0B002BCA6E /* CryptoListDetailView.swift in Sources */,
 				3824177426E1C861002BCA6E /* Path+.swift in Sources */,
 				38F6635126E43E5300631E88 /* CoinMarketChartService.swift in Sources */,
 				38F6634D26E437E500631E88 /* CoinDetailNewsView.swift in Sources */,
+				3822D59126F6882700528839 /* OrderCoinView.swift in Sources */,
 				3824175726E184CA002BCA6E /* NetworkManager.swift in Sources */,
 				3824177226E1A9FF002BCA6E /* XMarkButton.swift in Sources */,
 				3824176226E18688002BCA6E /* Double+.swift in Sources */,

@@ -22,11 +22,6 @@ struct AccountTabView: View {
                         Text("Orders")
                             .font(.title3)
                         Spacer()
-                        Button {
-                            accountVM.addOrder(coin: "bitcoin", amount: 0.01, price: 50000)
-                        } label: {
-                            Image(systemName: "plus")
-                        }
                     }
                     .foregroundColor(Color.theme.accent)
                     .padding()

@@ -11,6 +11,8 @@ struct InvestTabView: View {
     
     @EnvironmentObject private var marketVM: InvestTabViewModel
     
+    @State private var showOrderCoinView: Bool = false
+    
     var body: some View {
         NavigationView {
             List {
@@ -29,6 +31,19 @@ struct InvestTabView: View {
             }
             .listStyle(.plain)
             .navigationTitle("Investing")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showOrderCoinView.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    .sheet(isPresented: $showOrderCoinView) {
+                        OrderCoinView(showOrderCoinView: $showOrderCoinView)
+                            .environmentObject(marketVM)
+                    }
+                }
+            }
         }
     }
 }
@@ -49,10 +64,10 @@ extension InvestTabView {
         TabView {
             RoundedRectangle(cornerRadius: 5)
                 .foregroundColor(.theme.background)
-                .padding(8)
+                .padding(10)
             RoundedRectangle(cornerRadius: 5)
                 .foregroundColor(.theme.background)
-                .padding(8)
+                .padding(10)
         }
         .frame(height: 200)
         .tabViewStyle(.page(indexDisplayMode: .never))

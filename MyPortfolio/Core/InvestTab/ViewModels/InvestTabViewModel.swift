@@ -53,6 +53,10 @@ class InvestTabViewModel: ObservableObject {
     
     func add(coin: CoinModel) { accountDataService.add(coin: coin) }
     
+    func addOrder(coin coinID: String, amount: Double, price: Double) {
+        accountDataService.addCoinOrder(coinID: coinID, amount: amount, price: price)
+    }
+    
     func delete(coin: CoinModel) { accountDataService.delete(coin: coin) }
     
     func delete(at offset: IndexSet) { offset.map({ savedCoins[$0] }).forEach { coin in accountDataService.delete(coin: coin) } }
