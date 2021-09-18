@@ -43,6 +43,15 @@ extension Date {
     
     func asMonthYearString() -> String { monthYearFormatter.string(from: self) }
     
+    private var orderDateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.timeZone = TimeZone.current
+        formatter.dateFormat = "MM/dd/yyyy HH:mm:ss"
+        return formatter
+    }
+    
+    func asOrderDateString() -> String { orderDateFormatter.string(from: self) }
+    
     private var dailyMarketChartFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone.current

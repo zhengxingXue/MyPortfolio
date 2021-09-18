@@ -20,6 +20,7 @@ class AccountDataService {
     
     @Published var accounts: [AccountEntity] = []
     @Published var currentCoins: [CoinEntity] = []
+    @Published var currentOrders: [OrderEntity] = []
     private var allCoins: [CoinEntity] = []
     
     var currentAccount: AccountEntity {
@@ -29,6 +30,7 @@ class AccountDataService {
             let currentAccount = createEntity(account: "Guest Account")
             currentAccount.selected = true
             applyChanges()
+            addEntity(coin: "bitcoin")
             return currentAccount
         }
     }
@@ -41,17 +43,22 @@ class AccountDataService {
             } else {
                 print("Successfully loaded \(self.containerName)!")
             }
-            self.getAccount()
-            self.getCurrentCoins()
-            self.getAllCoins()
+            self.getAll()
         }
+    }
+    
+    private func getAll() {
+        getAccount()
+        getCurrentCoins()
+        getAllCoins()
+        getCurrentOrders()
     }
 
     private func getAccount() {
         let request = NSFetchRequest<AccountEntity>(entityName: accountEntityName)
         do {
             accounts = try container.viewContext.fetch(request)
-//            print("\naccounts: \n \(accounts)\n")
+            print("\naccounts: \n \(accounts)\n")
         } catch let error {
             print("Error fetching Account Entities. \(error)")
         }
@@ -66,6 +73,11 @@ class AccountDataService {
             }
         }
         currentCoins = sortedCoins
+    }
+    
+    private func getCurrentOrders() {
+        currentOrders = currentAccount.orders?.allObjects as? [OrderEntity] ?? []
+        currentOrders.sort(by: { $0.dateCreated ?? Date() > $1.dateCreated ?? Date() })
     }
     
     private func getAllCoins() {
@@ -88,9 +100,7 @@ class AccountDataService {
     
     private func applyChanges() {
         save()
-        getAccount()
-        getCurrentCoins()
-        getAllCoins()
+        getAll()
     }
     
     func clear() {
@@ -101,6 +111,24 @@ class AccountDataService {
         } catch let error {
             print("Error deleting all coin Entities. \(error)")
         }
+    }
+}
+
+extension AccountDataService {
+    // MARK: OrderEntity Functions
+    func addCoinOrder(coinID: String, amount: Double, price: Double) {
+        addEntity(order: coinID, amount: amount, price: price)
+    }
+    
+    private func addEntity(order name: String, amount: Double, price: Double) {
+        let entity = OrderEntity(context: container.viewContext)
+        entity.name = name
+        entity.dateCreated = Date()
+        entity.amount = amount
+        entity.price = price
+        entity.account = currentAccount
+        currentAccount.cash -= amount * price
+        applyChanges()
     }
 }
 
@@ -142,6 +170,7 @@ extension AccountDataService {
         entity.selected = false
         entity.coinIDs = []
         entity.coins = []
+        entity.orders = []
         return entity
     }
 }

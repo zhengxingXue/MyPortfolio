@@ -17,21 +17,49 @@ struct AccountTabView: View {
         NavigationView {
             ScrollView {
                 accountInfo
-                VStack {
-                    Text("Cash " + accountVM.currentAccount.cash.asCurrencyWith2Decimals())
+                LazyVStack(alignment: .leading) {
+                    HStack {
+                        Text("Orders")
+                            .font(.title3)
+                        Spacer()
+                        Button {
+                            accountVM.addOrder(coin: "bitcoin", amount: 0.01, price: 50000)
+                        } label: {
+                            Image(systemName: "plus")
+                        }
+                    }
+                    .foregroundColor(Color.theme.accent)
+                    .padding()
+                    Divider()
+                    ForEach(accountVM.currentOrders) { order in
+                        HStack {
+                            Text(order.name ?? "")
+                                .foregroundColor(Color.theme.accent)
+                            Spacer()
+                            Text(order.amount.asNumberString())
+                            Spacer()
+                            Text(order.dateCreated?.asOrderDateString() ?? "nil")
+                        }
+                        .padding(.horizontal)
+                        
+                        Divider()
+                    }
                 }
             }
-            .sheet(isPresented: $showAllAccountsView, content: {
-                AllAcountsView(showAllAccountsView: $showAllAccountsView)
-                    .environmentObject(accountVM)
-            })
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showAllAccountsView.toggle()
-                    } label: {
-                        Image(systemName: "line.3.horizontal")
-                            .foregroundColor(.theme.accent)
+                    HStack {
+                        Button {
+                            showAllAccountsView.toggle()
+                        } label: {
+                            Image(systemName: "line.3.horizontal")
+                                .foregroundColor(.theme.accent)
+                        }
+                        .sheet(isPresented: $showAllAccountsView, content: {
+                            AllAcountsView(showAllAccountsView: $showAllAccountsView)
+                                .environmentObject(accountVM)
+                        })
                     }
                 }
             }
@@ -71,6 +99,11 @@ extension AccountTabView {
             Text("Joined \(accountVM.currentAccount.dateCreated?.asMonthYearString() ?? "Unknown" )")
                 .foregroundColor(.theme.secondaryText)
                 .font(.body)
+            
+            Text("Cash " + accountVM.currentAccount.cash.asCurrencyWith2Decimals())
+                .foregroundColor(.theme.secondaryText)
+                .font(.body)
+
         }
         .padding(.bottom)
     }

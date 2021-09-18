@@ -10,6 +10,7 @@ import Combine
 
 class AccountTabViewModel: ObservableObject {
     @Published var allAccounts: [AccountEntity] = []
+    @Published var currentOrders: [OrderEntity] = []
     
     var currentAccount: AccountEntity { accountDataService.currentAccount }
     
@@ -26,11 +27,21 @@ class AccountTabViewModel: ObservableObject {
                 self?.allAccounts = returnedAccounts
             }
             .store(in: &cancellables)
+        
+        accountDataService.$currentOrders
+            .sink { [weak self] returnedOrders in
+                self?.currentOrders = returnedOrders
+            }
+            .store(in: &cancellables)
     }
     
     func add(account name: String = "Guest Account") {
         let uniqueName = name.uniqued(withRespectTo: allAccounts.map({ $0.name ?? "Guest Account"}))
         accountDataService.add(account: uniqueName)
+    }
+    
+    func addOrder(coin coinID: String, amount: Double, price: Double) {
+        accountDataService.addCoinOrder(coinID: coinID, amount: amount, price: price)
     }
     
     func delete(at offset: IndexSet) { offset.map({ allAccounts[$0] }).forEach { account in accountDataService.deleteEntity(account: account) } }

@@ -22,6 +22,7 @@ struct AllAcountsView: View {
                         Spacer()
                         Text((account.selected ) ? "current" : "")
                     }
+                    .foregroundColor(.theme.accent)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         accountVM.select(account: account)
@@ -38,15 +39,16 @@ struct AllAcountsView: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack {
-                        Button {
-                            accountVM.clear()
-                        } label: {
-                            Image(systemName: "trash")
-                        }
+//                        Button {
+//                            accountVM.clear()
+//                        } label: {
+//                            Image(systemName: "trash")
+//                        }
                         Button {
                             accountVM.add()
                         } label: {
                             Image(systemName: "plus")
+                                .foregroundColor(.theme.accent)
                         }
                     }
                 }
@@ -58,6 +60,10 @@ struct AllAcountsView: View {
 struct AllAcountsView_Previews: PreviewProvider {
     static var previews: some View {
         AllAcountsView(showAllAccountsView: .constant(true))
+            .preferredColorScheme(.light)
+            .environmentObject(dev.getAccountVM())
+        AllAcountsView(showAllAccountsView: .constant(true))
+            .preferredColorScheme(.dark)
             .environmentObject(dev.getAccountVM())
     }
 }

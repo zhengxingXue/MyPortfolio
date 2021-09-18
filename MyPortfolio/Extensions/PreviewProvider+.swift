@@ -943,6 +943,7 @@ class DeveloperPreview {
     func getAccountVM() -> AccountTabViewModel {
         let accountVM = AccountTabViewModel()
         _ = accountVM.currentAccount
+        accountVM.addOrder(coin: "bitcoin", amount: 0.01, price: 50000)
         return accountVM
     }
     
