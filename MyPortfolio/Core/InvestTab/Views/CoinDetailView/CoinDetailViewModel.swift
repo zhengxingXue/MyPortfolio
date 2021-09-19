@@ -12,7 +12,7 @@ class CoinDetailViewModel: ObservableObject {
     @Published var allNews: [NewsModel] = []
     @Published var prices: [[Double]] = []
     
-    @Published var coin: CoinModel
+    var coin: CoinModel
     
     private let searchKeywords: String
     
@@ -36,6 +36,7 @@ class CoinDetailViewModel: ObservableObject {
         coinMarketChartService.$marketCharts
             .sink { [weak self] returnedmarketCharts in
                 self?.prices = returnedmarketCharts?.prices ?? []
+                
                 print("\(String(describing: self?.prices.last))")
             }
             .store(in: &cancellables)
