@@ -45,6 +45,9 @@ struct CoinDetailView: View {
         .background(Color.theme.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(vm.coin.name)
+        .onDisappear {
+            vm.updateCoinEntityPrice()
+        }
     }
     
     private let columnsHorizontalSpacing: CGFloat = 5

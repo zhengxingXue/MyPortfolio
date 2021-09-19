@@ -51,6 +51,11 @@ class InvestTabViewModel: ObservableObject {
         (coinEntities.compactMap { coinEntity in allCoins.first(where: { $0.id == coinEntity.coinID }) }, coinEntities, allCoins)
     }
     
+    func getCoinEntity(of coin: CoinModel) -> CoinEntity? {
+        guard let coinEntity = savedCoinEntities.first(where: {$0.coinID == coin.id}) else { return nil}
+        return coinEntity
+    }
+    
     func add(coin: CoinModel) { accountDataService.add(coin: coin) }
     
     func addOrder(coin coinID: String, amount: Double, price: Double) {

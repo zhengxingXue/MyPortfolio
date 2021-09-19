@@ -9,9 +9,15 @@ import SwiftUI
 
 struct SimpleLineChartView: View {
     var data: [Double]
+    private let dataCount: Int
     
     var lineWidth: CGFloat = 1
     var padding = CGSize(width: 0, height: 20)
+    
+    init(prices: [[Double]]) {
+        self.data = prices.map{ $0[1] }
+        self.dataCount = max(24 * 60 / 5, self.data.count - 1)
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -30,7 +36,7 @@ struct SimpleLineChartView: View {
     private func getStep(in geometry: GeometryProxy) -> CGPoint {
         var step = CGPoint(x: 0, y: 0)
         guard data.count > 1, let min = data.min(), let max = data.max() else { return step }
-        step.x = (geometry.size.width - padding.width) / CGFloat(data.count - 1)
+        step.x = (geometry.size.width - padding.width) / CGFloat(dataCount)
         step.y = (geometry.size.height - padding.height) / CGFloat(max - min)
         return step
     }
@@ -38,9 +44,9 @@ struct SimpleLineChartView: View {
     private var lineColor: Color { (data.last ?? 0) - (data.first ?? 0) > 0 ? Color.theme.green : Color.theme.red }
 }
 
-struct SimpleLineChartView_Previews: PreviewProvider {
-    static var previews: some View {
-        SimpleLineChartView(data: dev.coin.sparklineIn7D?.price ?? [])
-            .frame(height: 200)
-    }
-}
+//struct SimpleLineChartView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SimpleLineChartView(data: dev.coin.sparklineIn7D?.price ?? [])
+//            .frame(height: 200)
+//    }
+//}

@@ -18,8 +18,8 @@ struct CryptoListDetailView: View {
     var body: some View {
         List {
             loadingView
-            ForEach(marketVM.savedCoins) {coin in
-                CoinRowView(coin: coin, isEditing: $isEditing)
+            ForEach(marketVM.savedCoins) { coin in
+                CoinRowView(coin: coin, coinEntity: marketVM.getCoinEntity(of: coin)!, isEditing: $isEditing)
             }
             .onMove(perform: marketVM.move)
             .onDelete(perform: marketVM.delete(at:))

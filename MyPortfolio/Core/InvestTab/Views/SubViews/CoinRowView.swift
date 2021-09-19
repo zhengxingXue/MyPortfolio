@@ -10,6 +10,7 @@ import SwiftUI
 struct CoinRowView: View {
     
     var coin: CoinModel
+    var coinEntity: CoinEntity
     @Binding var isEditing: Bool
     
     var body: some View {
@@ -18,7 +19,7 @@ struct CoinRowView: View {
                 .frame(width: UIScreen.main.bounds.width / divider, alignment: .leading)
                 .padding(.vertical)
             if !isEditing {
-                SimpleLineChartView(data: getData())
+                SimpleLineChartView(prices: coinEntity.priceChart1D ?? [])
                     .frame(width: UIScreen.main.bounds.width / divider)
                 Spacer()
                 rightColumn
@@ -35,23 +36,23 @@ struct CoinRowView: View {
     }
 }
 
-struct CoinRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        List{
-            CoinRowView(coin: dev.coin, isEditing: .constant(false))
-            CoinRowView(coin: dev.coin, isEditing: .constant(false))
-        }
-        .listStyle(.plain)
-        .preferredColorScheme(.light)
-        
-        List{
-            CoinRowView(coin: dev.coin, isEditing: .constant(false))
-            CoinRowView(coin: dev.coin, isEditing: .constant(false))
-        }
-        .listStyle(.plain)
-        .preferredColorScheme(.dark)
-    }
-}
+//struct CoinRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        List{
+//            CoinRowView(coin: dev.coin, isEditing: .constant(false))
+//            CoinRowView(coin: dev.coin, isEditing: .constant(false))
+//        }
+//        .listStyle(.plain)
+//        .preferredColorScheme(.light)
+//
+//        List{
+//            CoinRowView(coin: dev.coin, isEditing: .constant(false))
+//            CoinRowView(coin: dev.coin, isEditing: .constant(false))
+//        }
+//        .listStyle(.plain)
+//        .preferredColorScheme(.dark)
+//    }
+//}
 
 extension CoinRowView {
     private var leftColumn: some View {

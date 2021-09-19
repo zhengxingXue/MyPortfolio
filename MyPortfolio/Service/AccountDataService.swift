@@ -182,6 +182,12 @@ extension AccountDataService {
         addEntity(coin: coin.id)
     }
     
+    func add(prices: [[Double]], to coin: CoinModel) {
+        guard let entity = currentCoins.first(where: { $0.coinID == coin.id }) else { return }
+        entity.priceChart1D = prices
+        applyChanges()
+    }
+    
     func delete(coin: CoinModel) {
         guard let entity = currentCoins.first(where: { $0.coinID == coin.id }) else { return }
         deleteEntity(coin: entity, from: currentAccount)
@@ -198,6 +204,7 @@ extension AccountDataService {
         } else {
             let entity = CoinEntity(context: container.viewContext)
             entity.coinID = coinID
+            entity.priceChart1D = []
             currentAccount.addToCoins(entity)
         }
         currentAccount.coinIDs?.append(coinID)
