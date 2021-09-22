@@ -177,7 +177,7 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		3824175526E18486002BCA6E /* Service */ = {
+		3824175526E18486002BCA6E /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				3824178E26E1D584002BCA6E /* ImageService.swift */,
@@ -186,7 +186,7 @@
 				3824178326E1D2B6002BCA6E /* NewsDataService.swift */,
 				3808477E26F23254005ABF4F /* AccountDataService.swift */,
 			);
-			path = Service;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		3824176326E187D6002BCA6E /* SubViews */ = {
@@ -268,7 +268,7 @@
 				38B20A6A26E13C280028B819 /* MyPortfolioView.swift */,
 				3824175426E1847D002BCA6E /* Utils */,
 				38B20A7626E147A00028B819 /* Extensions */,
-				3824175526E18486002BCA6E /* Service */,
+				3824175526E18486002BCA6E /* Services */,
 				3824175326E18477002BCA6E /* Models */,
 				38B20A7926E14BE30028B819 /* Core */,
 				38B20A6C26E13C2B0028B819 /* Assets.xcassets */,
