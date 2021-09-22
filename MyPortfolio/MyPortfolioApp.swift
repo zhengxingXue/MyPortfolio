@@ -15,11 +15,6 @@ struct MyPortfolioApp: App {
     @StateObject private var accountVM = AccountTabViewModel()
     
     init() {
-        UITabBar.appearance().barStyle = .black
-        UITabBar.appearance().barTintColor = UIColor(Color.theme.background)
-        UITabBar.appearance().layer.borderColor = UIColor.clear.cgColor
-        UITabBar.appearance().clipsToBounds = true
-        
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor : UIColor(Color.theme.accent), .font: UIFont.preferredFont(forTextStyle: .largeTitle)]
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor : UIColor(Color.theme.accent), .font: UIFont.preferredFont(forTextStyle: .body)]
         UINavigationBar.appearance().barTintColor = UIColor(Color.theme.background)

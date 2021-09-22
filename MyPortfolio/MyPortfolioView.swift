@@ -13,7 +13,7 @@ struct MyPortfolioView: View {
     @EnvironmentObject private var browseVM: BrowseTabViewModel
     @EnvironmentObject private var accountVM: AccountTabViewModel
     
-    @State var selectedTab = 2
+    @State var selectedTab = 0
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -38,7 +38,11 @@ struct MyPortfolioView: View {
                 }
                 .tag(2)
         }
-        .accentColor(.theme.accent)
+        .tabViewStyle(
+            backgroundColor: .white,
+            itemColor: .gray,
+            selectedItemColor: .black
+        )
     }
 }
 

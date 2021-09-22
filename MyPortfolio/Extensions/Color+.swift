@@ -9,6 +9,10 @@ import SwiftUI
 
 extension Color {
     static let theme = ColorTheme()
+    
+    var uiColor: UIColor? {
+        return UIColor(self)
+    }
 }
 
 struct ColorTheme {
