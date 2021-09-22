@@ -28,6 +28,7 @@ class CoinRowViewModel: ObservableObject {
         self.coinEntity = coinEntity
         self.searchKeywords = coin.name
         addSubscribers()
+        print("init \(coin.name) CoinRowViewModel")
     }
     
     func addSubscribers() {

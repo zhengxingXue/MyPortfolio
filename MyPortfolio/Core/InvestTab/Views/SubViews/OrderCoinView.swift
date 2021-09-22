@@ -39,7 +39,7 @@ struct OrderCoinView: View {
                         HStack {
                             Text("Current Value")
                             Spacer()
-                            Text(getCurrentValue().asCurrencyWith2Decimals())
+                            Text(getCurrentValue().asCurrency())
                         }
                     }
                     .animation(.none, value: selectedCoin)

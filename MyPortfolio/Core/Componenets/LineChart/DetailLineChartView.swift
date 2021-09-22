@@ -123,9 +123,9 @@ extension DetailLineChartView {
     private var currentPrice: some View {
         Group {
             if showIndicator {
-                Text(dragPositionPrice.asCurrencyWith2Decimals())
+                Text(dragPositionPrice.asCurrency())
             } else {
-                Text((data.last ?? coin.currentPrice).asCurrencyWith2Decimals())
+                Text((data.last ?? coin.currentPrice).asCurrency())
             }
         }
         .font(.largeTitle)
@@ -136,7 +136,7 @@ extension DetailLineChartView {
             Image(systemName: "triangle.fill")
                 .font(.caption)
                 .rotationEffect((subTitlePriceChange < 0 ? .degrees(180) : .degrees(0)), anchor: .center)
-            Text(subTitlePriceChange.asCurrencyWith2Decimals())
+            Text(subTitlePriceChange.asCurrency())
             Text("(\(subTitlePriceChangePercent.asPercentString()))")
             if !showIndicator {
                 Text("Today")

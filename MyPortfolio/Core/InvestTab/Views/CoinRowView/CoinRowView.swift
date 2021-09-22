@@ -70,7 +70,7 @@ extension CoinRowView {
     }
     
     private var rightColumn: some View {
-        Text("\((vm.todayPrices.last?[1] ?? -1).asCurrencyWith2Decimals())")
+        Text("\((vm.todayPrices.last?[1] ?? -1).asCurrency())")
             .font(.callout)
             .foregroundColor(.theme.background)
             .frame(minWidth: 80)

@@ -72,6 +72,18 @@ extension Double {
     }
     
     /**
+     Converts a Double into a Currency as a String with 2-6 decimal places
+     */
+    func asCurrency() -> String {
+        let number = NSNumber(value: self)
+        if self < 10 {
+            return currencyFormatter6.string(from: number) ?? "$0.00"
+        } else {
+            return currencyFormatter2.string(from: number) ?? "$0.00"
+        }
+    }
+    
+    /**
      Converts a Double into a String representation
      ```
      Convert 1.2346 to "1.23"
