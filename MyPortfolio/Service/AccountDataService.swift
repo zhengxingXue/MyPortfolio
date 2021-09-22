@@ -58,7 +58,7 @@ class AccountDataService {
         let request = NSFetchRequest<AccountEntity>(entityName: accountEntityName)
         do {
             accounts = try container.viewContext.fetch(request)
-            print("\naccounts: \n \(accounts)\n")
+//            print("\naccounts: \n \(accounts)\n")
         } catch let error {
             print("Error fetching Account Entities. \(error)")
         }

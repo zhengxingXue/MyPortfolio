@@ -39,7 +39,7 @@ class CoinDetailViewModel: ObservableObject {
             .sink { [weak self] returnedmarketCharts in
                 self?.prices = returnedmarketCharts?.prices ?? []
                 
-                print("\(String(describing: self?.prices.last))")
+//                print("\(String(describing: self?.prices.last))")
             }
             .store(in: &cancellables)
     }

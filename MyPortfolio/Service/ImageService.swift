@@ -36,10 +36,10 @@ class ImageService {
     private func getImage() {
         if let savedImage = fileManager.getImage(imageName: imageName, folderName: folderName) {
             image = savedImage
-            print("Retrieved image \(imageName) from File Manager in folder \(folderName)")
+//            print("Retrieved image \(imageName) from File Manager in folder \(folderName)")
         } else {
             downloadImage()
-            print("Downloading image \(imageName) now")
+//            print("Downloading image \(imageName) now")
         }
     }
     
