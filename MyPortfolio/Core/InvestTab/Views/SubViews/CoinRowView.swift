@@ -30,10 +30,6 @@ struct CoinRowView: View {
     }
     
     private let divider: CGFloat = 3.8
-    private func getData() -> [Double] {
-        let sparkline7D = coin.sparklineIn7D?.price ?? []
-        return sparkline7D.suffix(Int(1 * sparkline7D.count / 7))
-    }
 }
 
 //struct CoinRowView_Previews: PreviewProvider {
