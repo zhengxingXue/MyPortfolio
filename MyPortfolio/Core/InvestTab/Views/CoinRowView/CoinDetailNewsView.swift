@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CoinDetailNewsView: View {
     
-    @EnvironmentObject private var vm: CoinDetailViewModel
+    @EnvironmentObject private var vm: CoinRowViewModel
     
     var body: some View {
         List {
@@ -23,11 +23,11 @@ struct CoinDetailNewsView: View {
     }
 }
 
-struct CoinDetailNewsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            CoinDetailNewsView()
-        }
-        .environmentObject(dev.coinDetailVM)
-    }
-}
+//struct CoinDetailNewsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            CoinDetailNewsView()
+//        }
+//        .environmentObject(dev.coinDetailVM)
+//    }
+//}

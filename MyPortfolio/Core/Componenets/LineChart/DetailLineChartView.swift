@@ -22,18 +22,8 @@ struct DetailLineChartView: View {
     @State private var animateBlinkingCircle: Bool = false
     
     init(coin: CoinModel, prices: [[Double]]) {
-        var startOfDay: Int64
-        if let last = prices.last {
-            startOfDay = Date(milliseconds: Int64(last[0])).startOfDay.millisecondsSince1970
-        } else {
-            startOfDay = Date().startOfDay.millisecondsSince1970
-        }
-        // map only today's prices
-        self.prices = prices.compactMap({ dataPoint in
-            guard dataPoint.count > 1, Int64(dataPoint[0]) > startOfDay else { return nil }
-            return dataPoint
-        })
-        self.data = self.prices.map{ $0[1] }
+        self.prices = prices
+        self.data = prices.map{ $0[1] }
         self.dataCount = max(24 * 60 / 5, self.data.count - 1)
         self.coin = coin
     }

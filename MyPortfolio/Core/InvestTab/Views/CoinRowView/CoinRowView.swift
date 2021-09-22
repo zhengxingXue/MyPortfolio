@@ -9,8 +9,14 @@ import SwiftUI
 
 struct CoinRowView: View {
     
-    var coin: CoinModel
-    var coinEntity: CoinEntity
+    @StateObject private var vm: CoinRowViewModel
+    
+    init(coin: CoinModel, coinEntity: CoinEntity, isEditing: Binding<Bool>) {
+        _vm = StateObject(wrappedValue: CoinRowViewModel(coin: coin, coinEntity: coinEntity))
+        _isEditing = isEditing
+        print("Init \(coin.name) CoinRowView")
+    }
+    
     @Binding var isEditing: Bool
     
     var body: some View {
@@ -19,14 +25,14 @@ struct CoinRowView: View {
                 .frame(width: UIScreen.main.bounds.width / divider, alignment: .leading)
                 .padding(.vertical)
             if !isEditing {
-                SimpleLineChartView(prices: coinEntity.priceChart1D ?? [])
+                SimpleLineChartView(prices: vm.todayPrices)
                     .frame(width: UIScreen.main.bounds.width / divider)
                 Spacer()
                 rightColumn
                     .padding(.vertical)
             }
         }
-        .background(NavigationLink("", destination: CoinDetailView(coin: coin)).opacity(0))
+        .background(NavigationLink("", destination: CoinDetailView().environmentObject(vm)).opacity(0))
     }
     
     private let divider: CGFloat = 3.8
@@ -53,10 +59,10 @@ struct CoinRowView: View {
 extension CoinRowView {
     private var leftColumn: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(coin.symbol.uppercased())
+            Text(vm.coin.symbol.uppercased())
                 .font(.body)
                 .foregroundColor(.theme.accent)
-            Text(coin.name)
+            Text(vm.coin.name)
                 .lineLimit(1)
                 .font(.caption)
                 .foregroundColor(.theme.secondaryText)
@@ -64,7 +70,7 @@ extension CoinRowView {
     }
     
     private var rightColumn: some View {
-        Text("\(coin.currentPrice.asCurrencyWith6Decimals())")
+        Text("\((vm.todayPrices.last?[1] ?? -1).asCurrencyWith2Decimals())")
             .font(.callout)
             .foregroundColor(.theme.background)
             .frame(minWidth: 80)
@@ -72,7 +78,7 @@ extension CoinRowView {
             .padding(.horizontal, 8)
             .background(
                 RoundedRectangle(cornerRadius: 7)
-                    .foregroundColor((coin.priceChangePercentage24H ?? 0) >= 0 ? .green : .red)
+                    .foregroundColor((vm.coin.priceChangePercentage24H ?? 0) >= 0 ? .green : .red)
             )
     }
     

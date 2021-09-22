@@ -21,7 +21,7 @@ class DeveloperPreview {
     
     var marketVM = InvestTabViewModel()
     
-    lazy var coinDetailVM = CoinDetailViewModel(coin: coin)
+//    lazy var coinDetailVM = CoinDetailViewModel(coin: coin)
     
     let browseVM = BrowseTabViewModel()
     

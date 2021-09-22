@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19197" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AccountEntity" representedClassName="AccountEntity" syncable="YES" codeGenerationType="class">
         <attribute name="cash" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="coinIDs" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
@@ -16,7 +16,6 @@
     </entity>
     <entity name="CoinEntity" representedClassName="CoinEntity" syncable="YES" codeGenerationType="class">
         <attribute name="coinID" optional="YES" attributeType="String"/>
-        <attribute name="priceChart1D" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[[Double]]"/>
         <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="coins" inverseEntity="AccountEntity"/>
     </entity>
     <entity name="OrderEntity" representedClassName="OrderEntity" syncable="YES" codeGenerationType="class">
@@ -28,7 +27,7 @@
     </entity>
     <elements>
         <element name="AccountEntity" positionX="769.2097778320312" positionY="-2.0887451171875" width="128" height="148"/>
-        <element name="CoinEntity" positionX="939.892822265625" positionY="107.6928100585937" width="128" height="88"/>
+        <element name="CoinEntity" positionX="939.892822265625" positionY="107.6928100585937" width="128" height="59"/>
         <element name="OrderEntity" positionX="489.537841796875" positionY="27.73519897460938" width="128" height="118"/>
     </elements>
 </model>

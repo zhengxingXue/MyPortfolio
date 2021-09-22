@@ -9,19 +9,14 @@ import SwiftUI
 
 struct CoinDetailView: View {
     
-    @StateObject private var vm: CoinDetailViewModel
+    @EnvironmentObject private var vm: CoinRowViewModel
     
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
-    
-    init(coin: CoinModel) {
-        _vm = StateObject(wrappedValue: CoinDetailViewModel(coin: coin))
-        print("Init \(coin.name) CoinDetailView")
-    }
     
     var body: some View {
         List {
             VStack(alignment: .leading) {
-                DetailLineChartView(coin: vm.coin, prices: vm.prices)
+                DetailLineChartView(coin: vm.coin, prices: vm.todayPrices)
                     .frame(height: 500)
             }
             .listRowInsets(EdgeInsets())
@@ -45,21 +40,18 @@ struct CoinDetailView: View {
         .background(Color.theme.background.ignoresSafeArea())
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(vm.coin.name)
-        .onDisappear {
-            vm.updateCoinEntityPrice()
-        }
     }
     
     private let columnsHorizontalSpacing: CGFloat = 5
 }
 
-struct CoinDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            CoinDetailView(coin: dev.coin)
-        }
-    }
-}
+//struct CoinDetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView {
+//            CoinDetailView(coin: dev.coin)
+//        }
+//    }
+//}
 
 extension CoinDetailView {
     private var statsVGrid: some View {
