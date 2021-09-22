@@ -19,7 +19,7 @@ class DeveloperPreview {
     
     private init() {}
     
-    lazy var marketVM = InvestTabViewModel(coins: [coin])
+    var marketVM = InvestTabViewModel()
     
     lazy var coinDetailVM = CoinDetailViewModel(coin: coin)
     

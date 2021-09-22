@@ -28,11 +28,6 @@ class InvestTabViewModel: ObservableObject {
         addSubscribers()
     }
     
-    convenience init(coins: [CoinModel]) {
-        self.init()
-        allCoins = coins
-    }
-    
     private func addSubscribers() {
         coinDataService.$allCoins
             .combineLatest(accountDataService.$currentCoins)
