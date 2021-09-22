@@ -194,7 +194,6 @@
 		3824176326E187D6002BCA6E /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
-				3824176426E187E4002BCA6E /* CoinRowView.swift */,
 				3824176626E19A0B002BCA6E /* CryptoListDetailView.swift */,
 				3824176F26E1A5DC002BCA6E /* AddCoinView.swift */,
 				3822D59026F6882700528839 /* OrderCoinView.swift */,
@@ -327,7 +326,7 @@
 			children = (
 				38B20A7D26E14C110028B819 /* InvestTabView.swift */,
 				3824176326E187D6002BCA6E /* SubViews */,
-				38D5666726E2827E005D71DA /* CoinDetailView */,
+				38D5666726E2827E005D71DA /* CoinRowView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -340,14 +339,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		38D5666726E2827E005D71DA /* CoinDetailView */ = {
+		38D5666726E2827E005D71DA /* CoinRowView */ = {
 			isa = PBXGroup;
 			children = (
+				3824176426E187E4002BCA6E /* CoinRowView.swift */,
 				38D5666826E282C8005D71DA /* CoinDetailViewModel.swift */,
 				38D5666326E27336005D71DA /* CoinDetailView.swift */,
 				38F6634C26E437E500631E88 /* CoinDetailNewsView.swift */,
 			);
-			path = CoinDetailView;
+			path = CoinRowView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
