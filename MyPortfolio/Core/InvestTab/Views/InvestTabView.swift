@@ -16,10 +16,13 @@ struct InvestTabView: View {
     var body: some View {
         NavigationView {
             List {
+                
                 notesScrollView
+                
+                portfolioView
+                
                 ListTitleRow(title: "List")
                 cryptoListTitle
-
                 ForEach(marketVM.savedCoins) { coin in
                     CoinRowView(coin: coin, coinEntity: marketVM.getCoinEntity(of: coin)!, isEditing: .constant(false))
                 }
@@ -74,6 +77,38 @@ extension InvestTabView {
         .listRowBackground(Color.gray.opacity(0.1))
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets())
+    }
+    
+    private var portfolioView: some View {
+        Group {
+            if marketVM.portfolios.count > 0 {
+                VStack(alignment: .leading) {
+                    Text("Portfolio")
+                        .font(.title)
+                        .foregroundColor(.theme.accent)
+                        .padding(.vertical)
+                    
+                    HStack {
+                        Text("Coin")
+                        Spacer()
+                        Text("Holdings")
+                        Text("Total Profit")
+                            .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+                    }
+                    .font(.caption)
+                    .foregroundColor(.theme.secondaryText)
+                }
+                
+                ForEach(marketVM.portfolios) { portfolio in
+                    PortfolioRowView(portfolio: portfolio)
+                }
+                
+                Rectangle()
+                    .foregroundColor(Color.gray.opacity(0.1))
+                    .frame(height: 8)
+                    .listRowInsets(EdgeInsets())
+            }
+        }
     }
     
     private var cryptoListTitle: some View {

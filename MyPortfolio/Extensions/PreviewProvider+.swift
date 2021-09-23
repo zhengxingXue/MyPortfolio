@@ -19,7 +19,11 @@ class DeveloperPreview {
     
     private init() {}
     
-    var marketVM = InvestTabViewModel()
+    var marketVM: InvestTabViewModel {
+        let vm = InvestTabViewModel()
+        vm.add(coin: coin)
+        return vm
+    }
     
 //    lazy var coinDetailVM = CoinDetailViewModel(coin: coin)
     
@@ -945,6 +949,15 @@ class DeveloperPreview {
         _ = accountVM.currentAccount
         accountVM.addOrder(coin: "bitcoin", amount: 0.01, price: 50000)
         return accountVM
+    }
+    
+    var portfolioEntity: PortfolioEntity {
+        let portolioEntity = PortfolioEntity()
+        portolioEntity.name = "bitcoin"
+        portolioEntity.amount = 1
+        portolioEntity.initValue = 50000
+        portolioEntity.currentPrice = 50000
+        return portolioEntity
     }
     
 }

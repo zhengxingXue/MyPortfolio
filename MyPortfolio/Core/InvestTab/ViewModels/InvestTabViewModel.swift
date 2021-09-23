@@ -14,6 +14,7 @@ class InvestTabViewModel: ObservableObject {
     @Published var allCoins: [CoinModel] = []
     @Published var savedCoins: [CoinModel] = []
     @Published var savedCoinEntities: [CoinEntity] = []
+    @Published var portfolios: [PortfolioEntity] = []
     
     @Published var isLoading: Bool = false
     
@@ -38,6 +39,12 @@ class InvestTabViewModel: ObservableObject {
                 self.savedCoins = returned.savedCoins
                 self.savedCoinEntities = returned.savedEntities
                 self.isLoading = self.savedCoinEntities.count > self.savedCoins.count
+            }
+            .store(in: &cancellables)
+        
+        accountDataService.$currentPortfolios
+            .sink { [weak self] returnedPortfolios in
+                self?.portfolios = returnedPortfolios
             }
             .store(in: &cancellables)
     }

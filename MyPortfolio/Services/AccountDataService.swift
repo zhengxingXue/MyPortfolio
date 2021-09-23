@@ -21,6 +21,7 @@ class AccountDataService {
     @Published var accounts: [AccountEntity] = []
     @Published var currentCoins: [CoinEntity] = []
     @Published var currentOrders: [OrderEntity] = []
+    @Published var currentPortfolios: [PortfolioEntity] = []
     private var allCoins: [CoinEntity] = []
     
     var currentAccount: AccountEntity {
@@ -52,6 +53,7 @@ class AccountDataService {
         getCurrentCoins()
         getAllCoins()
         getCurrentOrders()
+        getCurrentPortfolios()
     }
 
     private func getAccount() {
@@ -90,6 +92,11 @@ class AccountDataService {
         }
     }
     
+    private func getCurrentPortfolios() {
+        currentPortfolios = currentAccount.portfolios?.allObjects as? [PortfolioEntity] ?? []
+//        print("\nCurrent Portfolios: \n\(currentPortfolios)\n")
+    }
+    
     private func save() {
         do {
             try container.viewContext.save()
@@ -115,9 +122,10 @@ class AccountDataService {
 }
 
 extension AccountDataService {
-    // MARK: OrderEntity Functions
+    // MARK: OrderEntity PortfolioEntity Functions
     func addCoinOrder(coinID: String, amount: Double, price: Double) {
         addEntity(order: coinID, amount: amount, price: price)
+        updatePortolio(name: coinID, amount: amount, price: price)
     }
     
     private func addEntity(order name: String, amount: Double, price: Double) {
@@ -128,6 +136,32 @@ extension AccountDataService {
         entity.price = price
         entity.account = currentAccount
         currentAccount.cash -= amount * price
+        applyChanges()
+    }
+    
+    private func updatePortolio(name: String, amount: Double, price: Double) {
+        if let oldEntity = currentPortfolios.first(where: { $0.name == name }) {
+            // TODO: how to publish entity attribute change
+            // Workaround, build a new entity
+            let newAmount = oldEntity.amount + amount
+            if newAmount > 0 {
+                let portolioEntity = PortfolioEntity(context: container.viewContext)
+                portolioEntity.name = name
+                portolioEntity.amount = newAmount
+                portolioEntity.initValue = oldEntity.initValue + amount * price
+                portolioEntity.currentPrice = price
+                portolioEntity.account = currentAccount
+            }
+            container.viewContext.delete(oldEntity)
+
+        } else {
+            let portolioEntity = PortfolioEntity(context: container.viewContext)
+            portolioEntity.name = name
+            portolioEntity.amount = amount
+            portolioEntity.initValue = amount * price
+            portolioEntity.currentPrice = price
+            portolioEntity.account = currentAccount
+        }
         applyChanges()
     }
 }
@@ -171,6 +205,7 @@ extension AccountDataService {
         entity.coinIDs = []
         entity.coins = []
         entity.orders = []
+        entity.portfolios = []
         return entity
     }
 }
