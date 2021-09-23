@@ -44,6 +44,14 @@ class CoinRowViewModel: ObservableObject {
                 self?.todayPrices = returnedTodayPrices
             }
             .store(in: &cancellables)
+        
+        // Fetch market chart data every 60 s
+        Timer.publish(every: 60, tolerance: 10, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self]_ in
+                self?.coinMarketChartService.getCoinMarketChart()
+            }
+            .store(in: &cancellables)
     }
     
     private func mapTodayPrices(charts: CoinMarketChartModel?) -> [[Double]] {
