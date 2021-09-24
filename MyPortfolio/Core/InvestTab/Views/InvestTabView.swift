@@ -24,7 +24,7 @@ struct InvestTabView: View {
                 ListTitleRow(title: "List")
                 cryptoListTitle
                 ForEach(marketVM.savedCoins) { coin in
-                    CoinRowView(coin: coin, coinEntity: marketVM.getCoinEntity(of: coin)!, isEditing: .constant(false))
+                    CoinRowView(coin: coin, isEditing: .constant(false))
                 }
                 .onDelete(perform: marketVM.delete(at:))
                 

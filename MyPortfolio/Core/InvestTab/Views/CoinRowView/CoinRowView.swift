@@ -11,8 +11,8 @@ struct CoinRowView: View {
     
     @StateObject private var vm: CoinRowViewModel
     
-    init(coin: CoinModel, coinEntity: CoinEntity, isEditing: Binding<Bool>) {
-        _vm = StateObject(wrappedValue: CoinRowViewModel(coin: coin, coinEntity: coinEntity))
+    init(coin: CoinModel, isEditing: Binding<Bool>) {
+        _vm = StateObject(wrappedValue: CoinRowViewModel(coin: coin))
         _isEditing = isEditing
         print("Init \(coin.name) CoinRowView")
     }

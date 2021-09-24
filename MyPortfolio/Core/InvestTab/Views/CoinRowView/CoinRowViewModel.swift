@@ -13,7 +13,6 @@ class CoinRowViewModel: ObservableObject {
     @Published var todayPrices: [[Double]] = []
     
     var coin: CoinModel
-    var coinEntity: CoinEntity
     
     private let searchKeywords: String
     
@@ -23,9 +22,8 @@ class CoinRowViewModel: ObservableObject {
     
     private let accountDataService = AccountDataService.instance
     
-    init(coin: CoinModel, coinEntity: CoinEntity) {
+    init(coin: CoinModel) {
         self.coin = coin
-        self.coinEntity = coinEntity
         self.searchKeywords = coin.name
         addSubscribers()
         print("init \(coin.name) CoinRowViewModel")
