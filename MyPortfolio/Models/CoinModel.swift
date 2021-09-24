@@ -11,7 +11,7 @@ import Foundation
 /*
  
  URL:
-    https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=24h
+    https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h
  
  JSON Response:
  {
@@ -40,12 +40,7 @@ import Foundation
      "atl_change_percentage": 71111.90048,
      "atl_date": "2013-07-06T00:00:00.000Z",
      "roi": null,
-     "last_updated": "2021-08-25T03:02:29.214Z",
-     "sparkline_in_7d": {
-       "price": [
-         44534.454854219905,
-         48306.2768305887
-       ]
+     "last_updated": "2021-08-25T03:02:29.214Z"
      },
      "price_change_percentage_24h_in_currency": -2.0139284142739124
    }
@@ -64,7 +59,6 @@ struct CoinModel: Identifiable, Codable, Hashable {
     let atl, atlChangePercentage: Double?
     let atlDate: String?
     let lastUpdated: String?
-    let sparklineIn7D: SparklineIn7D?
     let priceChangePercentage24HInCurrency: Double?
     
     enum CodingKeys: String, CodingKey {
@@ -90,7 +84,6 @@ struct CoinModel: Identifiable, Codable, Hashable {
         case atlChangePercentage = "atl_change_percentage"
         case atlDate = "atl_date"
         case lastUpdated = "last_updated"
-        case sparklineIn7D = "sparkline_in_7d"
         case priceChangePercentage24HInCurrency = "price_change_percentage_24h_in_currency"
     }
     
@@ -112,8 +105,4 @@ struct CoinModel: Identifiable, Codable, Hashable {
         ]
     }
     
-}
-
-struct SparklineIn7D: Codable {
-    let price: [Double]?
 }
