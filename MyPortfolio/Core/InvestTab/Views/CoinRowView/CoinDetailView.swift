@@ -9,14 +9,14 @@ import SwiftUI
 
 struct CoinDetailView: View {
     
-    @EnvironmentObject private var vm: CoinRowViewModel
+    @EnvironmentObject private var vm: CoinDetailViewModel
     
     private let columns: [GridItem] = Array(repeating: .init(.flexible()), count: 2)
     
     var body: some View {
         List {
             VStack(alignment: .leading) {
-                DetailLineChartView(coin: vm.coin, prices: vm.todayPrices)
+                DetailLineChartView(coin: vm.coin, prices: vm.coin.todayPrices ?? [])
                     .frame(height: 500)
             }
             .listRowInsets(EdgeInsets())

@@ -49,7 +49,7 @@ import Foundation
 struct CoinModel: Identifiable, Codable, Hashable {
     let id, symbol, name: String
     let image: String
-    let currentPrice: Double
+    let price: Double
     let marketCap, marketCapRank, fullyDilutedValuation: Double?
     let totalVolume, high24H, low24H: Double?
     let priceChange24H, priceChangePercentage24H, marketCapChange24H, marketCapChangePercentage24H: Double?
@@ -63,7 +63,7 @@ struct CoinModel: Identifiable, Codable, Hashable {
     
     enum CodingKeys: String, CodingKey {
         case id, symbol, name, image
-        case currentPrice = "current_price"
+        case price = "current_price"
         case marketCap = "market_cap"
         case marketCapRank = "market_cap_rank"
         case fullyDilutedValuation = "fully_diluted_valuation"
@@ -85,6 +85,13 @@ struct CoinModel: Identifiable, Codable, Hashable {
         case atlDate = "atl_date"
         case lastUpdated = "last_updated"
         case priceChangePercentage24HInCurrency = "price_change_percentage_24h_in_currency"
+        case todayPrices = "today_prices"
+    }
+    
+    var todayPrices: [[Double]]?
+    
+    mutating func updateTodayPrices(with prices: [[Double]]?) {
+        self.todayPrices = prices
     }
     
     static func == (lhs: CoinModel, rhs: CoinModel) -> Bool {
@@ -103,6 +110,14 @@ struct CoinModel: Identifiable, Codable, Hashable {
          ("Mkt Cap", marketCap?.formattedWithAbbreviations() ?? "-"),
          ("Rank", "\(Int(marketCapRank ?? -1))"),
         ]
+    }
+    
+    var todayPricesChange: Double {
+        (todayPrices?.last?[1] ?? 0) - (todayPrices?.first?[1] ?? 0)
+    }
+    
+    var currentPrice: Double {
+        todayPrices?.last?[1] ?? -1
     }
     
 }

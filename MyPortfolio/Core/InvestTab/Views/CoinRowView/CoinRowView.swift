@@ -9,12 +9,13 @@ import SwiftUI
 
 struct CoinRowView: View {
     
-    @StateObject private var vm: CoinRowViewModel
+    var coin: CoinModel
     
     init(coin: CoinModel, isEditing: Binding<Bool>) {
-        _vm = StateObject(wrappedValue: CoinRowViewModel(coin: coin))
+        self.coin = coin
         _isEditing = isEditing
         print("Init \(coin.name) CoinRowView")
+        print("\(coin.name) CoinRowView's CoinModel \(coin.todayPrices?.last ?? [])")
     }
     
     @Binding var isEditing: Bool
@@ -25,14 +26,14 @@ struct CoinRowView: View {
                 .frame(width: UIScreen.main.bounds.width / divider, alignment: .leading)
                 .padding(.vertical)
             if !isEditing {
-                SimpleLineChartView(prices: vm.todayPrices)
+                SimpleLineChartView(prices: coin.todayPrices ?? [])
                     .frame(width: UIScreen.main.bounds.width / divider)
                 Spacer()
                 rightColumn
                     .padding(.vertical)
             }
         }
-        .background(NavigationLink("", destination: CoinDetailView().environmentObject(vm)).opacity(0))
+        .background(NavigationLink("", destination: CoinDetailView().environmentObject(CoinDetailViewModel(coin: coin))).opacity(0))
     }
     
     private let divider: CGFloat = 3.8
@@ -59,10 +60,10 @@ struct CoinRowView: View {
 extension CoinRowView {
     private var leftColumn: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text(vm.coin.symbol.uppercased())
+            Text(coin.symbol.uppercased())
                 .font(.body)
                 .foregroundColor(.theme.accent)
-            Text(vm.coin.name)
+            Text(coin.name)
                 .lineLimit(1)
                 .font(.caption)
                 .foregroundColor(.theme.secondaryText)
@@ -70,16 +71,22 @@ extension CoinRowView {
     }
     
     private var rightColumn: some View {
-        Text("\((vm.todayPrices.last?[1] ?? -1).asCurrency())")
-            .font(.callout)
-            .foregroundColor(.theme.background)
-            .frame(minWidth: 80)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 7)
-                    .foregroundColor((vm.coin.priceChangePercentage24H ?? 0) >= 0 ? .green : .red)
-            )
+        Group {
+            if coin.currentPrice != -1 {
+                Text("\(coin.currentPrice.asCurrency())")
+                    .font(.callout)
+                    .foregroundColor(.theme.background)
+                    .frame(minWidth: 80)
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 7)
+                            .foregroundColor((coin.todayPricesChange >= 0) ? .green : .red)
+                    )
+            } else {
+                ProgressView()
+            }
+        }
     }
     
 }

@@ -19,6 +19,7 @@ class InvestTabViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     
     private let coinDataService = CoinDataService()
+    private let coinsMarketChartService = CoinsMarketChartService()
     
     private let accountDataService = AccountDataService.instance
     
@@ -37,6 +38,10 @@ class InvestTabViewModel: ObservableObject {
                 guard let self = self else { return }
                 self.allCoins = returned.allCoins
                 self.savedCoins = returned.savedCoins
+                
+                self.coinsMarketChartService.update(coins: returned.savedCoins)
+                self.coinsMarketChartService.getMarketChart()
+                
                 self.savedCoinEntities = returned.savedEntities
                 self.isLoading = self.savedCoinEntities.count > self.savedCoins.count
             }
@@ -47,6 +52,40 @@ class InvestTabViewModel: ObservableObject {
                 self?.portfolios = returnedPortfolios
             }
             .store(in: &cancellables)
+        
+        coinsMarketChartService.$marketChartDictionary
+            .sink { [weak self] returnedDictionary in
+                for (coinID, coinMarketChart) in returnedDictionary {
+                    if let index = self?.savedCoins.firstIndex(where: {$0.id == coinID}) {
+                        self?.savedCoins[index].updateTodayPrices(with: self?.getTodayPrices(from: coinMarketChart))
+                    }
+                }
+            }
+            .store(in: &cancellables)
+        
+        
+        // Fetch market chart data every 60 s
+//        Timer.publish(every: 60, tolerance: 10, on: .main, in: .common)
+//            .autoconnect()
+//            .sink { [weak self]_ in
+//                self?.coinMarketChartService.getCoinMarketChart()
+//            }
+//            .store(in: &cancellables)
+    }
+    
+    private func getTodayPrices(from charts: CoinMarketChartModel) -> [[Double]] {
+        guard let prices = charts.prices else { return [] }
+        var startOfDay: Int64
+        if let last = prices.last {
+            startOfDay = Date(milliseconds: Int64(last[0])).startOfDay.millisecondsSince1970
+        } else {
+            startOfDay = Date().startOfDay.millisecondsSince1970
+        }
+        // map only today's prices
+        return prices.compactMap({ dataPoint in
+            guard dataPoint.count > 1, Int64(dataPoint[0]) > startOfDay else { return nil }
+            return dataPoint
+        })
     }
     
     private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [CoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [CoinEntity], allCoins: [CoinModel]) {

@@ -34,7 +34,7 @@ class DeveloperPreview {
         symbol: "btc",
         name: "Bitcoin",
         image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
-        currentPrice: 61408,
+        price: 61408,
         marketCap: 1141731099010,
         marketCapRank: 1,
         fullyDilutedValuation: 1285385611303,
