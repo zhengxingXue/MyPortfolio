@@ -56,22 +56,22 @@ class InvestTabViewModel: ObservableObject {
         
         coinsMarketChartService.$marketChartDictionary
             .sink { [weak self] returnedDictionary in
+                guard let self = self else { return }
                 for (coinID, coinMarketChart) in returnedDictionary {
-                    if let index = self?.allCoins.firstIndex(where: {$0.id == coinID}) {
-                        self?.allCoins[index].updateTodayPrices(with: self?.getTodayPrices(from: coinMarketChart))
+                    if let index = self.allCoins.firstIndex(where: {$0.id == coinID}) {
+                        self.allCoins[index].updateTodayPrices(with: self.getTodayPrices(from: coinMarketChart))
                     }
                 }
             }
             .store(in: &cancellables)
         
-        
         // Fetch market chart data every 60 s
-//        Timer.publish(every: 60, tolerance: 10, on: .main, in: .common)
-//            .autoconnect()
-//            .sink { [weak self]_ in
-//                self?.coinMarketChartService.getCoinMarketChart()
-//            }
-//            .store(in: &cancellables)
+        Timer.publish(every: 60, tolerance: 10, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self]_ in
+                self?.coinsMarketChartService.getMarketChart()
+            }
+            .store(in: &cancellables)
     }
     
     private func getTodayPrices(from charts: CoinMarketChartModel) -> [[Double]] {

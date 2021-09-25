@@ -26,7 +26,7 @@ class CoinDetailViewModel: ObservableObject {
         self.searchKeywords = coin.name
         self.newsDataService = NewsDataService(endPoints: .everything, pageSize: 10, keywords: self.searchKeywords)
         addSubscribers()
-        print("init \(coin.name) CoinDetailViewModel")
+//        print("\t\tinit \(coin.name) CoinDetailViewModel")
     }
     
     func addSubscribers() {

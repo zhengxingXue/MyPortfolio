@@ -14,8 +14,8 @@ struct CoinRowView: View {
     init(coin: CoinModel, isEditing: Binding<Bool>) {
         self.coin = coin
         _isEditing = isEditing
-        print("Init \(coin.name) CoinRowView")
-        print("\(coin.name) CoinRowView's CoinModel \(coin.todayPrices?.last ?? [])")
+//        print("\t\tInit \(coin.name) CoinRowView")
+//        print("\(coin.name) CoinRowView's CoinModel \(coin.todayPrices?.last ?? [])")
     }
     
     @Binding var isEditing: Bool

@@ -12,14 +12,10 @@ class CoinsMarketChartService {
     
     @Published var marketChartDictionary: [String: CoinMarketChartModel] = [:]
     
-    private var subscriptionDictionary: [String: AnyCancellable] = [:]
-    
-//    let coinID: String
-//    var days: Double = 1
-//    var interval: String = "5minute"
-    
     private var coinIDs: Set<String> = []
     
+    private var subscriptionDictionary: [String: AnyCancellable] = [:]
+
     func update(coins: [CoinModel]) {
         coinIDs.removeAll()
         for coin in coins {
@@ -28,7 +24,12 @@ class CoinsMarketChartService {
     }
     
     func update(coinIDs: [String]) {
-        self.coinIDs.removeAll()
+        for oldCoinID in self.coinIDs {
+            if !coinIDs.contains(oldCoinID) {
+                self.coinIDs.remove(oldCoinID)
+                self.marketChartDictionary[oldCoinID] = nil
+            }
+        }
         for coinID in coinIDs {
             self.coinIDs.insert(coinID)
         }
@@ -58,7 +59,7 @@ class CoinsMarketChartService {
                 guard let self = self else { return }
                 self.marketChartDictionary[coinID] = returnedmarketCharts
                 self.subscriptionDictionary[coinID]?.cancel()
-                print("\(coinID) chart recieved from coingecko, \(days) days, \(interval) interval")
+                print("\t\(coinID) chart recieved from coingecko, \(days) days, \(interval) interval")
             })
     }
 }

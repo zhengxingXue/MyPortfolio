@@ -92,7 +92,10 @@ struct CoinModel: Identifiable, Codable, Hashable {
     var todayPrices: [[Double]]?
     
     mutating func updateTodayPrices(with prices: [[Double]]?) {
-        self.todayPrices = prices
+        // only update if the prices is new
+        if todayPrices?.last != prices?.last {
+            self.todayPrices = prices
+        }
     }
     
     static func == (lhs: CoinModel, rhs: CoinModel) -> Bool {

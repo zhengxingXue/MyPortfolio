@@ -44,7 +44,7 @@ class NewsDataService {
                 guard let self = self else { return }
                 self.allNews = newsResponse.articles
                 self.newsSubscription?.cancel()
-                print("\(self.allNews.count) news for \(self.searchKeywords ?? "unknown") recieved from NewsAPI")
+//                print("\(self.allNews.count) news for \(self.searchKeywords ?? "unknown") recieved from NewsAPI")
             })
     }
     
