@@ -102,9 +102,22 @@ extension InvestTabView {
                 }
                 
                 ForEach(marketVM.portfolios) { portfolio in
-                    PortfolioRowView(portfolio: portfolio)
+                    HStack {
+                        Text(portfolio.getCoinModel(from: marketVM.allCoins)?.name ?? "-")
+                        Spacer()
+                        VStack(alignment: .trailing) {
+                            Text(portfolio.getHoldingValueString(from: marketVM.allCoins))
+                                .bold()
+                            Text(portfolio.initValue.asCurrencyWith2Decimals())
+                            Text(portfolio.amount.asNumberString())
+                        }
+                        Text(portfolio.getTotalProfitString(from: marketVM.allCoins))
+                            .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+                    }
+                    .foregroundColor(.theme.accent)
                 }
                 
+                // Section separator
                 Rectangle()
                     .foregroundColor(Color.gray.opacity(0.1))
                     .frame(height: 8)

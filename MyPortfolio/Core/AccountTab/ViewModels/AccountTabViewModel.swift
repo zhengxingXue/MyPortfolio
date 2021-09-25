@@ -40,8 +40,8 @@ class AccountTabViewModel: ObservableObject {
         accountDataService.add(account: uniqueName)
     }
     
-    func addOrder(coin coinID: String, amount: Double, price: Double) {
-        accountDataService.addCoinOrder(coinID: coinID, amount: amount, price: price)
+    func addOrder(coin: CoinModel, amount: Double) {
+        accountDataService.addOrder(coin: coin, amount: amount)
     }
     
     func delete(at offset: IndexSet) { offset.map({ allAccounts[$0] }).forEach { account in accountDataService.deleteEntity(account: account) } }

@@ -776,7 +776,7 @@ class DeveloperPreview {
     func getAccountVM() -> AccountTabViewModel {
         let accountVM = AccountTabViewModel()
         _ = accountVM.currentAccount
-        accountVM.addOrder(coin: "bitcoin", amount: 0.01, price: 50000)
+        accountVM.addOrder(coin: coin, amount: 0.01)
         return accountVM
     }
     
@@ -785,7 +785,7 @@ class DeveloperPreview {
         portolioEntity.name = "bitcoin"
         portolioEntity.amount = 1
         portolioEntity.initValue = 50000
-        portolioEntity.currentPrice = 50000
+        portolioEntity.rank = 1
         return portolioEntity
     }
     

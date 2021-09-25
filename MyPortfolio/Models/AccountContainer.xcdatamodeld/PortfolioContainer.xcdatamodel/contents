@@ -29,15 +29,15 @@
     </entity>
     <entity name="PortfolioEntity" representedClassName="PortfolioEntity" syncable="YES" codeGenerationType="class">
         <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="currentPrice" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="initValue" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="rank" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AccountEntity" inverseName="portfolios" inverseEntity="AccountEntity"/>
     </entity>
     <elements>
         <element name="AccountEntity" positionX="787.6304321289062" positionY="200.3970642089844" width="128" height="163"/>
         <element name="CoinEntity" positionX="1051.130615234375" positionY="256.9857177734374" width="128" height="74"/>
         <element name="OrderEntity" positionX="489.537841796875" positionY="27.73519897460938" width="128" height="118"/>
-        <element name="PortfolioEntity" positionX="493.8948974609375" positionY="377.7197875976562" width="128" height="118"/>
+        <element name="PortfolioEntity" positionX="493.8948974609375" positionY="377.7197875976562" width="128" height="104"/>
     </elements>
 </model>

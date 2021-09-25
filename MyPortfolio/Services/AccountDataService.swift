@@ -123,9 +123,9 @@ class AccountDataService {
 
 extension AccountDataService {
     // MARK: OrderEntity PortfolioEntity Functions
-    func addCoinOrder(coinID: String, amount: Double, price: Double) {
-        addEntity(order: coinID, amount: amount, price: price)
-        updatePortolio(name: coinID, amount: amount, price: price)
+    func addOrder(coin: CoinModel, amount: Double) {
+        addEntity(order: coin.id, amount: amount, price: coin.currentPrice)
+        updatePortolio(name: coin.id, rank:coin.marketCapRank, amount: amount, price: coin.currentPrice)
     }
     
     private func addEntity(order name: String, amount: Double, price: Double) {
@@ -139,7 +139,7 @@ extension AccountDataService {
         applyChanges()
     }
     
-    private func updatePortolio(name: String, amount: Double, price: Double) {
+    private func updatePortolio(name: String, rank: Int16, amount: Double, price: Double) {
         if let oldEntity = currentPortfolios.first(where: { $0.name == name }) {
             // TODO: how to publish entity attribute change
             // Workaround, build a new entity
@@ -149,7 +149,7 @@ extension AccountDataService {
                 portolioEntity.name = name
                 portolioEntity.amount = newAmount
                 portolioEntity.initValue = oldEntity.initValue + amount * price
-                portolioEntity.currentPrice = price
+                portolioEntity.rank = rank
                 portolioEntity.account = currentAccount
             }
             container.viewContext.delete(oldEntity)
@@ -159,7 +159,7 @@ extension AccountDataService {
             portolioEntity.name = name
             portolioEntity.amount = amount
             portolioEntity.initValue = amount * price
-            portolioEntity.currentPrice = price
+            portolioEntity.rank = rank
             portolioEntity.account = currentAccount
         }
         applyChanges()

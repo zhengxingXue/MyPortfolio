@@ -56,7 +56,7 @@ struct OrderCoinView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         if let coin = selectedCoin, let quantity = Double(quantityText) {
-                            marketVM.addOrder(coin: coin.id, amount: quantity, price: coin.currentPrice)
+                            marketVM.addOrder(coin: coin, amount: quantity)
                             showOrderCoinView = false
                         }
                     } label: {

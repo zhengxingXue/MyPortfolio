@@ -15,7 +15,7 @@ class InvestTabViewModel: ObservableObject {
     
     @Published var savedCoinIndices: [Int] = []
     
-    @Published var portfolios: [PortfolioEntity] = []
+    @Published var portfolios: [PortfolioModel] = []
     
     @Published var isLoading: Bool = false
     
@@ -50,7 +50,7 @@ class InvestTabViewModel: ObservableObject {
         
         accountDataService.$currentPortfolios
             .sink { [weak self] returnedPortfolios in
-                self?.portfolios = returnedPortfolios
+                self?.portfolios = returnedPortfolios.map({PortfolioModel(portfolioEntity: $0)})
             }
             .store(in: &cancellables)
         
@@ -91,8 +91,8 @@ class InvestTabViewModel: ObservableObject {
     
     func add(coin: CoinModel) { accountDataService.add(coin: coin) }
     
-    func addOrder(coin coinID: String, amount: Double, price: Double) {
-        accountDataService.addCoinOrder(coinID: coinID, amount: amount, price: price)
+    func addOrder(coin: CoinModel, amount: Double) {
+        accountDataService.addOrder(coin: coin, amount: amount)
     }
     
     func delete(coin: CoinModel) { accountDataService.delete(coin: coin) }
