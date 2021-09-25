@@ -27,6 +27,13 @@ class CoinsMarketChartService {
         }
     }
     
+    func update(coinIDs: [String]) {
+        self.coinIDs.removeAll()
+        for coinID in coinIDs {
+            self.coinIDs.insert(coinID)
+        }
+    }
+    
     func getMarketChart() {
         var index = 0
         let coinIDArray = Array(coinIDs)

@@ -12,8 +12,9 @@ import SwiftUI
 class InvestTabViewModel: ObservableObject {
     
     @Published var allCoins: [CoinModel] = []
-    @Published var savedCoins: [CoinModel] = []
-    @Published var savedCoinEntities: [CoinEntity] = []
+    
+    @Published var savedCoinIndices: [Int] = []
+    
     @Published var portfolios: [PortfolioEntity] = []
     
     @Published var isLoading: Bool = false
@@ -32,18 +33,18 @@ class InvestTabViewModel: ObservableObject {
     
     private func addSubscribers() {
         coinDataService.$allCoins
-            .combineLatest(accountDataService.$currentCoins)
-            .map(mapDataToCoins)
-            .sink { [weak self] returned in
+            .sink { [weak self] returnedCoins in
+                self?.allCoins = returnedCoins
+                self?.isLoading = false
+            }
+            .store(in: &cancellables)
+        
+        accountDataService.$currentCoins
+            .sink { [weak self] returnedCoinEntities in
                 guard let self = self else { return }
-                self.allCoins = returned.allCoins
-                self.savedCoins = returned.savedCoins
-                
-                self.coinsMarketChartService.update(coins: returned.savedCoins)
+                self.savedCoinIndices = returnedCoinEntities.map({ Int($0.rank - 1) })
+                self.coinsMarketChartService.update(coinIDs: returnedCoinEntities.map({ $0.coinID ?? "" }))
                 self.coinsMarketChartService.getMarketChart()
-                
-                self.savedCoinEntities = returned.savedEntities
-                self.isLoading = self.savedCoinEntities.count > self.savedCoins.count
             }
             .store(in: &cancellables)
         
@@ -56,8 +57,8 @@ class InvestTabViewModel: ObservableObject {
         coinsMarketChartService.$marketChartDictionary
             .sink { [weak self] returnedDictionary in
                 for (coinID, coinMarketChart) in returnedDictionary {
-                    if let index = self?.savedCoins.firstIndex(where: {$0.id == coinID}) {
-                        self?.savedCoins[index].updateTodayPrices(with: self?.getTodayPrices(from: coinMarketChart))
+                    if let index = self?.allCoins.firstIndex(where: {$0.id == coinID}) {
+                        self?.allCoins[index].updateTodayPrices(with: self?.getTodayPrices(from: coinMarketChart))
                     }
                 }
             }
@@ -88,15 +89,6 @@ class InvestTabViewModel: ObservableObject {
         })
     }
     
-    private func mapDataToCoins(allCoins: [CoinModel], coinEntities: [CoinEntity]) -> (savedCoins: [CoinModel], savedEntities: [CoinEntity], allCoins: [CoinModel]) {
-        (coinEntities.compactMap { coinEntity in allCoins.first(where: { $0.id == coinEntity.coinID }) }, coinEntities, allCoins)
-    }
-    
-    func getCoinEntity(of coin: CoinModel) -> CoinEntity? {
-        guard let coinEntity = savedCoinEntities.first(where: {$0.coinID == coin.id}) else { return nil}
-        return coinEntity
-    }
-    
     func add(coin: CoinModel) { accountDataService.add(coin: coin) }
     
     func addOrder(coin coinID: String, amount: Double, price: Double) {
@@ -105,10 +97,9 @@ class InvestTabViewModel: ObservableObject {
     
     func delete(coin: CoinModel) { accountDataService.delete(coin: coin) }
     
-    func delete(at offset: IndexSet) { offset.map({ savedCoins[$0] }).forEach { coin in accountDataService.delete(coin: coin) } }
+    func delete(at offset: IndexSet) { offset.map({ allCoins[savedCoinIndices[$0]] }).forEach { coin in accountDataService.delete(coin: coin) } }
     
     func move(from source: IndexSet, to destination: Int) {
-//        source.map({ savedCoins[$0] }).forEach { coin in accountDataService.move(coin: coin, to: destination)}
         accountDataService.moveCoin(from: source, to: destination)
     }
     

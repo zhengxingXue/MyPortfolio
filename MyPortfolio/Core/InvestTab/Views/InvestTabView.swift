@@ -23,10 +23,12 @@ struct InvestTabView: View {
                 
                 ListTitleRow(title: "List")
                 cryptoListTitle
-                ForEach(marketVM.savedCoins) { coin in
-                    CoinRowView(coin: coin, isEditing: .constant(false))
+                if !marketVM.isLoading && marketVM.allCoins.count > 0 {
+                    ForEach(marketVM.savedCoinIndices, id: \.self) { coinIndex in
+                        CoinRowView(coin: marketVM.allCoins[coinIndex], isEditing: .constant(false))
+                    }
+                    .onDelete(perform: marketVM.delete(at:))
                 }
-                .onDelete(perform: marketVM.delete(at:))
                 
             }
             .refreshable {
@@ -120,7 +122,7 @@ extension InvestTabView {
                 Text("My Crypto")
                     .font(.body)
                     .foregroundColor(.theme.accent)
-                Text("\(marketVM.savedCoinEntities.count) items")
+                Text("\(marketVM.savedCoinIndices.count) items")
                     .font(.callout)
                     .foregroundColor(.theme.secondaryText)
             }

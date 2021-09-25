@@ -18,11 +18,13 @@ struct CryptoListDetailView: View {
     var body: some View {
         List {
             loadingView
-            ForEach(marketVM.savedCoins) { coin in
-                CoinRowView(coin: coin, isEditing: $isEditing)
+            if !marketVM.isLoading && marketVM.allCoins.count > 0 {
+                ForEach(marketVM.savedCoinIndices, id: \.self) { coinIndex in
+                    CoinRowView(coin: marketVM.allCoins[coinIndex], isEditing: $isEditing)
+                }
+                .onMove(perform: marketVM.move)
+                .onDelete(perform: marketVM.delete(at:))
             }
-            .onMove(perform: marketVM.move)
-            .onDelete(perform: marketVM.delete(at:))
         }
         .refreshable {
             marketVM.refreshAllCoins()

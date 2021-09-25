@@ -29,7 +29,7 @@ struct AddCoinView: View {
                         }
                         Spacer()
                         Group {
-                            if marketVM.savedCoins.contains(where: { $0.id == coin.id }) {
+                            if marketVM.savedCoinIndices.contains(where: {$0 == coin.marketCapRank - 1}) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .onTapGesture {
                                         marketVM.delete(coin: coin)

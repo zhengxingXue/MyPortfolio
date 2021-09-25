@@ -31,7 +31,7 @@ class AccountDataService {
             let currentAccount = createEntity(account: "Guest Account")
             currentAccount.selected = true
             applyChanges()
-            addEntity(coin: "bitcoin")
+            addEntity(coin: "bitcoin", rank: 1)
             return currentAccount
         }
     }
@@ -214,7 +214,7 @@ extension AccountDataService {
     // MARK: CoinEntity Functions
     func add(coin: CoinModel) {
         guard currentCoins.first(where: { $0.coinID == coin.id }) == nil else { return }
-        addEntity(coin: coin.id)
+        addEntity(coin: coin.id, rank: coin.marketCapRank)
     }
     
     func delete(coin: CoinModel) {
@@ -227,12 +227,13 @@ extension AccountDataService {
         applyChanges()
     }
     
-    private func addEntity(coin coinID: String) {
+    private func addEntity(coin coinID: String, rank: Int16) {
         if let entity = allCoins.first(where: { $0.coinID == coinID }) {
             currentAccount.addToCoins(entity)
         } else {
             let entity = CoinEntity(context: container.viewContext)
             entity.coinID = coinID
+            entity.rank = rank
             currentAccount.addToCoins(entity)
         }
         currentAccount.coinIDs?.append(coinID)
