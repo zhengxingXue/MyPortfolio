@@ -29,12 +29,12 @@ struct AccountTabView: View {
                     ForEach(accountVM.currentOrders) { order in
                         HStack {
                             Text(order.name ?? "")
-                                .foregroundColor(Color.theme.accent)
                             Spacer()
                             Text(order.amount.asNumberString())
                             Text(order.dateCreated?.asOrderDateString() ?? "nil")
                                 .frame(width: UIScreen.main.bounds.width / 2.3, alignment: .trailing)
                         }
+                        .foregroundColor(.theme.secondaryText)
                         .padding(.horizontal)
                         
                         Divider()
