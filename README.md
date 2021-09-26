@@ -24,4 +24,4 @@ The news data that is used in this app comes from [NewsAPI](https://newsapi.org/
 
 <img src="./Resources/1.png" height="500"><img src="./Resources/2.png" height="500"><img src="./Resources/3.png" height="500"><img src="./Resources/4.png" height="500"><img src="./Resources/5.png" height="500"><img src="./Resources/6.png" height="500">
 
-<img src="./Resources/-1.png" height="500"><img src="./Resources/-2.png" height="500"><img src="./Resources/-3.png" height="500"><img src="./Resources/-4.png" height="500"><img src="./Resources/-5.png" height="500">
+<img src="./Resources/-1.png" height="500"><img src="./Resources/-2.png" height="500"><img src="./Resources/-3.png" height="500"><img src="./Resources/-4.png" height="500"><img src="./Resources/-5.png" height="500"><img src="./Resources/-6.png" height="500">
