@@ -121,6 +121,7 @@ struct CoinModel: Identifiable, Codable, Hashable {
     }
     
     var currentPrice: Double {
+        // TODO: Handle the nil case
         todayPrices?.last?[1] ?? -1
     }
     
