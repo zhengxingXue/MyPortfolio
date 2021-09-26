@@ -32,8 +32,8 @@ struct AccountTabView: View {
                                 .foregroundColor(Color.theme.accent)
                             Spacer()
                             Text(order.amount.asNumberString())
-                            Spacer()
                             Text(order.dateCreated?.asOrderDateString() ?? "nil")
+                                .frame(width: UIScreen.main.bounds.width / 2.3, alignment: .trailing)
                         }
                         .padding(.horizontal)
                         

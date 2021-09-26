@@ -41,4 +41,9 @@ struct PortfolioModel: Identifiable {
         return (coin.currentPrice * self.amount - initValue).asCurrencyWith2Decimals()
     }
     
+    func isProfitable(from allCoins: [CoinModel]) -> Bool {
+        guard let coin = self.getCoinModel(from: allCoins) else { return true }
+        return (coin.currentPrice * self.amount - initValue) >= 0
+    }
+    
 }

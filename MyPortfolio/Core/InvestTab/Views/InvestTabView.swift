@@ -105,13 +105,14 @@ extension InvestTabView {
                     HStack {
                         Text(portfolio.getCoinModel(from: marketVM.allCoins)?.name ?? "-")
                         Spacer()
-                        VStack(alignment: .trailing) {
+                        VStack(alignment: .trailing, spacing: 6) {
                             Text(portfolio.getHoldingValueString(from: marketVM.allCoins))
                                 .bold()
-                            Text(portfolio.initValue.asCurrencyWith2Decimals())
+                            // Text(portfolio.initValue.asCurrencyWith2Decimals())
                             Text(portfolio.amount.asNumberString())
                         }
                         Text(portfolio.getTotalProfitString(from: marketVM.allCoins))
+                            .foregroundColor(portfolio.isProfitable(from: marketVM.allCoins) ? .theme.green : .theme.red)
                             .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
                     }
                     .foregroundColor(.theme.accent)

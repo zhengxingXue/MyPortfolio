@@ -39,9 +39,9 @@ struct MyPortfolioView: View {
                 .tag(2)
         }
         .tabViewStyle(
-            backgroundColor: .white,
+            backgroundColor: .theme.background,
             itemColor: .gray,
-            selectedItemColor: .black
+            selectedItemColor: .theme.accent
         )
     }
 }

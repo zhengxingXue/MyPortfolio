@@ -93,7 +93,7 @@ class AccountDataService {
     }
     
     private func getCurrentPortfolios() {
-        currentPortfolios = currentAccount.portfolios?.allObjects as? [PortfolioEntity] ?? []
+        currentPortfolios = (currentAccount.portfolios?.allObjects as? [PortfolioEntity] ?? []).sorted(by: { $0.initValue > $1.initValue })
 //        print("\nCurrent Portfolios: \n\(currentPortfolios)\n")
     }
     

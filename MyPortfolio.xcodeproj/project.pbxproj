@@ -165,9 +165,9 @@
 			children = (
 				3824175926E184ED002BCA6E /* CoinModel.swift */,
 				38F6634E26E43B5900631E88 /* CoinMarketChartModel.swift */,
-				3824177F26E1D250002BCA6E /* NewsModel.swift */,
 				389FD9A126FFA93200CF0AFA /* PortfolioModel.swift */,
 				3808477B26F2301D005ABF4F /* AccountContainer.xcdatamodeld */,
+				3824177F26E1D250002BCA6E /* NewsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
