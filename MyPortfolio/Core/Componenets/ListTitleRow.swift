@@ -16,7 +16,7 @@ struct ListTitleRow: View {
             .font(.title)
             .foregroundColor(.theme.accent)
             .listRowSeparator(.hidden)
-            .padding(.vertical)
+            .padding(.bottom)
     }
 }
 

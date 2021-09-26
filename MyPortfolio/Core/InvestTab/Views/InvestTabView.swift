@@ -17,7 +17,9 @@ struct InvestTabView: View {
         NavigationView {
             List {
                 
-                notesScrollView
+                overviewView
+                
+                // notesScrollView
                 
                 portfolioView
                 
@@ -81,14 +83,45 @@ extension InvestTabView {
         .listRowInsets(EdgeInsets())
     }
     
+    private var overviewView: some View {
+        Group {
+            sectionSeparator
+            
+            HStack {
+                Text(marketVM.getEquityString())
+                    .bold()
+                Text("Equity")
+                Spacer()
+            }
+            .font(.title)
+            .foregroundColor(.theme.accent)
+            
+            HStack {
+                Text(marketVM.getBuyingPowerString())
+                Text("Buying Power")
+                Spacer()
+            }
+            .font(.title2)
+            .foregroundColor(.theme.accent)
+            
+            sectionSeparator
+        }
+        .listRowSeparator(.hidden)
+    }
+    
     private var portfolioView: some View {
         Group {
             if marketVM.portfolios.count > 0 {
                 VStack(alignment: .leading) {
-                    Text("Portfolio")
-                        .font(.title)
-                        .foregroundColor(.theme.accent)
-                        .padding(.vertical)
+                    HStack {
+                        Text("Portfolio")
+                            .font(.title)
+                        Spacer()
+                        Text("Value " + marketVM.getPortfolioValueString())
+                            .font(.callout)
+                    }
+                    .foregroundColor(.theme.accent)
+                    .padding(.bottom)
                     
                     HStack {
                         Text("Coin")
@@ -117,14 +150,16 @@ extension InvestTabView {
                     }
                     .foregroundColor(.theme.accent)
                 }
-                
-                // Section separator
-                Rectangle()
-                    .foregroundColor(Color.gray.opacity(0.1))
-                    .frame(height: 8)
-                    .listRowInsets(EdgeInsets())
+                sectionSeparator
             }
         }
+    }
+    
+    private var sectionSeparator: some View {
+        Rectangle()
+            .foregroundColor(Color.gray.opacity(0.1))
+            .frame(height: 8)
+            .listRowInsets(EdgeInsets())
     }
     
     private var cryptoListTitle: some View {

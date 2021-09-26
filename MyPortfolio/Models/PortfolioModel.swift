@@ -31,10 +31,12 @@ struct PortfolioModel: Identifiable {
         }
     }
     
-    func getHoldingValueString(from allCoins: [CoinModel]) -> String {
-        guard let coin = self.getCoinModel(from: allCoins) else { return "-"}
-        return (coin.currentPrice * self.amount).asCurrencyWith2Decimals()
+    func getHoldingValue(from allCoins: [CoinModel]) -> Double? {
+        guard let coin = self.getCoinModel(from: allCoins) else { return nil }
+        return coin.currentPrice * self.amount
     }
+    
+    func getHoldingValueString(from allCoins: [CoinModel]) -> String { getHoldingValue(from: allCoins)?.asCurrencyWith2Decimals() ?? "-" }
     
     func getTotalProfitString(from allCoins: [CoinModel]) -> String {
         guard let coin = self.getCoinModel(from: allCoins) else { return "-"}

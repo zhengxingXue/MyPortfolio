@@ -42,6 +42,7 @@ class InvestTabViewModel: ObservableObject {
         accountDataService.$currentCoins
             .sink { [weak self] returnedCoinEntities in
                 guard let self = self else { return }
+                // TODO: make sure the rank is correct to index the coin
                 self.savedCoinIndices = returnedCoinEntities.map({ Int($0.rank - 1) })
                 self.coinsMarketChartService.update(coinIDs: returnedCoinEntities.map({ $0.coinID ?? "" }))
                 self.coinsMarketChartService.getMarketChart()
@@ -87,6 +88,28 @@ class InvestTabViewModel: ObservableObject {
             guard dataPoint.count > 1, Int64(dataPoint[0]) > startOfDay else { return nil }
             return dataPoint
         })
+    }
+    
+    func getPortfolioValueString() -> String {
+        var value: Double = 0
+        for portfolio in portfolios {
+            guard let holdingValue = portfolio.getHoldingValue(from: allCoins) else { return "-"}
+            value += holdingValue
+        }
+        return value.asCurrencyWith2Decimals()
+    }
+    
+    func getEquityString() -> String {
+        var equity: Double = accountDataService.currentAccount.cash
+        for portfolio in portfolios {
+            guard let holdingValue = portfolio.getHoldingValue(from: allCoins) else { return "-"}
+            equity += holdingValue
+        }
+        return equity.asCurrencyWith2Decimals()
+    }
+    
+    func getBuyingPowerString() -> String {
+        accountDataService.currentAccount.cash.asCurrencyWith2Decimals()
     }
     
     func add(coin: CoinModel) { accountDataService.add(coin: coin) }
