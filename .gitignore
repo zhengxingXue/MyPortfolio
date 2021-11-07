@@ -3,7 +3,7 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## App Specific
-Dividend\ App/Networking/Configuration.swift
+MyPortfolio/API.swift
 
 ## User settings
 xcuserdata/
@@ -34,6 +34,3 @@ DerivedData/
 
 ## Gcc Patch
 /*.gcno
-
-## API key
-MyPortfolio/API.swift
